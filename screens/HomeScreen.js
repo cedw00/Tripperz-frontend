@@ -1,10 +1,20 @@
 import { StyleSheet, Text, View, Image, SafeAreaView, Dimensions, TouchableOpacity } from 'react-native';
+import { useSelector } from 'react-redux';
 
 export default function HomeScreen({ navigation }) {
+  const { email, pseudo, phone, birthday, interests } = useSelector((state) => state.user.value)
   
     const handleReturn = () => {
-        navigation.navigate('Register')
+        navigation.navigate('SetProfile')
     }
+
+    const favorites = interests.map((data, i) => {
+      return (
+        <View key={i}>
+          <Text>{data}</Text>
+        </View>
+      )
+    })
 
   return (
     <SafeAreaView style={styles.container}>
@@ -13,10 +23,13 @@ export default function HomeScreen({ navigation }) {
       </View>
       <View style={styles.body}>
         <View style={styles.top}>
-          <Text>Home Page</Text>
+          <Text>Welcome {pseudo}</Text>
         </View>
         <View style={styles.main}>
-          <Text>Main</Text>
+          <Text>Your email: {email}</Text>
+          <Text>Your phone number: {phone}</Text>
+          <Text>Your birthday: {birthday}</Text>
+          {favorites}
         </View>
         <View style={styles.bottom}>
           <TouchableOpacity activeOpacity={0.8} onPress={() => handleReturn()}>

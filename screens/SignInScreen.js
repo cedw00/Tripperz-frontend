@@ -5,7 +5,7 @@ import { useState } from 'react';
 import { useDispatch } from 'react-redux'
 import { updateUser } from '../reducers/user';
 
-export default function RegisterScreen({ navigation }) {
+export default function SignInScreen({ navigation }) {
   const dispatch = useDispatch();
   const [toggleCheckBox, setToggleCheckBox] = useState(false);
   const [showError, setShowError] = useState(false);
@@ -17,18 +17,14 @@ export default function RegisterScreen({ navigation }) {
   const [password, setPassword] = useState('');
 
   const checkForm = () => {
-    let okay = 0;
+    let isValid = false;
     const pattern = /^[0-9a-z._-]+@{1}[0-9a-z.-]{2,}[.]{1}[a-z]{2,5}$/gi;
-    const phonePattern = /0[6-7]{1}[0-9]{8}/;
-    email.match(pattern) ? okay++ : okay = 0;
-    pseudo.trim() !== '' ? okay++ : okay = 0;
-    phoneNb.match(phonePattern) ? okay++ : okay = 0;
-    if (okay === 3) {
-      return true
+    email.match(pattern) ? isValid = true : isValid = false;
+    if (isValid) {
+        return true
     } else {
-      return false;
+        return false
     }
-
   }
 
   const handleReturn = () => {
@@ -68,7 +64,7 @@ export default function RegisterScreen({ navigation }) {
       </View>
       <View style={styles.form}>
         <View style={styles.top}>
-            <Text>Inscription</Text>
+            <Text>Connection</Text>
         </View>
         <View style={styles.textArea}>
             <KeyboardAvoidingView behavior={Platform.OS === 'ios' ? 'padding' : 'height'} style={styles.inputContainer}>
@@ -91,7 +87,7 @@ export default function RegisterScreen({ navigation }) {
       </View>
       <View style={styles.test}>
         <TouchableOpacity activeOpacity={0.8} onPress={() => handleRegister()} style={styles.button}>
-            <Text style={styles.textBtn}>Register</Text>
+            <Text style={styles.textBtn}>Connect</Text>
         </TouchableOpacity>
         { showError && <View>
           <Text>{errorMsg}</Text>
