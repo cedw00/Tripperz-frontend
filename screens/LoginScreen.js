@@ -3,9 +3,13 @@ import FontAwesome from 'react-native-vector-icons/FontAwesome';
 
 export default function LoginScreen({ navigation }) {
   
+  const goToSignIn = () => {
+    navigation.navigate('SignIn');
+  }
+
   const handleSubmit = () => {
     navigation.navigate('Register')
-  }
+  };
 
   return (
     <SafeAreaView style={styles.container}>
@@ -17,8 +21,8 @@ export default function LoginScreen({ navigation }) {
           <Text>Connection to your account</Text>
         </View>
         <View style={styles.main}>
-          <TouchableOpacity activeOpacity={0.8} style={styles.btn}>
-            <Text style={styles.btnText}>Continue with your email</Text>
+          <TouchableOpacity activeOpacity={0.8} style={styles.btn} onPress={() => goToSignIn()}>
+            <Text style={styles.btnText}><FontAwesome name={'at'} size={20} color={'#FFFFFF'}/> Continue with your email</Text>
           </TouchableOpacity>
         </View>
         <View style={styles.bottom}>
@@ -63,7 +67,11 @@ const styles = StyleSheet.create({
     flex: 1,
   },
   btn: {
-    backgroundColor: 'grey'
+    backgroundColor: 'grey',
+    padding: 8,
+  },
+  btnText: {
+    color: 'white',
   },
   bottom: {
     flex: 1,

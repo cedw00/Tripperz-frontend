@@ -3,25 +3,54 @@ KeyboardAvoidingView } from 'react-native';
 import { useDispatch } from 'react-redux';
 import { useState } from 'react';
 import FontAwesome from 'react-native-vector-icons/FontAwesome';
+import { Dropdown, MultiSelect } from 'react-native-element-dropdown';
+import DateTimePicker from '@react-native-community/datetimepicker';
 import { updateProfile } from '../reducers/user';
+
+const genderData = [
+  { label: 'Male', value: 'Male' },
+  { label: 'Female', value: 'Female' },
+];
+
+const mockData = [
+  { label: 'Museum', value: '1' },
+  { label: 'Sea', value: '2' },
+  { label: 'Sport', value: '3' },
+  { label: 'Restaurant', value: '4' },
+  { label: 'Theater', value: '5' },
+  { label: 'Sightseeing', value: '6' },
+  { label: 'Amusement Park', value: '7' },
+  { label: 'Mountain', value: '8' },
+];
 
 export default function SetProfileScreen({ navigation }) {
   const dispatch = useDispatch();
   const [birthday, setBirthday] = useState('');
-  const [gender, setGender] = useState('');
-  const [password, setPassword] = useState('');
+  const [gender, setGender] = useState(null);
+  const [selected, setSelected] = useState([]);
+  const [date, setDate] = useState(new Date());
   
     const handleReturn = () => {
         navigation.navigate('Register')
     };
 
     const handleSubmit = () => {
+      const interests = selected.map(data => mockData[data].label);
       const infos = {
         birthday: birthday,
         gender: gender,
-        password: password,
+        interests: interests,
       };
       dispatch(updateProfile(infos));
+      navigation.navigate('Home')
+    };
+
+    const display = item => {
+      return (
+        <View>
+          <Text>{item.label}</Text>
+        </View>
+      )
     }
 
   return (
@@ -40,14 +69,19 @@ export default function SetProfileScreen({ navigation }) {
             <KeyboardAvoidingView behavior={Platform.OS === 'ios' ? 'padding' : 'height'} style={styles.inputContainer}>
                 <TextInput placeholder="Birthday Date: DD/MM/YYYY" onChangeText={(value) => setBirthday(value)} value={birthday} style={styles.input}/>
             </KeyboardAvoidingView>
-            <KeyboardAvoidingView behavior={Platform.OS === 'ios' ? 'padding' : 'height'} style={styles.inputContainer}>
-                <TextInput placeholder="Gender" onChangeText={(value) => setGender(value)} value={gender} style={styles.input}/>
-            </KeyboardAvoidingView>
-            <KeyboardAvoidingView behavior={Platform.OS === 'ios' ? 'padding' : 'height'} style={styles.inputContainer}>
-                <TextInput placeholder="Password" onChangeText={(value) => setPassword(value)} value={password} style={styles.input}/>
-            </KeyboardAvoidingView>
+            <Dropdown
+                style={styles.dropdown} data={genderData} labelField='label' valueField='value' placeholder='Select your gender' placeholderStyle={styles.input}
+                value={gender} onChange={(item) => {setGender(item.value)}} renderItem={display} maxHeight={100}
+            />
+            <MultiSelect
+                style={styles.dropdown} data={mockData} labelField='label' valueField='value' placeholder='Choose your favorites activities'
+                placeholderStyle={styles.input} value={selected} onChange={(item) => {setSelected(item)}} renderItem={display} maxHeight={100}
+            />
         </View>
         <View style={styles.bottom}>
+          <TouchableOpacity activeOpacity={0.8} onPress={() => handleSubmit()} style={styles.button}>
+              <Text style={styles.textBtn}>Plan your trip</Text>
+          </TouchableOpacity>
           <TouchableOpacity activeOpacity={0.8} onPress={() => handleReturn()}>
             <Text>Return</Text>
           </TouchableOpacity>
@@ -59,62 +93,82 @@ export default function SetProfileScreen({ navigation }) {
 
 const styles = StyleSheet.create({
     container: {
-        flex: 1,
-        width: Dimensions.get('screen').width,
-        height: Dimensions.get('screen').height,
-        justifyContent: "center",
-        alignItems: "center",
-      },
-      header: {
-        flex: 1,
-        justifyContent: 'center',
-        alignItems: 'center',
-      },
-      title: {
-        fontWeight: 'bold',
-        fontSize: 48,
-        color: 'blue'
-      },
-      body: {
-        flex: 3,
-        width: '80%',
-        justifyContent: 'center',
-        alignItems: 'center',
-      },
-      top: {
-        flex: 1,
-        width: '70%',
-        justifyContent: 'center',
-        alignItems: 'center',
-      },
-      messageContainer: {
-        flex: 1,
-        alignItems: 'center',
-        justifyContent: 'center',
-      },
-      message: {
-        fontSize: 20,
-      },
-      main: {
-        flex: 1,
-        width: '100%',
-        alignItems: 'center',
-        justifyContent: 'space-around'
-      },
-      inputContainer: {
-        width: '80%',
-        backgroundColor: '#AFBBE8',
-        borderStyle: 'solid',
-        borderWidth: 2,
-        borderColor: 'black',
-        borderRadius: 5,
-      },
-      input: {
-        color: 'black',
-      },
-      bottom: {
-        flex: 1,
-        justifyContent: 'flex-start',
-        alignItems: 'center',
-      }
+      flex: 1,
+      width: Dimensions.get('screen').width,
+      height: Dimensions.get('screen').height,
+      justifyContent: "center",
+      alignItems: "center",
+    },
+    header: {
+      flex: 1,
+      justifyContent: 'center',
+      alignItems: 'center',
+    },
+    title: {
+      fontWeight: 'bold',
+      fontSize: 48,
+      color: 'blue'
+    },
+    body: {
+      flex: 3,
+      width: '80%',
+      justifyContent: 'center',
+      alignItems: 'center',
+    },
+    top: {
+      flex: 1,
+      width: '70%',
+      justifyContent: 'center',
+      alignItems: 'center',
+    },
+    messageContainer: {
+      flex: 1,
+      alignItems: 'center',
+      justifyContent: 'center',
+    },
+    message: {
+      fontSize: 20,
+    },
+    main: {
+      flex: 1,
+      width: '100%',
+      alignItems: 'center',
+      justifyContent: 'space-around'
+    },
+    dropdown: {
+      width: '80%',
+      backgroundColor: '#AFBBE8',
+      borderStyle: 'solid',
+      borderWidth: 2,
+      borderColor: 'black',
+      borderRadius: 5,
+    },
+    inputContainer: {
+      width: '80%',
+      backgroundColor: '#AFBBE8',
+      borderStyle: 'solid',
+      borderWidth: 2,
+      borderColor: 'black',
+      borderRadius: 5,
+    },
+    input: {
+      color: 'black',
+    },
+    bottom: {
+      flex: 1,
+      width: '80%',
+      justifyContent: 'space-around',
+      alignItems: 'center',
+    },
+    button: {
+      width: '60%',
+      alignItems: 'center',
+      paddingTop: 8,
+      paddingBottom: 8,
+      backgroundColor: 'black',
+      borderRadius: 8,
+    },
+    textBtn: {
+      color: 'white',
+    }
 });

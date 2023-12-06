@@ -8,7 +8,8 @@ const initialState = {
     phone: null,
     birthday: null,
     gender: null,
-    password: null
+    password: null,
+    interests: [],
   },
 };
 
@@ -20,11 +21,12 @@ export const userSlice = createSlice({
      state.value.email = action.payload.email;
      state.value.pseudo = action.payload.pseudo;
      state.value.phone = action.payload.phone;
+     state.value.password = action.payload.password;
    },
    updateProfile: (state, action) => {
     state.value.birthday = action.payload.birthday;
     state.value.gender = action.payload.gender;
-    state.value.password = action.payload.password;
+    state.value.interests = action.payload.interests;
    }
  },
 });
