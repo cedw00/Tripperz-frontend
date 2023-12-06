@@ -2,16 +2,33 @@ import { StyleSheet, Text, View, Image, TextInput,
     SafeAreaView, Dimensions, TouchableOpacity, KeyboardAvoidingView } from 'react-native';
 import CheckBox from 'expo-checkbox';
 import { useState } from 'react';
-// import { useDispatch } from 'react-redux'
+import { useDispatch } from 'react-redux'
+import { updateUser } from '../reducers/user';
 
 export default function RegisterScreen({ navigation }) {
-  // const dispatch = useDispatch();
+  const dispatch = useDispatch();
   const [toggleCheckBox, setToggleCheckBox] = useState(false);
   const [showError, setShowError] = useState(false);
+  const [errorMsg, setErrorMsg] = useState('');
 
   const [pseudo, setPseudo] = useState('');
   const [email, setEmail] = useState('');
   const [phoneNb, setPhoneNb] = useState('');
+
+  const checkForm = () => {
+    let okay = 0;
+    const pattern = /^[0-9a-z._-]+@{1}[0-9a-z.-]{2,}[.]{1}[a-z]{2,5}$/gi;
+    const phonePattern = /0[6-7]{1}[0-9]{8}/;
+    email.match(pattern) ? okay++ : okay = 0;
+    pseudo.trim() !== '' ? okay++ : okay = 0;
+    phoneNb.match(phonePattern) ? okay++ : okay = 0;
+    if (okay === 3) {
+      return true
+    } else {
+      return false;
+    }
+
+  }
 
   const handleReturn = () => {
     setShowError(false)
@@ -19,11 +36,26 @@ export default function RegisterScreen({ navigation }) {
   }
 
   const handleRegister = () => {
-    if (toggleCheckBox) {
-      setShowError(false)
-      navigation.navigate('Home')
-    } else {
+    if (!checkForm()) {
+      setErrorMsg('Missing or invalid field(s)');
       setShowError(true)
+    } else {
+      if (toggleCheckBox) {
+        setShowError(false)
+        const user = {
+          email: email,
+          pseudo: pseudo,
+          phone: phoneNb,
+        }
+        setEmail('');
+        setPseudo('');
+        setPhoneNb('');
+        dispatch(updateUser(user))
+        navigation.navigate('SetProfile')
+      } else {
+        setErrorMsg('Accept terms is required');
+        setShowError(true)
+      }
     }
   }
 
@@ -57,7 +89,7 @@ export default function RegisterScreen({ navigation }) {
             <Text style={styles.textBtn}>Register</Text>
         </TouchableOpacity>
         { showError && <View>
-          <Text>Invalid register</Text>
+          <Text>{errorMsg}</Text>
         </View> }
         <TouchableOpacity activeOpacity={0.8} onPress={() => handleReturn()}>
             <Text>Return</Text>

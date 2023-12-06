@@ -17,7 +17,9 @@ export default function LoginScreen({ navigation }) {
           <Text>Connection to your account</Text>
         </View>
         <View style={styles.main}>
-          <Text>Main</Text>
+          <TouchableOpacity activeOpacity={0.8} style={styles.btn}>
+            <Text style={styles.btnText}>Continue with your email</Text>
+          </TouchableOpacity>
         </View>
         <View style={styles.bottom}>
           <TouchableOpacity activeOpacity={0.8} onPress={() => handleSubmit()}>
@@ -59,6 +61,9 @@ const styles = StyleSheet.create({
   },
   main: {
     flex: 1,
+  },
+  btn: {
+    backgroundColor: 'grey'
   },
   bottom: {
     flex: 1,

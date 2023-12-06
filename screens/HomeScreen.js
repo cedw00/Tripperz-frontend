@@ -1,9 +1,11 @@
 import { StyleSheet, Text, View, Image, SafeAreaView, Dimensions, TouchableOpacity } from 'react-native';
+import { useSelector } from 'react-redux';
 
 export default function HomeScreen({ navigation }) {
+  const { email, pseudo, phone, birthday } = useSelector((state) => state.user.value)
   
     const handleReturn = () => {
-        navigation.navigate('Register')
+        navigation.navigate('SetProfile')
     }
 
   return (
@@ -13,10 +15,12 @@ export default function HomeScreen({ navigation }) {
       </View>
       <View style={styles.body}>
         <View style={styles.top}>
-          <Text>Home Page</Text>
+          <Text>Welcome {pseudo}</Text>
         </View>
         <View style={styles.main}>
-          <Text>Main</Text>
+          <Text>Your email: {email}</Text>
+          <Text>Your phone number: {phone}</Text>
+          <Text>Your email: {birthday}</Text>
         </View>
         <View style={styles.bottom}>
           <TouchableOpacity activeOpacity={0.8} onPress={() => handleReturn()}>
