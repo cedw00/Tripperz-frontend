@@ -5,13 +5,13 @@ import LoginScreen from './screens/LoginScreen';
 import RegisterScreen from './screens/RegisterScreen';
 import HomeScreen from './screens/HomeScreen';
 
-// import { Provider } from 'react-redux';
-// import { configureStore } from '@reduxjs/toolkit';
-// import user from './reducers/user';
+import { Provider } from 'react-redux';
+import { configureStore } from '@reduxjs/toolkit';
+import user from './reducers/user';
 
-// const store = configureStore({
-//   reducer: { user },
-// });
+const store = configureStore({
+  reducer: { user },
+});
 
 const Stack = createNativeStackNavigator();
 
