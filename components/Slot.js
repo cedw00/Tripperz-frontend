@@ -5,8 +5,8 @@ import {
   PanResponder,
   Animated,
 } from "react-native";
-import { randomActivity } from "../modules/slotMods";
-import { useEffect, useState } from "react";
+import { getRandomActivityByInput } from "../modules/slotMods";
+import { useEffect, useState, useRef } from "react";
 
 export default function Slot() {
   const activitiesList = [
@@ -144,8 +144,9 @@ export default function Slot() {
     },
   ];
   const userReq = "restaurants landscapes sportActivities";
+  const allActivNames = "shopping restaurants culturePlaces landscapes sportActivities";
   const [index, setIndex] = useState(0);
-
+  const [activList, setActivList] = useState([]);
   // SWIPE LEFT DETECTION
   const pan = useRef(new Animated.ValueXY()).current;
 
@@ -181,27 +182,31 @@ export default function Slot() {
   };
 
   // Activities
-  let chosenActivList = [];
-
   useEffect(() => {
+    let activArray = [];
     for (let i = 0; i < 10; i++) {
-      chosenActivList.push(randomActivity(activitiesList, userReq));
+      activArray.push(getRandomActivityByInput(activitiesList, userReq));
     }
+    setActivList(activArray)
   }, []);
+
+  console.log(getRandomActivityByInput(activitiesList, userReq))
 
   return (
     <View style={styles.slotContainer}>
       <Animated.View
         style={{
-          width: 200,
-          height: 200,
+          width: 300,
+          height: 20,
+          borderColor: 'black',
+          borderWidth: '1rem',
           backgroundColor: "lightblue",
           transform: [{ translateX: pan.x }, { translateY: pan.y }],
         }}
         {...panResponder.panHandlers}
       >
         <View>
-          <Text>{chosenActivList[index]}</Text>
+          <Text style={styles.text}>{activList[index]}</Text>
         </View>
       </Animated.View>
     </View>
@@ -213,6 +218,13 @@ const styles = StyleSheet.create({
       flex: 1,
       backgroundColor: '#eee',
       justifyContent: 'center',
-      alignItems: 'center'
+      alignItems: 'center',
+      height: '10%',
+      width: '10%',
     },
+    text: {
+        color: 'black',
+        justifyContent: 'center',
+        alignItems: 'center',
+      },
 })

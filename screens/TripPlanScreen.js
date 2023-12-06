@@ -1,13 +1,5 @@
 import React, { useState, useEffect } from "react";
-import {
-  StyleSheet,
-  Text,
-  View,
-  Image,
-  SafeAreaView,
-  Dimensions,
-  TouchableOpacity,
-} from "react-native";
+import { StyleSheet, ScrollView, View, SafeAreaView } from "react-native";
 import FontAwesome from "react-native-vector-icons/FontAwesome";
 import Day from "../components/Day";
 
@@ -19,16 +11,20 @@ export default function TripPlanScreen() {
   }, []);
 
   return (
-    <View title="Trip Plan" style={styles.planContainer}>
-      {day}
-    </View>
+    <ScrollView>
+      <SafeAreaView>
+        <View title="Trip Plan" style={styles.planContainer}>
+          {day}
+        </View>
+      </SafeAreaView>
+    </ScrollView>
   );
 }
 
 const styles = StyleSheet.create({
   planContainer: {
     flex: 1,
-    flexDirection: 'row',
+    flexDirection: "column",
     backgroundColor: "white",
     justifyContent: "center",
     alignItems: "center",

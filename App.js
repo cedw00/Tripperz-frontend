@@ -6,6 +6,7 @@ import SignInScreen from './screens/SignInScreen';
 import RegisterScreen from './screens/RegisterScreen';
 import SetProfileScreen from './screens/SetProfileScreen';
 import HomeScreen from './screens/HomeScreen';
+import TripPlanScreen from './screens/TripPlanScreen';
 
 import { Provider } from 'react-redux';
 import { configureStore } from '@reduxjs/toolkit';
@@ -27,6 +28,7 @@ export default function App() {
           <Stack.Screen name="Register" component={RegisterScreen} />
           <Stack.Screen name="SetProfile" component={SetProfileScreen} />
           <Stack.Screen name="Home" component={HomeScreen} />
+          <Stack.Screen name="TripPlan" component={TripPlanScreen} />
         </Stack.Navigator>
       </NavigationContainer>
     </Provider>

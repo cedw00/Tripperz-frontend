@@ -7,6 +7,9 @@ export default function HomeScreen({ navigation }) {
     const handleReturn = () => {
         navigation.navigate('SetProfile')
     }
+    const handleNext = () => {
+      navigation.navigate('TripPlan')
+  }
 
     const favorites = interests.map((data, i) => {
       return (
@@ -34,6 +37,9 @@ export default function HomeScreen({ navigation }) {
         <View style={styles.bottom}>
           <TouchableOpacity activeOpacity={0.8} onPress={() => handleReturn()}>
             <Text>Return</Text>
+          </TouchableOpacity>
+          <TouchableOpacity activeOpacity={0.8} onPress={() => handleNext()}>
+            <Text>Go to plan Trip</Text>
           </TouchableOpacity>
         </View>
       </View>

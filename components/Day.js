@@ -49,25 +49,26 @@ export default function Day() {
 
 const styles = StyleSheet.create({
   dayContainer: {
+    marginTop: 200,
     flex: 1,
-    flexDirection: 'row',
+    flexDirection: 'column',
     backgroundColor: "white",
     justifyContent: "center",
     alignItems: "center",
   },
   halfday: {
-    width: "80%",
-    height: "50%",
+    width: "100%",
+    height: "100%",
     justifyContent: "center",
     alignItems: "center",
-    flexDirection: 'row',
+    flexDirection: 'column',
   },
   daySlots: {
     width: "80%",
-    height: "50%",
+    height: "80%",
     justifyContent: "center",
     alignItems: "center",
-    flexDirection: 'row',
+    flexDirection: 'column',
     backgroundColor: "#eee",
   },
 });
