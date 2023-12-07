@@ -1,5 +1,4 @@
-import { StyleSheet, Text, View, Image, SafeAreaView, Dimensions, TouchableOpacity, TextInput,
-KeyboardAvoidingView } from 'react-native';
+import { StyleSheet, Text, View, Image, SafeAreaView, Dimensions, TouchableOpacity } from 'react-native';
 import { useDispatch } from 'react-redux';
 import { useState } from 'react';
 import FontAwesome from 'react-native-vector-icons/FontAwesome';
@@ -29,12 +28,32 @@ export default function SetProfileScreen({ navigation }) {
   const [gender, setGender] = useState(null);
   const [selected, setSelected] = useState([]);
   const [date, setDate] = useState(new Date());
-  
+  const [mode, setMode] = useState('date');
+  const [show, setShow] = useState(false);
+
+  const onChange = (event, selectedDate) => {
+    const currentDate = selectedDate;
+    setShow(false);
+    setDate(currentDate);
+  };
+
+  const showMode = (currentMode) => {
+    setShow(true);
+    setMode(currentMode);
+  };
+
+  const showDatepicker = () => {
+    showMode('date');
+  };
+
     const handleReturn = () => {
         navigation.navigate('Register')
     };
 
     const handleSubmit = () => {
+      const month = date.getMonth() + 1;
+      const str = `${date.getDate()}/${month}/${date.getFullYear()}`;
+      setBirthday(str)
       const interests = selected.map(data => mockData[data].label);
       const infos = {
         birthday: birthday,
@@ -42,7 +61,8 @@ export default function SetProfileScreen({ navigation }) {
         interests: interests,
       };
       dispatch(updateProfile(infos));
-      navigation.navigate('Home')
+      setSelected([])
+      navigation.navigate('Profile')
     };
 
     const display = item => {
@@ -66,17 +86,30 @@ export default function SetProfileScreen({ navigation }) {
           </View>
         </View>
         <View style={styles.main}>
-            <KeyboardAvoidingView behavior={Platform.OS === 'ios' ? 'padding' : 'height'} style={styles.inputContainer}>
-                <TextInput placeholder="Birthday Date: DD/MM/YYYY" onChangeText={(value) => setBirthday(value)} value={birthday} style={styles.input}/>
-            </KeyboardAvoidingView>
-            <Dropdown
-                style={styles.dropdown} data={genderData} labelField='label' valueField='value' placeholder='Select your gender' placeholderStyle={styles.input}
-                value={gender} onChange={(item) => {setGender(item.value)}} renderItem={display} maxHeight={100}
+          <View style={styles.show}>
+            <TouchableOpacity activeOpacity={0.8} onPress={() => showDatepicker()} style={styles.button}>
+                <Text style={styles.textBtn}>Select Date</Text>
+            </TouchableOpacity>
+          </View>
+          <Text>{date.getDate()}/{date.getMonth() + 1}/{date.getFullYear()}</Text>
+          {show && (
+            <DateTimePicker
+              testID="dateTimePicker"
+              value={date}
+              mode={mode}
+              is24Hour={true}
+              onChange={onChange}
             />
-            <MultiSelect
-                style={styles.dropdown} data={mockData} labelField='label' valueField='value' placeholder='Choose your favorites activities'
-                placeholderStyle={styles.input} value={selected} onChange={(item) => {setSelected(item)}} renderItem={display} maxHeight={100}
-            />
+          )}
+          <Dropdown
+              style={styles.dropdown} data={genderData} labelField='label' valueField='value' placeholder='Select your gender' placeholderStyle={styles.input}
+              value={gender} onChange={(item) => {setGender(item.value)}} renderItem={display} maxHeight={100}
+          />
+          <MultiSelect
+              style={styles.dropdown} data={mockData} labelField='label' valueField='value' placeholder='Choose your favorites activities'
+              placeholderStyle={styles.input} value={selected} onChange={(item) => {setSelected(item)}} renderItem={display} maxHeight={100}
+              visibleSelectedItem={false} activeColor='lightblue'
+          />
         </View>
         <View style={styles.bottom}>
           <TouchableOpacity activeOpacity={0.8} onPress={() => handleSubmit()} style={styles.button}>
@@ -119,6 +152,12 @@ const styles = StyleSheet.create({
       flex: 1,
       width: '70%',
       justifyContent: 'center',
+      alignItems: 'center',
+    },
+    show: {
+      flex: 1,
+      flexDirection: 'row',
+      justifyContent: 'space-around',
       alignItems: 'center',
     },
     messageContainer: {

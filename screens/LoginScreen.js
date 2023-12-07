@@ -67,8 +67,9 @@ const styles = StyleSheet.create({
     flex: 1,
   },
   btn: {
-    backgroundColor: 'grey',
+    backgroundColor: 'black',
     padding: 8,
+    borderRadius: 8,
   },
   btnText: {
     color: 'white',
@@ -78,5 +79,4 @@ const styles = StyleSheet.create({
     justifyContent: 'flex-start',
     alignItems: 'center',
   }
-
 });

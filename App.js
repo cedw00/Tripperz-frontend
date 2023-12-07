@@ -5,7 +5,7 @@ import LoginScreen from './screens/LoginScreen';
 import SignInScreen from './screens/SignInScreen';
 import RegisterScreen from './screens/RegisterScreen';
 import SetProfileScreen from './screens/SetProfileScreen';
-import HomeScreen from './screens/HomeScreen';
+import ProfileScreen from './screens/ProfileScreen';
 
 import { Provider } from 'react-redux';
 import { configureStore } from '@reduxjs/toolkit';
@@ -26,7 +26,7 @@ export default function App() {
           <Stack.Screen name="SignIn" component={SignInScreen} />
           <Stack.Screen name="Register" component={RegisterScreen} />
           <Stack.Screen name="SetProfile" component={SetProfileScreen} />
-          <Stack.Screen name="Home" component={HomeScreen} />
+          <Stack.Screen name="Profile" component={ProfileScreen} />
         </Stack.Navigator>
       </NavigationContainer>
     </Provider>
