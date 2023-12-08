@@ -85,39 +85,31 @@ const styles = StyleSheet.create({
   scrollView: {
     flexDirection: "column", // Organiser les éléments en colonnes
     alignItems: "center", // Centrer les éléments horizontalement
-    paddingVertical: 20,
   },
   centeredView: {
-    flex: 1,
     justifyContent: "center",
-    alignItems: "center",
   },
   slotContainer: {
     flex: 1,
-    backgroundColor: "#eee",
     justifyContent: "center",
-    alignItems: "center",
     maxWidth: 600, // Largeur maximale du conteneur
-    backgroundColor: "lightblue",
   },
 
   text: {
     color: "black",
     flexWrap: "wrap", // Permettre au texte de passer à la ligne
-    wordWrap: "break-word", // Éviter de couper les mots en milieu de mot
     textAlign: "center",
   },
   cont: {
-    flex: 1,
     justifyContent: "center",
     alignItems: "center",
-    width: 350,
-    height: 20,
-    paddingVertical: 5,
-    marginVertical: 8,
+    width: 250,
+    height: 30,
+    marginTop: 15,
+    marginHorizontal: 25,
     borderWidth: 3, // Pour visualiser la zone du conteneur
     paddingHorizontal: "3%", // Ajouter un padding pour l'espace intérieur
-    backgroundColor: "lightblue",
+    backgroundColor: "lightyellow",
     borderRadius: "10%",
   },
   modalView: {

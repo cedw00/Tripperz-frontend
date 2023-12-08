@@ -11,22 +11,21 @@ export default function TripPlanScreen() {
   }, []);
 
   return (
-    <ScrollView>
-      <SafeAreaView>
+    <SafeAreaView>
+      <ScrollView>
         <View title="Trip Plan" style={styles.planContainer}>
           {day}
         </View>
-      </SafeAreaView>
-    </ScrollView>
+      </ScrollView>
+    </SafeAreaView>
   );
 }
 
 const styles = StyleSheet.create({
   planContainer: {
     flex: 1,
-    flexDirection: "column",
     backgroundColor: "white",
-    justifyContent: "center",
-    alignItems: "center",
+    width: "100%",
+    height: "100%",
   },
 });

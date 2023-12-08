@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { StyleSheet, Text, View } from "react-native";
+import { StyleSheet, Text, View, SafeAreaView, ScrollView } from "react-native";
 import FontAwesome from "react-native-vector-icons/FontAwesome";
 import Slot from "./Slot";
 import {
@@ -347,8 +347,8 @@ export default function Day() {
   }, []);
 
   useEffect(() => {
-    const modalActivities = activities.map((data) => {
-      return <Slot activity={data} />;
+    const modalActivities = activities.map((data,index) => {
+      return <Slot activity={data} key={index}/>;
     });
     console.log("DAY => modalContent", modalActivities);
 
@@ -363,25 +363,43 @@ export default function Day() {
   }, [activities]);
 
   return (
-    <View title="Day" style={styles.dayContainer}>
-        <Text style={{fontSize: 20}}>PLAN YOUR TRIP</Text>
-      <View title="halfDay" style={styles.halfday}>
-        <Text>A.M.</Text>
-        <View style={styles.daySlots}>{morning}</View>
-        <FontAwesome name="plus" color="black" />
+    <SafeAreaView>
+      <View title="Day" style={styles.dayContainer}>
+        <Text style={{ fontSize: 20, marginBottom: 30 }}>PLAN YOUR TRIP</Text>
+        <View title="halfDay" style={styles.halfday}>
+          <Text>A.M.</Text>
+          <View style={styles.daySlots}>
+            {morning}
+            <FontAwesome
+              name="plus-square"
+              color="black"
+              size={25}
+              style={styles.plusIcon}
+            />
+          </View>
+        </View>
+        <View title="halfDay" style={styles.halfday}>
+          <Text>P.M.</Text>
+          <View style={styles.daySlots}>
+          <ScrollView contentContainerStyle={styles.scrollView}>
+          {afternoon}
+              </ScrollView>
+            
+            <FontAwesome
+              name="plus-square"
+              color="black"
+              size={25}
+              style={styles.plusIcon}
+            />
+          </View>
+        </View>
       </View>
-      <View title="halfDay" style={styles.halfday}>
-        <Text>P.M.</Text>
-        <View style={styles.daySlots}>{afternoon}</View>
-        <FontAwesome name="plus" color="black" />
-      </View>
-    </View>
+    </SafeAreaView>
   );
 }
 
 const styles = StyleSheet.create({
   dayContainer: {
-    marginTop: 200,
     flex: 1,
     flexDirection: "column",
     backgroundColor: "white",
@@ -389,18 +407,23 @@ const styles = StyleSheet.create({
     alignItems: "center",
   },
   halfday: {
-    width: "100%",
-    height: "100%",
-    justifyContent: "center",
     alignItems: "center",
-    flexDirection: "column",
+  },
+  plusIcon: {
+    marginVertical: "3%",
   },
   daySlots: {
+    marginTop: 15,
     width: "80%",
-    height: "80%",
+    height: "60%",
     justifyContent: "center",
     alignItems: "center",
     flexDirection: "column",
-    backgroundColor: "#eee",
+    backgroundColor: "lightblue",
+    borderRadius: "10%",
+  },
+  scrollView: {
+    flexDirection: "column", // Organiser les éléments en colonnes
+    alignItems: "center", // Centrer les éléments horizontalement
   },
 });
