@@ -12,14 +12,14 @@ const genderData = [
 ];
 
 const mockData = [
-  { label: 'Museum', value: '1' },
-  { label: 'Sea', value: '2' },
-  { label: 'Sport', value: '3' },
-  { label: 'Restaurant', value: '4' },
-  { label: 'Theater', value: '5' },
-  { label: 'Sightseeing', value: '6' },
-  { label: 'Amusement Park', value: '7' },
-  { label: 'Mountain', value: '8' },
+  { label: 'Museum', value: '0' },
+  { label: 'Sea', value: '1' },
+  { label: 'Sport', value: '2' },
+  { label: 'Restaurant', value: '3' },
+  { label: 'Theater', value: '4' },
+  { label: 'Sightseeing', value: '5' },
+  { label: 'Amusement Park', value: '6' },
+  { label: 'Mountain', value: '7' },
 ];
 
 export default function SetProfileScreen({ navigation }) {
