@@ -182,8 +182,6 @@ function removeDuplicates(arr) {
 };
 
 // Exemple de tableau avec des doublons
-const arrayWithDuplicates = [1, 2, 2, 3, 4, 4, 5, 6];
-
 const getUniqueElements = (arr, count) => {
   const uniqueElements = new Set();
   const result = [];
@@ -204,6 +202,17 @@ const getUniqueElements = (arr, count) => {
   return result;
 };  
 
+function getUniqueRandomIndex(tableau) {
+  if (tableau.length > 0) {
+    const index = Math.floor(Math.random() * tableau.length);
+    const selectedActivity = tableau[index];
+    tableau.splice(tableau.indexOf(selectedActivity), 1); // Retire le nombre du tableau pour éviter la répétition
+    return selectedActivity;
+  } else {
+    return null; // Retourne null si tous les nombres ont été utilisés
+  }
+}
 
 
-module.exports = { getRandomActivityByInput, removeDuplicates, getUniqueElements };
+
+module.exports = { getRandomActivityByInput, removeDuplicates, getUniqueElements, getUniqueRandomIndex };
