@@ -10,25 +10,36 @@ import {
 } from "react-native";
 import FontAwesome from "react-native-vector-icons/FontAwesome";
 import Slot from "./Slot";
+import {
+  getUniqueElements,
+} from "../modules/slotMods";
+import { useDispatch, useSelector } from "react-redux";
+
 
 export default function Day() {
   const [morning, setMorning] = useState([]);
   const [afternoon, setAfternoon] = useState([]);
+  const [day, setDay] = useState([])
+  const activities = useSelector((state) => state.activ.value);
 
   useEffect(() => {
+    setDay(activities);
+    console.log('day', day);
     // CREATION OF THREE ACTIV FOR A.M. AT COMPONENT INIT
     const newMorning = [];
-    for (let i = 0; i < 3; i++) {
+    for (let i = 0; i < 4; i++) {
       newMorning.push(<Slot key={i} />);
     }
-    setMorning(newMorning);
+    const filteredMorning = getUniqueElements(newMorning, 4);
+    setMorning(filteredMorning);
 
     // CREATION OF THREE ACTIV FOR P.M. AT COMPONENT INIT
     const newAfternoon = [];
-    for (let i = 0; i < 3; i++) {
+    for (let i = 0; i < 4; i++) {
       newAfternoon.push(<Slot key={i} />);
-    }
-    setAfternoon(newAfternoon);
+    };
+    const filteredAfternoon = getUniqueElements(newAfternoon, 4);
+    setAfternoon(filteredAfternoon);
   }, []);
 
   return (
@@ -51,7 +62,7 @@ const styles = StyleSheet.create({
   dayContainer: {
     marginTop: 200,
     flex: 1,
-    flexDirection: 'column',
+    flexDirection: "column",
     backgroundColor: "white",
     justifyContent: "center",
     alignItems: "center",
@@ -61,14 +72,14 @@ const styles = StyleSheet.create({
     height: "100%",
     justifyContent: "center",
     alignItems: "center",
-    flexDirection: 'column',
+    flexDirection: "column",
   },
   daySlots: {
     width: "80%",
     height: "80%",
     justifyContent: "center",
     alignItems: "center",
-    flexDirection: 'column',
+    flexDirection: "column",
     backgroundColor: "#eee",
   },
 });

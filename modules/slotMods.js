@@ -135,6 +135,9 @@ let activList = [
     ],
   },
 ];
+let arr = ["apple", "mango",
+          "apple", "orange", "mango", "mango"];
+
 function getRandomActivityByInput(activList, userInput) {
   let filteredActivities = [];
 
@@ -166,6 +169,41 @@ function getRandomActivityByInput(activList, userInput) {
   const randomActivity = filteredActivities[randomIndex];
 
   return (`Going @ ${randomActivity.name}`);
-}
+};
 
-module.exports = { getRandomActivityByInput };
+function removeDuplicates(arr) {
+    let unique = [];
+    for (i = 0; i < arr.length; i++) {
+        if (unique.indexOf(arr[i]) === -1) {
+            unique.push(arr[i]);
+        }
+    }
+    return unique;
+};
+
+// Exemple de tableau avec des doublons
+const arrayWithDuplicates = [1, 2, 2, 3, 4, 4, 5, 6];
+
+const getUniqueElements = (arr, count) => {
+  const uniqueElements = new Set();
+  const result = [];
+
+  // Boucle à travers le tableau pour obtenir des éléments uniques
+  for (let i = 0; i < arr.length; i++) {
+    uniqueElements.add(arr[i]); // Ajouter l'élément à l'ensemble pour garantir l'unicité
+    if (uniqueElements.size >= count) {
+      break; // Sortir de la boucle une fois que le nombre requis d'éléments uniques est atteint
+    }
+  }
+
+  // Convertir l'ensemble en tableau pour retourner les éléments uniques
+  uniqueElements.forEach((element) => {
+    result.push(element);
+  });
+
+  return result;
+};  
+
+
+
+module.exports = { getRandomActivityByInput, removeDuplicates, getUniqueElements };

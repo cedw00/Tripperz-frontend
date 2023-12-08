@@ -1,12 +1,8 @@
-import {
-  StyleSheet,
-  Text,
-  View,
-  PanResponder,
-  Animated,
-} from "react-native";
+import { StyleSheet, Text, View, PanResponder, Animated } from "react-native";
 import { getRandomActivityByInput } from "../modules/slotMods";
 import { useEffect, useState, useRef } from "react";
+import { useDispatch, useSelector } from "react-redux";
+import { updateActivList } from "../reducers/activ";
 
 export default function Slot() {
   const activitiesList = [
@@ -143,88 +139,69 @@ export default function Slot() {
       ],
     },
   ];
-  const userReq = "restaurants landscapes sportActivities";
-  const allActivNames = "shopping restaurants culturePlaces landscapes sportActivities";
-  const [index, setIndex] = useState(0);
+  // const userReq = "restaurants landscapes sportActivities";
+  const allActivNames =
+    "shopping restaurants culturePlaces landscapes sportActivities";
+  //   const [index, setIndex] = useState(0);
   const [activList, setActivList] = useState([]);
-  // SWIPE LEFT DETECTION
-  const pan = useRef(new Animated.ValueXY()).current;
-
-  const panResponder = PanResponder.create({
-    onStartShouldSetPanResponder: () => true,
-    onPanResponderMove: Animated.event(
-      [
-        null,
-        {
-          dx: pan.x,
-          dy: pan.y,
-        },
-      ],
-      { useNativeDriver: false }
-    ),
-    onPanResponderRelease: (_, gesture) => {
-      if (gesture.dx < -50) {
-        // If the swipe distance to the left is more than 50, trigger your function
-        handleSwipeLeft();
-      } else {
-        // Reset the position if not swiped enough
-        Animated.spring(pan, {
-          toValue: { x: 0, y: 0 },
-          useNativeDriver: false,
-        }).start();
-      }
-    },
-  });
-
-  const handleSwipeLeft = () => {
-    console.log("Swiped Left!");
-    setIndex(index+=1);
-  };
+  const randomIndex = Math.floor(Math.random() * activList.length);
+  const dispatch = useDispatch();
+  const activities = useSelector((state) => state.activ.value);
 
   // Activities
   useEffect(() => {
-    let activArray = [];
-    for (let i = 0; i < 10; i++) {
-      activArray.push(getRandomActivityByInput(activitiesList, userReq));
+    const uniqueActivities = new Set();
+
+    for (let i = uniqueActivities.size; i < 20; i++) {
+      const randomActivity = getRandomActivityByInput(
+        activitiesList,
+        allActivNames
+      );
+      uniqueActivities.add(randomActivity);
+      if (uniqueActivities.size >= 20) {
+        break;
+      }
     }
-    setActivList(activArray)
+
+    setActivList(Array.from(uniqueActivities));
+    console.log("hello", activList);
+    dispatch(updateActivList(activList));
+    console.log("hi", activities);
   }, []);
 
-  console.log(getRandomActivityByInput(activitiesList, userReq))
+  console.log("hi", activities);
 
   return (
     <View style={styles.slotContainer}>
-      <Animated.View
+      <View
         style={{
           width: 300,
           height: 20,
-          borderColor: 'black',
-          borderWidth: '1rem',
+          borderColor: "black",
+          borderWidth: "1rem",
           backgroundColor: "lightblue",
-          transform: [{ translateX: pan.x }, { translateY: pan.y }],
         }}
-        {...panResponder.panHandlers}
       >
         <View>
-          <Text style={styles.text}>{activList[index]}</Text>
+          <Text style={styles.text}>{activList[randomIndex]}</Text>
         </View>
-      </Animated.View>
+      </View>
     </View>
   );
-};
+}
 
 const styles = StyleSheet.create({
-    slotContainer: {
-      flex: 1,
-      backgroundColor: '#eee',
-      justifyContent: 'center',
-      alignItems: 'center',
-      height: '10%',
-      width: '10%',
-    },
-    text: {
-        color: 'black',
-        justifyContent: 'center',
-        alignItems: 'center',
-      },
-})
+  slotContainer: {
+    flex: 1,
+    backgroundColor: "#eee",
+    justifyContent: "center",
+    alignItems: "center",
+    height: "10%",
+    width: "10%",
+  },
+  text: {
+    color: "black",
+    justifyContent: "center",
+    alignItems: "center",
+  },
+});
