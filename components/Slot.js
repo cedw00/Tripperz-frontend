@@ -16,12 +16,25 @@ export default function Slot(props) {
   const [modalVisible, setModalVisible] = useState(false);
 
   //const otherActivities = activities.filter((activ) => activ < activities[7]);
-//   const modalActivities = otherActivities.map((data, index) => {
-//     return <ModalSlot key={index} activity={data} />;
-//   });
+  //   const modalActivities = otherActivities.map((data, index) => {
+  //     return <ModalSlot key={index} activity={data} />;
+  //   });
+
+  // INVERSE DATA FLOW MODALACTIVITY SWITCH
+  const switchActivity = (name, modalActivity) => {
+    console.log(`SWITCH : Switching ${name} with =>`, modalActivity);
+  };
+
+  // MAPPING MODALACTIVITY
 
   const modalActivities = activities.map((data, index) => {
-    return <ModalSlot key={index} activity={data} />;
+    return (
+      <ModalSlot
+        key={index}
+        modalActivity={data}
+        switchActivity={switchActivity}
+      />
+    );
   });
 
   return (
@@ -38,6 +51,9 @@ export default function Slot(props) {
         >
           <View style={styles.centeredView}>
             <View style={styles.modalView}>
+              <Text style={styles.text} title="Switch title">
+                SWITCH DEFAULT ACTIVITY
+              </Text>
               <ScrollView contentContainerStyle={styles.scrollView}>
                 {modalActivities}
               </ScrollView>
@@ -55,7 +71,7 @@ export default function Slot(props) {
       <Pressable onPress={() => setModalVisible(true)}>
         <View style={styles.slotContainer}>
           <View style={styles.slotContent} title="Slot">
-            <Text style={styles.text} title="Activity">
+            <Text style={styles.text} title="Activity" name={props.activity}>
               Going @ {props.activity}
             </Text>
           </View>
@@ -108,7 +124,7 @@ const styles = StyleSheet.create({
     maxHeight: "80%",
     width: "85%",
     margin: 20,
-    backgroundColor: "white",
+    backgroundColor: "lightblue",
     borderRadius: 20,
     padding: 35,
     shadowColor: "#000",

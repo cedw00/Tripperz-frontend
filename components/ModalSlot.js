@@ -8,16 +8,19 @@ import {
   ScrollView,
 } from "react-native";
 
-export default function Slot(props) {
-
+export default function ModalSlot(props) {
+  const selectActivity = () => {
+    props.switchActivity(props.modalActivity);
+  };
+  console.log("props.switchActivity", selectActivity());
 
   return (
     <View style={styles.cont}>
-      <Pressable>
+      <Pressable onPress={() => selectActivity()}>
         <View style={styles.slotContainer}>
           <View style={styles.slotContent} title="Slot">
             <Text style={styles.text} title="Activity">
-              {props.activity}
+            {props.modalActivity || 'No Activity'}
             </Text>
           </View>
         </View>
@@ -37,13 +40,13 @@ const styles = StyleSheet.create({
     flexWrap: "wrap", // Permettre au texte de passer à la ligne
     wordWrap: "break-word", // Éviter de couper les mots en milieu de mot
     textAlign: "center",
-    paddingVertical: 15
+    paddingVertical: 15,
   },
   cont: {
     flex: 1,
     justifyContent: "center",
     alignItems: "center",
-    width: 'auto',
+    width: "auto",
     marginVertical: 8,
     borderWidth: 3, // Pour visualiser la zone du conteneur
     paddingHorizontal: "20%", // Ajouter un padding pour l'espace intérieur
