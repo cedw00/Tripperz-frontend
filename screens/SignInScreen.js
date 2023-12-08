@@ -55,7 +55,7 @@ export default function SignInScreen({ navigation }) {
         </View>
         <View style={styles.form}>
           <View style={styles.top}>
-              <Text>Connection</Text>
+              <Text>Connection with email</Text>
           </View>
           <View style={styles.textArea}>
               <View style={styles.inputContainer}>
@@ -66,7 +66,7 @@ export default function SignInScreen({ navigation }) {
               </View>
           </View>
         </View>
-        <View style={styles.test}>
+        <View style={styles.bottom}>
           <TouchableOpacity activeOpacity={0.8} onPress={() => handleRegister()} style={styles.button}>
               <Text style={styles.textBtn}>Connect</Text>
           </TouchableOpacity>
@@ -74,7 +74,7 @@ export default function SignInScreen({ navigation }) {
             <Text>{errorMsg}</Text>
           </View> }
           <TouchableOpacity activeOpacity={0.8} onPress={() => handleReturn()}>
-              <Text>Return</Text>
+              <Text>Go back</Text>
           </TouchableOpacity>
         </View>
       </KeyboardAvoidingView>
@@ -89,6 +89,7 @@ const styles = StyleSheet.create({
     height: Dimensions.get('screen').height,
     justifyContent: "center",
     alignItems: "center",
+    backgroundColor: '#96D3E8',
   },
   view: {
     flex: 1,
@@ -103,13 +104,13 @@ const styles = StyleSheet.create({
   title: {
     fontWeight: 'bold',
     fontSize: 48,
-    color: 'blue'
+    color: '#1AB4E7'
   },
   form: {
     flex: 1,
-    width: '70%',
-    backgroundColor: 'gray',
+    width: '80%',
     alignItems: 'center',
+    borderRadius: 10,
   },
   top: {
     flex: 1,
@@ -119,7 +120,7 @@ const styles = StyleSheet.create({
   textArea: {
     width: '100%',
     flex: 3,
-    justifyContent: 'space-around',
+    justifyContent: 'center',
     alignItems: 'center',
   },
   inputContainer: {
@@ -129,6 +130,8 @@ const styles = StyleSheet.create({
     borderWidth: 2,
     borderColor: 'white',
     borderRadius: 5,
+    marginTop: 10,
+    marginBottom: 10,
   },
   input: {
     color: 'black',
@@ -140,10 +143,10 @@ const styles = StyleSheet.create({
     justifyContent: 'space-around',
     alignItems: 'center',
   },
-  test: {
+  bottom: {
     flex: 1,
     width: '80%',
-    justifyContent: 'center',
+    justifyContent: 'space-around',
     alignItems: 'center',
   },
   button: {
@@ -151,6 +154,7 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     paddingTop: 8,
     paddingBottom: 8,
+    borderRadius: 8,
     backgroundColor: 'black',
   },
   textBtn: {

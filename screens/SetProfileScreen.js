@@ -61,7 +61,6 @@ export default function SetProfileScreen({ navigation }) {
         interests: interests,
       };
       dispatch(updateProfile(infos));
-      setSelected([])
       navigation.navigate('Profile')
     };
 
@@ -131,6 +130,7 @@ const styles = StyleSheet.create({
       height: Dimensions.get('screen').height,
       justifyContent: "center",
       alignItems: "center",
+      backgroundColor: '#96D3E8',
     },
     header: {
       flex: 1,
@@ -140,10 +140,10 @@ const styles = StyleSheet.create({
     title: {
       fontWeight: 'bold',
       fontSize: 48,
-      color: 'blue'
+      color: '#1AB4E7'
     },
     body: {
-      flex: 3,
+      flex: 8,
       width: '80%',
       justifyContent: 'center',
       alignItems: 'center',

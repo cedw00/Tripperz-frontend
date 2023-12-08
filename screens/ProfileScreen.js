@@ -25,14 +25,14 @@ export default function ProfileScreen({ navigation }) {
       <View style={styles.body}>
         <View style={styles.top}>
           <View style={styles.icon}>
-            <FontAwesome name={'user-circle'} size={75} color={'#000000'} />
+            <FontAwesome name={'user-circle'} size={75} color={'#000000'}/>
           </View>
           <View style={styles.messageContainer}>
             <Text style={styles.message}>{pseudo}</Text>
           </View>
           <View style={styles.desc}>
-            <Text>Description</Text>
-            <Text>Globetrotter</Text>
+            <Text style={styles.descText}>Description</Text>
+            <Text style={styles.descText}>Globetrotter</Text>
           </View>
         </View>
         <View style={styles.main}>
@@ -47,6 +47,9 @@ export default function ProfileScreen({ navigation }) {
           </View>
           <View style={styles.section}>
             <Text>{gender}</Text>
+          </View>
+          <View style={styles.section}>
+            <Text>France</Text>
           </View>
           <ScrollView horizontal={true}>
             {favorites}
@@ -69,30 +72,39 @@ const styles = StyleSheet.create({
         height: Dimensions.get('screen').height,
         justifyContent: "center",
         alignItems: "center",
+        backgroundColor: '#43C1E7'
       },
       header: {
         flex: 1,
+        width: '100%',
         justifyContent: 'center',
         alignItems: 'center',
+        backgroundColor: '#067188',
+        borderTopLeftRadius: 15,
+        borderTopRightRadius: 15,
+        marginBottom: 15,
       },
       title: {
         fontWeight: 'bold',
         fontSize: 48,
-        color: 'blue'
+        color: '#1AB4E7'
       },
       body: {
-        flex: 3,
-        width: '70%',
+        flex: 8,
+        width: '95%',
         justifyContent: 'center',
         alignItems: 'center',
       },
       top: {
         flex: 2,
+        width: '100%',
         justifyContent: 'center',
         alignItems: 'center',
+        backgroundColor: '#AFBBE8',
       },
       icon: {
-        flex: 2
+        flex: 3,
+        marginTop: 5,
       },
       messageContainer: {
         flex: 1,
@@ -100,30 +112,46 @@ const styles = StyleSheet.create({
         justifyContent: 'center',
       },
       desc: {
-        flex: 2
+        flex: 2,
+        width: '90%',
+        backgroundColor: '#FFFFFF',
+        justifyContent: 'space-around',
+        alignItems: 'flex-start',
+        borderRadius: 10,
+        marginBottom: 5,
+      },
+      descText: {
+        fontSize: 14,
+        paddingLeft: 8,
       },
       message: {
-        fontSize: 16,
+        fontSize: 18,
       },
       main: {
-        flex: 2,
-        width: '80%'
+        flex: 4,
+        width: '100%',
+        backgroundColor: 'white',
+        alignItems: 'center'
       },
       section: {
         flex: 1,
+        width: '80%',
         flexDirection: 'row',
         alignItems: 'center',
-      },
-      interests: {
-        flex: 1,
-        flexDirection: 'row',
-        justifyContent: 'space-between',
-        alignItems: 'center',
-        overflow: 'scroll',
+        borderStyle: 'solid',
+        borderWidth: 1,
+        borderColor: 'black',
+        borderBottomColor: 'silver',
+        borderTopLeftRadius: 10,
+        borderTopRightRadius: 10,
+        borderBottomLeftRadius: 10,
+        borderBottomRightRadius: 10,
+        paddingLeft: 10,
+        marginTop: 10,
       },
       bottom: {
         flex: 1,
-        justifyContent: 'flex-start',
+        justifyContent: 'center',
         alignItems: 'center',
       }
 });

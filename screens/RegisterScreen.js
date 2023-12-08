@@ -86,10 +86,10 @@ export default function RegisterScreen({ navigation }) {
           </View>
           <View style={styles.terms}>
             <CheckBox disabled={false} value={toggleCheckBox} onValueChange={(newValue) => setToggleCheckBox(newValue)}/>
-              <Text>Accept general use terms</Text>
+            <Text style={styles.conditions}>Accept general use terms</Text>
           </View>
         </View>
-        <View style={styles.test}>
+        <View style={styles.bottom}>
           <TouchableOpacity activeOpacity={0.8} onPress={() => handleRegister()} style={styles.button}>
               <Text style={styles.textBtn}>Register</Text>
           </TouchableOpacity>
@@ -97,7 +97,7 @@ export default function RegisterScreen({ navigation }) {
             <Text>{errorMsg}</Text>
           </View> }
           <TouchableOpacity activeOpacity={0.8} onPress={() => handleReturn()}>
-              <Text>Return</Text>
+              <Text>Go back</Text>
           </TouchableOpacity>
         </View>
       </KeyboardAvoidingView>
@@ -112,6 +112,7 @@ const styles = StyleSheet.create({
     height: Dimensions.get('screen').height,
     justifyContent: "center",
     alignItems: "center",
+    backgroundColor: '#96D3E8',
   },
   view: {
     flex: 1,
@@ -126,13 +127,13 @@ const styles = StyleSheet.create({
   title: {
     fontWeight: 'bold',
     fontSize: 48,
-    color: 'blue'
+    color: '#1AB4E7'
   },
   form: {
     flex: 1,
-    width: '70%',
-    backgroundColor: 'gray',
+    width: '80%',
     alignItems: 'center',
+    borderRadius: 10,
   },
   top: {
     flex: 1,
@@ -160,13 +161,16 @@ const styles = StyleSheet.create({
     width: '80%',
     flex: 1,
     flexDirection: 'row',
-    justifyContent: 'space-around',
+    justifyContent: 'center',
     alignItems: 'center',
   },
-  test: {
+  conditions: {
+    marginLeft: 5,
+  },
+  bottom: {
     flex: 1,
     width: '80%',
-    justifyContent: 'center',
+    justifyContent: 'space-around',
     alignItems: 'center',
   },
   button: {
@@ -174,6 +178,7 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     paddingTop: 8,
     paddingBottom: 8,
+    borderRadius: 8,
     backgroundColor: 'black',
   },
   textBtn: {
