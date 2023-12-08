@@ -348,7 +348,7 @@ export default function Day() {
 
   useEffect(() => {
     const modalActivities = activities.map((data) => {
-      return <Slot activity={data} key={data.name} />;
+      return <Slot activity={data} />;
     });
     console.log("DAY => modalContent", modalActivities);
 
@@ -364,6 +364,7 @@ export default function Day() {
 
   return (
     <View title="Day" style={styles.dayContainer}>
+        <Text style={{fontSize: 20}}>PLAN YOUR TRIP</Text>
       <View title="halfDay" style={styles.halfday}>
         <Text>A.M.</Text>
         <View style={styles.daySlots}>{morning}</View>

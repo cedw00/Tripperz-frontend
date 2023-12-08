@@ -1,3 +1,4 @@
+import React, { useState } from "react";
 import {
   StyleSheet,
   Text,
@@ -7,14 +8,21 @@ import {
   Pressable,
   ScrollView,
 } from "react-native";
-import { useEffect, useState } from "react";
+import { useSelector } from "react-redux";
+import ModalSlot from "./ModalSlot";
 
 export default function Slot(props) {
+  const activities = useSelector((state) => state.activ.value);
   const [modalVisible, setModalVisible] = useState(false);
 
-  useEffect(() => {
-    console.log("SLOT => props.activity", props.activity);
-  }, []);
+  //const otherActivities = activities.filter((activ) => activ < activities[7]);
+//   const modalActivities = otherActivities.map((data, index) => {
+//     return <ModalSlot key={index} activity={data} />;
+//   });
+
+  const modalActivities = activities.map((data, index) => {
+    return <ModalSlot key={index} activity={data} />;
+  });
 
   return (
     <View style={styles.cont}>
@@ -30,7 +38,9 @@ export default function Slot(props) {
         >
           <View style={styles.centeredView}>
             <View style={styles.modalView}>
-              <Text style={styles.modalText}>Hello World!</Text>
+              <ScrollView contentContainerStyle={styles.scrollView}>
+                {modalActivities}
+              </ScrollView>
               <Pressable
                 style={[styles.button, styles.buttonClose]}
                 onPress={() => setModalVisible(!modalVisible)}
@@ -46,7 +56,7 @@ export default function Slot(props) {
         <View style={styles.slotContainer}>
           <View style={styles.slotContent} title="Slot">
             <Text style={styles.text} title="Activity">
-              {props.activity}
+              Going @ {props.activity}
             </Text>
           </View>
         </View>
@@ -56,11 +66,16 @@ export default function Slot(props) {
 }
 
 const styles = StyleSheet.create({
-    centeredView: {
-        flex: 1,
-        justifyContent: 'center',
-        alignItems: 'center',
-      },
+  scrollView: {
+    flexDirection: "column", // Organiser les éléments en colonnes
+    alignItems: "center", // Centrer les éléments horizontalement
+    paddingVertical: 20,
+  },
+  centeredView: {
+    flex: 1,
+    justifyContent: "center",
+    alignItems: "center",
+  },
   slotContainer: {
     flex: 1,
     backgroundColor: "#eee",
@@ -84,18 +99,18 @@ const styles = StyleSheet.create({
     height: 20,
     paddingVertical: 5,
     marginVertical: 8,
-    backgroundColor: "black",
     borderWidth: 3, // Pour visualiser la zone du conteneur
     paddingHorizontal: "3%", // Ajouter un padding pour l'espace intérieur
     backgroundColor: "lightblue",
     borderRadius: "10%",
   },
   modalView: {
+    maxHeight: "80%",
+    width: "85%",
     margin: 20,
     backgroundColor: "white",
     borderRadius: 20,
     padding: 35,
-    alignItems: "center",
     shadowColor: "#000",
     shadowOffset: {
       width: 0,
@@ -107,6 +122,7 @@ const styles = StyleSheet.create({
   },
   button: {
     borderRadius: 20,
+    marginTop: 15,
     padding: 10,
     elevation: 2,
   },
@@ -124,5 +140,7 @@ const styles = StyleSheet.create({
   modalText: {
     marginBottom: 15,
     textAlign: "center",
+    maxHeight: "20%",
+    maxWidth: "30%",
   },
 });

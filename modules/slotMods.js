@@ -168,7 +168,7 @@ function getRandomActivityByInput(activList, userInput) {
   const randomIndex = Math.floor(Math.random() * filteredActivities.length);
   const randomActivity = filteredActivities[randomIndex];
 
-  return (`Going @ ${randomActivity.name}`);
+  return (randomActivity.name);
 };
 
 function removeDuplicates(arr) {
