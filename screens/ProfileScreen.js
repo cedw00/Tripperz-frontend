@@ -3,6 +3,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import FontAwesome from 'react-native-vector-icons/FontAwesome';
 import { Dropdown } from 'react-native-element-dropdown';
 import { logout } from '../reducers/user';
+import Footer from '../components/Footer';
 
 export default function ProfileScreen({ navigation }) {
   const dispatch = useDispatch();
@@ -68,6 +69,7 @@ export default function ProfileScreen({ navigation }) {
           <TouchableOpacity activeOpacity={0.8} onPress={() => handleLogout()} style={styles.button}>
             <Text style={styles.textBtn}>Logout</Text>
           </TouchableOpacity>
+          <Footer/>
         </View>
       </View>
     </SafeAreaView>
@@ -183,13 +185,14 @@ const styles = StyleSheet.create({
   },
   bottom: {
     flex: 1,
-    width: '80%',
+    width: '100%',
     justifyContent: 'center',
     alignItems: 'center',
   },
   button: {
-    width: '60%',
+    width: '50%',
     alignItems: 'center',
+    marginTop: 5,
     paddingTop: 8,
     paddingBottom: 8,
     borderRadius: 8,
@@ -197,5 +200,5 @@ const styles = StyleSheet.create({
   },
   textBtn: {
     color: 'white',
-  }
+  },
 });
