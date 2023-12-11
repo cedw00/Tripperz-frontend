@@ -26,7 +26,7 @@ export default function TripPlanScreen({ navigation }) {
   }, []);
 
   const handleTextChange = (newText) => {
-    setOtherTripperz(' @'+newText);
+    setOtherTripperz('  @'+newText);
   };
 
   const inviteTripperz = () => {
