@@ -14,6 +14,10 @@ export default function ProfileScreen({ navigation }) {
       navigation.navigate('Login')
   }
 
+  const handlePlan = () => {
+    navigation.navigate('Home');
+  }
+
   const display = item => {
     return (
       <View>
@@ -65,9 +69,14 @@ export default function ProfileScreen({ navigation }) {
         />
       </View>
       <View style={styles.bottom}>
-        <TouchableOpacity activeOpacity={0.8} onPress={() => handleLogout()} style={styles.button}>
-          <Text style={styles.textBtn}>Logout</Text>
-        </TouchableOpacity>
+        <View style={styles.btnContainer}>
+          <TouchableOpacity activeOpacity={0.8} onPress={() => handleLogout()} style={styles.button}>
+            <Text style={styles.textBtn}>Logout</Text>
+          </TouchableOpacity>
+          <TouchableOpacity activeOpacity={0.8} onPress={() => handlePlan()} style={styles.button}>
+            <Text style={styles.textBtn}>Plan your trips</Text>
+          </TouchableOpacity>
+        </View>
         <Footer navigation={navigation}/>
       </View>
     </View>
@@ -188,10 +197,18 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     alignItems: 'center',
   },
-  button: {
-    width: '50%',
-    alignItems: 'center',
+  btnContainer: {
+    flex: 1,
+    flexDirection: 'row',
+    justifyContent: 'space-around',
     marginTop: 5,
+    marginBottom: 5,
+  },
+  button: {
+    width: '40%',
+    alignItems: 'center',
+    marginLeft: 2,
+    marginRight: 2,
     paddingTop: 8,
     paddingBottom: 8,
     borderRadius: 8,

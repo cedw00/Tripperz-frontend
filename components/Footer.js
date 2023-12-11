@@ -32,6 +32,7 @@ const styles = StyleSheet.create({
         flex: 1,
         flexDirection: 'row',
         alignItems: 'flex-end',
+        marginTop: 15,
     },
     footerSection: {
         flex: 1,
