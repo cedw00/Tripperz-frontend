@@ -7,6 +7,22 @@ import { useState } from 'react';
 
 
 export default function HomeScreen({ navigation }) {
+  const { email, pseudo, phone, birthday, interests } = useSelector((state) => state.user.value)
+  
+    const handleReturn = () => {
+        navigation.navigate('SetProfile')
+    }
+    const handleNext = () => {
+      navigation.navigate('TripPlan')
+  }
+
+    const favorites = interests.map((data, i) => {
+      return (
+        <View key={i}>
+          <Text>{data}</Text>
+        </View>
+      )
+    })
 
   const [dest, setDest] = useState(null);
   const [activ, setActiv] = useState((<Activities activity={'Activités'} date={'date'} />));
@@ -64,6 +80,9 @@ export default function HomeScreen({ navigation }) {
         <View style={styles.bottom}>
           <TouchableOpacity style={styles.search} activeOpacity={0.8} onPress={() => handleSearch()}>
             <Text style={styles.searchText}>Search</Text>
+          </TouchableOpacity>
+          <TouchableOpacity activeOpacity={0.8} onPress={() => handleNext()}>
+            <Text>Go to plan Trip</Text>
           </TouchableOpacity>
         </View>
 
