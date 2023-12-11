@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useRef } from "react";
 import {
   StyleSheet,
   Text,
@@ -14,6 +14,7 @@ import ModalSlot from "./ModalSlot";
 export default function Slot(props) {
   const activities = useSelector((state) => state.activ.value);
   const [modalVisible, setModalVisible] = useState(false);
+//   const [activityModal, setActivityModal] = useState('')
 
   //const otherActivities = activities.filter((activ) => activ < activities[7]);
   //   const modalActivities = otherActivities.map((data, index) => {
@@ -21,19 +22,24 @@ export default function Slot(props) {
   //   });
 
   // INVERSE DATA FLOW MODALACTIVITY SWITCH
-  const switchActivity = (name, modalActivity) => {
-    console.log(`SWITCH : Switching ${name} with =>`, modalActivity);
+  const switchActivity = (act) => {
+    console.log(`SWITCH : Switching ${props.activity} with =>`, act);
   };
 
   // MAPPING MODALACTIVITY
-
   const modalActivities = activities.map((data, index) => {
+    
+    //console.log("modalAct.current:", props.modalAct);
+    // console.log("modalAct:", modalAct);
+    
     return (
-      <ModalSlot
-        key={index}
-        modalActivity={data}
-        switchActivity={switchActivity}
-      />
+      <Pressable key={index} >
+        <ModalSlot
+          key={index}
+          modalActivity={data}
+          switchActivity={switchActivity}
+        />
+      </Pressable>
     );
   });
 
@@ -88,13 +94,14 @@ const styles = StyleSheet.create({
   },
   centeredView: {
     justifyContent: "center",
+    alignItems: "center",
   },
   slotContainer: {
-    flex: 1,
-    justifyContent: "center",
-    maxWidth: 600, // Largeur maximale du conteneur
+    maxWidth: "100%", // Largeur maximale du conteneur
   },
-
+  slotContent: {
+    maxWidth: "100%", // Largeur maximale du conteneur
+  },
   text: {
     color: "black",
     flexWrap: "wrap", // Permettre au texte de passer à la ligne
@@ -106,7 +113,7 @@ const styles = StyleSheet.create({
     width: 250,
     height: 30,
     marginTop: 15,
-    marginHorizontal: 25,
+    marginHorizontal: "10%",
     borderWidth: 3, // Pour visualiser la zone du conteneur
     paddingHorizontal: "3%", // Ajouter un padding pour l'espace intérieur
     backgroundColor: "lightyellow",
@@ -115,7 +122,6 @@ const styles = StyleSheet.create({
   modalView: {
     maxHeight: "80%",
     width: "85%",
-    margin: 20,
     backgroundColor: "lightblue",
     borderRadius: 20,
     padding: 35,
@@ -144,11 +150,5 @@ const styles = StyleSheet.create({
     color: "white",
     fontWeight: "bold",
     textAlign: "center",
-  },
-  modalText: {
-    marginBottom: 15,
-    textAlign: "center",
-    maxHeight: "20%",
-    maxWidth: "30%",
   },
 });

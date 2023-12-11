@@ -1,5 +1,13 @@
 import React, { useState, useEffect } from "react";
-import { StyleSheet, Text, View, SafeAreaView, ScrollView } from "react-native";
+import {
+  StyleSheet,
+  Text,
+  View,
+  SafeAreaView,
+  ScrollView,
+  Dimensions,
+  Pressable,
+} from "react-native";
 import FontAwesome from "react-native-vector-icons/FontAwesome";
 import Slot from "./Slot";
 import {
@@ -325,6 +333,8 @@ export default function Day() {
     "shopping restaurants culturePlaces landscapes sportActivities";
   const [morning, setMorning] = useState([]);
   const [afternoon, setAfternoon] = useState([]);
+  const [morningSize, setMorningSize] = useState(4);
+  const [afternoonSize, setAfternoonSize] = useState(8);
   const activities = useSelector((state) => state.activ.value);
   const dispatch = useDispatch();
 
@@ -347,80 +357,160 @@ export default function Day() {
   }, []);
 
   useEffect(() => {
-    const modalActivities = activities.map((data,index) => {
-      return <Slot activity={data} key={index}/>;
+    const cardActivities = activities.map((data, index) => {
+      return <Slot activity={data} key={index} />;
     });
-    console.log("DAY => modalContent", modalActivities);
+    console.log("DAY => Activities Length", activities.length);
 
-    const newMorning = modalActivities.slice(0, 4);
+    console.log("DAY => cardContent", cardActivities);
+    const newMorning = cardActivities.slice(0, morningSize);
     setMorning(newMorning);
 
-    const newAfternoon = modalActivities.slice(4, 8);
+    const newAfternoon = cardActivities.slice(4, afternoonSize);
     setAfternoon(newAfternoon);
 
     console.log("DAY => morning", morning);
     console.log("DAY => afternoon", afternoon);
-  }, [activities]);
+    console.log(
+      "morningSize :",
+      morningSize,
+      "afternoonSize :",
+      afternoonSize
+    );
+  }, [activities, morningSize, afternoonSize]);
+
+  const moreMorningActivity = () => {
+    setMorningSize(morningSize + 1);
+    setAfternoonSize(afternoonSize + 1);
+  };
+
+  const moreAfternoonActivity = () => {
+    setAfternoonSize(afternoonSize + 1);
+  };
+
+  const lessMorningActivity = () => {
+        if (morningSize > 0) {
+        setMorningSize(morningSize - 1);
+        } else {
+        setMorningSize(1);
+        }
+  };
+
+  const lessAfternoonActivity = () => {
+    if (afternoonSize > 0) {
+        setAfternoonSize(afternoonSize - 1);
+        } else {
+        setAfternoonSize(1);
+        }
+  };
 
   return (
-    <SafeAreaView>
+    <View style={styles.container}>
       <View title="Day" style={styles.dayContainer}>
-        <Text style={{ fontSize: 20, marginBottom: 30 }}>PLAN YOUR TRIP</Text>
-        <View title="halfDay" style={styles.halfday}>
-          <Text>A.M.</Text>
-          <View style={styles.daySlots}>
-            {morning}
-            <FontAwesome
-              name="plus-square"
-              color="black"
-              size={25}
-              style={styles.plusIcon}
-            />
-          </View>
-        </View>
-        <View title="halfDay" style={styles.halfday}>
-          <Text>P.M.</Text>
-          <View style={styles.daySlots}>
-          <ScrollView contentContainerStyle={styles.scrollView}>
-          {afternoon}
+          <Text style={styles.dayTitle}>Day 1 - 01/01/2024</Text>
+          <View title="halfDay" style={styles.morning}>
+            <Text style={{ fontSize: 18, marginBottom: "2%" }}>Morning</Text>
+            <View style={styles.daySlots}>
+              <ScrollView contentContainerStyle={styles.scrollView}>
+                <View>{morning}</View>
               </ScrollView>
-            
-            <FontAwesome
-              name="plus-square"
-              color="black"
-              size={25}
-              style={styles.plusIcon}
-            />
+              <View style={styles.iconContainer}>
+                <Pressable onPress={() => moreMorningActivity()}>
+                  <FontAwesome
+                    name="plus-square"
+                    color="black"
+                    size={25}
+                    style={styles.plusIcon}
+                  />
+                </Pressable>
+                <Pressable onPress={() => lessMorningActivity()}>
+                  <FontAwesome
+                    name="minus-square"
+                    color="black"
+                    size={25}
+                    style={styles.plusIcon}
+                  />
+                </Pressable>
+              </View>
+            </View>
           </View>
-        </View>
+          <View title="halfDay" style={styles.afternoon}>
+            <Text style={{ fontSize: 18, marginVertical: "2%" }}>Afternoon</Text>
+            <View style={styles.daySlots}>
+              <ScrollView contentContainerStyle={styles.scrollView}>
+                <View>{afternoon}</View>
+              </ScrollView>
+              <View style={styles.iconContainer}>
+                <Pressable onPress={() => moreAfternoonActivity()}>
+                  <FontAwesome
+                    name="plus-square"
+                    color="black"
+                    size={25}
+                    style={styles.plusIcon}
+                  />
+                </Pressable>
+                <Pressable onPress={() => lessAfternoonActivity()}>
+                  <FontAwesome
+                    name="minus-square"
+                    color="black"
+                    size={25}
+                    style={styles.plusIcon}
+                  />
+                </Pressable>
+              </View>
+            </View>
+          </View>
       </View>
-    </SafeAreaView>
+    </View>
   );
 }
 
 const styles = StyleSheet.create({
   dayContainer: {
-    flex: 1,
-    flexDirection: "column",
-    backgroundColor: "white",
-    justifyContent: "center",
+    marginTop: "5%",
+    alignItems: "center",
+    borderWidth: 3,
+    borderRadius: "10%",
+    paddingHorizontal: "5%",
+    height: "100%",
+  },
+  container: {
     alignItems: "center",
   },
-  halfday: {
+  dayTitle: {
+    fontSize: 25,
+    marginTop: "5%",
+  },
+  morning: {
     alignItems: "center",
+    maxHeight: 230,
+    marginTop: "5%",
+    marginBottom: "9%",
+
+  },
+  afternoon: {
+    alignItems: "center",
+    maxHeight: 230,
+    marginTop: "5%",
+    marginBottom: "8%",
+  },
+  iconContainer: {
+    flexDirection: "row",
+    marginLeft: '4%',
+    paddingVertical: '2%'
   },
   plusIcon: {
-    marginVertical: "3%",
+    marginHorizontal: "3%",
   },
   daySlots: {
-    marginTop: 15,
-    width: "80%",
-    height: "60%",
+    width: "100%",
     justifyContent: "center",
     alignItems: "center",
     flexDirection: "column",
     backgroundColor: "lightblue",
     borderRadius: "10%",
+    maxHeight: 300,
+    paddingTop: '3%'
   },
   scrollView: {
     flexDirection: "column", // Organiser les éléments en colonnes
