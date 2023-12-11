@@ -7,29 +7,16 @@ import { useState } from 'react';
 
 
 export default function HomeScreen({ navigation }) {
-  const { email, pseudo, phone, birthday, interests } = useSelector((state) => state.user.value)
-  
-    const handleReturn = () => {
-        navigation.navigate('SetProfile')
-    }
     const handleNext = () => {
       navigation.navigate('TripPlan')
   }
-
-    const favorites = interests.map((data, i) => {
-      return (
-        <View key={i}>
-          <Text>{data}</Text>
-        </View>
-      )
-    })
 
   const [dest, setDest] = useState(null);
   const [activ, setActiv] = useState((<Activities activity={'Activités'} date={'date'} />));
   const [isClickedActiv, setIsClickedActiv] = useState(true);
 
   const handleSearch = () => {
-    navigation.navigate('ResultPage')
+    navigation.navigate('Result')
   }
 
   const handleClickActivities = () => {

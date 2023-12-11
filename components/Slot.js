@@ -105,19 +105,25 @@ const styles = StyleSheet.create({
   text: {
     color: "black",
     flexWrap: "wrap", // Permettre au texte de passer à la ligne
+    wordWrap: "break-word",
     textAlign: "center",
   },
   cont: {
     justifyContent: "center",
     alignItems: "center",
     width: 250,
-    height: 30,
     marginTop: 15,
     marginHorizontal: "10%",
-    borderWidth: 3, // Pour visualiser la zone du conteneur
+    //borderWidth: 3, // Pour visualiser la zone du conteneur
     paddingHorizontal: "3%", // Ajouter un padding pour l'espace intérieur
-    backgroundColor: "lightyellow",
-    borderRadius: "10%",
+    paddingVertical: '2%',
+    backgroundColor: "white",
+    borderRadius: "20%",
+    maxHeight: '100%',
+    shadowColor: "#000",
+    shadowOffset: { width: +3, height: 3 },
+    shadowOpacity: 0.7,
+    shadowRadius: 2,
   },
   modalView: {
     maxHeight: "80%",

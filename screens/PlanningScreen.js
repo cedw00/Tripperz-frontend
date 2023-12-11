@@ -79,7 +79,7 @@ export default function TripPlanScreen({ navigation }) {
           style={styles.image}
         />
       </View>
-      <Text style={styles.titleContainer}>Your planning</Text>
+      <Text style={styles.title}>Your{'\n'}Planning</Text>
       <View style={styles.inviteContainer}>
         <Pressable onPress={() => setModalVisible(true)}>
           <View style={styles.inviteBtn}>
@@ -110,7 +110,7 @@ export default function TripPlanScreen({ navigation }) {
       <View style={styles.nextContainer}>
         <Pressable onPress={() => navigation.navigate("Planning")}>
           <View style={styles.confirm}>
-            <Text style={{ color: "black" }}>CONFIRM</Text>
+            <Text style={{ color: "white" }}>CONFIRM</Text>
           </View>
         </Pressable>
         <Pressable onPress={() => navigation.navigate("TripPlan")}>
@@ -133,21 +133,26 @@ const styles = StyleSheet.create({
     backgroundColor: "white",
     marginBottom: 80,
   },
-  titleContainer: {
+  title: {
     flex: 1,
     fontSize: 50,
     backgroundColor: "white",
     maxWidth: "100%",
     flex: "flex-wrap",
     marginHorizontal: "5%",
-    marginVertical: "5%",
+    marginBottom: "2%",
+    marginTop: "1%",
   },
   nextContainer: {
     flexDirection: "row",
     alignItems: "center",
     justifyContent: "space-around",
-    backgroundColor: "#067188",
+    backgroundColor: "white",
     paddingVertical: "6%",
+    shadowColor: "#000",
+    shadowOffset: { width: 1, height: 0 },
+    shadowOpacity: 0.7,
+    shadowRadius: 2,
   },
   imageContainer: {
     flex: 1,
@@ -165,34 +170,58 @@ const styles = StyleSheet.create({
   confirm: {
     alignItems: "center",
     justifyContent: "center",
-    borderWidth: 3,
-    backgroundColor: "lightblue",
+    borderWidth: 2,
+    backgroundColor: "#067188",
     paddingHorizontal: "6%",
     paddingVertical: "4%",
     borderRadius: "10%",
+    borderStyle: 'solid',
+    borderColor: '#067188',
+    fallback: {
+      borderColor: '#067188', // Couleur de secours
+    },
+    shadowColor: "#000",
+    shadowOffset: { width: +3, height: 3 },
+    shadowOpacity: 0.7,
+    shadowRadius: 2,
   },
   cancel: {
     alignItems: "center",
     justifyContent: "center",
-    borderWidth: 3,
-    backgroundColor: "#eee",
+    borderWidth: 2,
+    backgroundColor: "white",
     paddingHorizontal: "6%",
     paddingVertical: "4%",
     borderRadius: "10%",
+    borderStyle: 'solid',
+    borderColor: '#067188',
+    fallback: {
+      borderColor: '#067188', // Couleur de secours
+    },
+    shadowColor: "#000",
+    shadowOffset: { width: +3, height: 3 },
+    shadowOpacity: 0.7,
+    shadowRadius: 2,
   },
   inviteContainer: {
     alignItems: "center",
     justifyContent: "center",
+    marginBottom: '1%',
   },
   inviteBtn: {
+    shadowColor: "#000",
+    shadowOffset: { width: +3, height: 3 },
+    shadowOpacity: 0.7,
+    shadowRadius: 2,
     alignItems: "center",
     justifyContent: "center",
     borderWidth: 3,
-    backgroundColor: "#eee",
+    backgroundColor: "lightblue",
     paddingHorizontal: "6%",
-    paddingVertical: "4%",
+    paddingVertical: "2%",
     borderRadius: "10%",
     maxWidth: "80%",
+    marginVertical: '2%',
   },
   centeredView: {
     flex: 1,

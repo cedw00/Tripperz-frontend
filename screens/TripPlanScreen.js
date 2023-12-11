@@ -24,7 +24,9 @@ export default function TripPlanScreen({ navigation }) {
           style={styles.image}
         />
       </View>
-      <Text style={styles.titleContainer}>Plan your next Trip</Text>
+      <View style={styles.titleBlock}>
+      <Text style={styles.title}>Plan your{'\n'}next Trip</Text>
+      </View>
       <ScrollView>
         <View title="Day Card" style={styles.dayContainer}>
           {day}
@@ -45,10 +47,10 @@ export default function TripPlanScreen({ navigation }) {
       <View style={styles.nextContainer}>
         <Pressable onPress={() => navigation.navigate("Planning")}>
           <View style={styles.confirm}>
-            <Text style={{ color: "black" }}>CONFIRM</Text>
+            <Text style={{ color: "white" }}>CONFIRM</Text>
           </View>
         </Pressable>
-        <Pressable onPress={() => navigation.navigate("Home")}>
+        <Pressable onPress={() => navigation.navigate("Result")}>
           <View style={styles.cancel}>
             <Text style={{ color: "black" }}>CANCEL</Text>
           </View>
@@ -68,20 +70,34 @@ const styles = StyleSheet.create({
     backgroundColor: "white",
     marginBottom: 80,
   },
-  titleContainer: {
+  title: {
     flex: 1,
     fontSize: 50,
     backgroundColor: "white",
     maxWidth: "100%",
     flex: "flex-wrap",
     marginHorizontal: "5%",
+    marginBottom: "2%",
+    marginTop: "1%",
+  },
+  titleBlock: {
+    flex: 1,
+    fontSize: 50,
+    backgroundColor: "white",
+    maxWidth: "100%",
+    flex: "flex-wrap",
+    marginBottom: "2%",
   },
   nextContainer: {
     flexDirection: "row",
     alignItems: "center",
     justifyContent: "space-around",
-    backgroundColor: "#067188",
+    backgroundColor: "white",
     paddingVertical: "6%",
+    shadowColor: "#000",
+    shadowOffset: { width: 1, height: 0 },
+    shadowOpacity: 0.7,
+    shadowRadius: 2,
   },
   imageContainer: {
     flex: 1,
@@ -99,19 +115,37 @@ const styles = StyleSheet.create({
   confirm: {
     alignItems: "center",
     justifyContent: "center",
-    borderWidth: 3,
-    backgroundColor: 'lightblue',
-    paddingHorizontal: '6%',
-    paddingVertical: '4%',
-    borderRadius: '10%'
+    borderWidth: 2,
+    backgroundColor: "#067188",
+    paddingHorizontal: "6%",
+    paddingVertical: "4%",
+    borderRadius: "10%",
+    borderStyle: 'solid',
+    borderColor: '#067188',
+    fallback: {
+      borderColor: '#067188', // Couleur de secours
+    },
+    shadowColor: "#000",
+    shadowOffset: { width: +3, height: 3 },
+    shadowOpacity: 0.7,
+    shadowRadius: 2,
   },
   cancel: {
     alignItems: "center",
     justifyContent: "center",
-    borderWidth: 3,
-    backgroundColor: '#eee',
-    paddingHorizontal: '6%',
-    paddingVertical: '4%',
-    borderRadius: '10%'
-  }
+    borderWidth: 2,
+    backgroundColor: "white",
+    paddingHorizontal: "6%",
+    paddingVertical: "4%",
+    borderRadius: "10%",
+    borderStyle: 'solid',
+    borderColor: '#067188',
+    fallback: {
+      borderColor: '#067188', // Couleur de secours
+    },
+    shadowColor: "#000",
+    shadowOffset: { width: +3, height: 3 },
+    shadowOpacity: 0.7,
+    shadowRadius: 2,
+  },
 });

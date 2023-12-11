@@ -6,6 +6,7 @@ import SignInScreen from "./screens/SignInScreen";
 import RegisterScreen from "./screens/RegisterScreen";
 import SetProfileScreen from "./screens/SetProfileScreen";
 import HomeScreen from "./screens/HomeScreen";
+import ResultScreen from "./screens/ResultScreen";
 import TripPlanScreen from "./screens/TripPlanScreen";
 import PlanningScreen from "./screens/PlanningScreen";
 
@@ -29,13 +30,15 @@ export default function App() {
     <Provider store={store}>
       <NavigationContainer>
         <Stack.Navigator screenOptions={{ headerShown: false }}>
+        <Stack.Screen name="TripPlan" component={TripPlanScreen} />
+          <Stack.Screen name="Planning" component={PlanningScreen} />
           <Stack.Screen name="Login" component={LoginScreen} />
           <Stack.Screen name="SignIn" component={SignInScreen} />
           <Stack.Screen name="Register" component={RegisterScreen} />
           <Stack.Screen name="SetProfile" component={SetProfileScreen} />
           <Stack.Screen name="Home" component={HomeScreen} />
-          <Stack.Screen name="TripPlan" component={TripPlanScreen} />
-          <Stack.Screen name="Planning" component={PlanningScreen} />
+          <Stack.Screen name="Result" component={ResultScreen} />
+          
 
         </Stack.Navigator>
       </NavigationContainer>
