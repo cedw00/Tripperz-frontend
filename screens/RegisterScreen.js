@@ -3,7 +3,9 @@ import { StyleSheet, Text, View, Image, ImageBackground, TextInput,
 import CheckBox from 'expo-checkbox';
 import { useState } from 'react';
 import { useDispatch } from 'react-redux'
-import { updateUser } from '../reducers/user';
+import { getToken } from '../reducers/user';
+
+const backend = '192.168.10.134'
 
 export default function RegisterScreen({ navigation }) {
   const dispatch = useDispatch();
@@ -44,15 +46,24 @@ export default function RegisterScreen({ navigation }) {
         setShowError(false)
         const user = {
           email: email,
-          pseudo: pseudo,
+          username: pseudo,
           phone: phoneNb,
           password: password,
         }
-        setEmail('');
-        setPseudo('');
-        setPhoneNb('');
-        dispatch(updateUser(user))
-        navigation.navigate('SetProfile')
+        fetch(`http://${backend}:3000/users/register`, {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify(user),
+        }).then(response => response.json()).then(data => {
+          if (data.result) {
+            setEmail('');
+            setPseudo('');
+            setPhoneNb('');
+            setPassword('');
+            dispatch(getToken(data.token));
+            navigation.navigate('SetProfile')
+          }
+        })
       } else {
         setErrorMsg('Accept terms is required');
         setShowError(true)
@@ -168,7 +179,7 @@ const styles = StyleSheet.create({
     paddingLeft: 8,
   },
   input: {
-    color: 'black',
+    color: '#FFFFFF',
   },
   terms: {
     width: '70%',

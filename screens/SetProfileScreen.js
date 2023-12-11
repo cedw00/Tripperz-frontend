@@ -1,6 +1,6 @@
 import { StyleSheet, Text, View, Image, ImageBackground, SafeAreaView, Dimensions, TouchableOpacity,
   KeyboardAvoidingView, Platform, TextInput  } from 'react-native';
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { useState } from 'react';
 import FontAwesome from 'react-native-vector-icons/FontAwesome';
 import { Dropdown, MultiSelect } from 'react-native-element-dropdown';
@@ -32,8 +32,11 @@ const foodData = [
   { label: 'Vegan', value: '5' },
 ];
 
+const backend = '192.168.10.134'
+
 export default function SetProfileScreen({ navigation }) {
   const dispatch = useDispatch();
+  const { token } = useSelector((state) => state.user.value);
   const [gender, setGender] = useState(null);
   const [country, setCountry] = useState('');
   const [favoriteCountry, setFavoriteCountry] = useState('');
@@ -52,21 +55,30 @@ export default function SetProfileScreen({ navigation }) {
         navigation.navigate('Register')
     };
 
-    const handleSubmit = () => {
+    const handleSubmit = async () => {
       const month = date.getMonth() + 1;
       const str = `${date.getDate()}/${month}/${date.getFullYear()}`;
       const interests = selectedActivities.map(data => mockData[data].label);
       const favoriteFood = selectedFood.map(data => foodData[data].label);
-      const infos = {
+      const profile = {
         birthday: str,
         gender: gender,
-        homeCountry: country,
-        favoriteCountry: favoriteCountry,
-        favoriteFood: favoriteFood,
-        interests: interests,
+        country: country,
+        favDest: favoriteCountry,
+        favFood: favoriteFood,
+        hobbies: interests,
+        token: token
       };
-      dispatch(updateProfile(infos));
-      navigation.navigate('Profile')
+      const response = await fetch(`http://${backend}:3000/profile/create`, {
+        method: 'PUT',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(profile),
+      });
+      const data = await response.json();
+      if (data.result) {
+        dispatch(updateProfile(data.user))
+        navigation.navigate('Profile')
+      }
     };
 
     const display = item => {

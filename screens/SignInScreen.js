@@ -1,32 +1,33 @@
 import { StyleSheet, Text, View, Image, ImageBackground, TextInput,
     SafeAreaView, Dimensions, TouchableOpacity, KeyboardAvoidingView } from 'react-native';
 import { useState } from 'react';
-import { useDispatch } from 'react-redux';
-import { updateUser, updateProfile } from '../reducers/user';
+import { useDispatch, useSelector } from 'react-redux';
+import { updateUser, updateProfile, getToken } from '../reducers/user';
 
-const user = [
-  { email: 'user.admin@admin.fr', password: 'admin123', phone: '0652882068', birthday: '10/08/1990', gender: 'Male',
-    homeCountry: 'France', favoriteCountry: 'Greece', favoriteFood: ['Vegan'], interests: ['Sea', 'Restaurant', 'Theater'] },
-  { email: 'user.test@test.com', password: 'azerty000', phone: '0617935077', birthday: '21/05/1997', gender: 'Female',
-    homeCountry: 'France', favoriteCountry: 'United States', favoriteFood: ['Fast-Food', 'Cakes'], interests: ['Sport', 'Amusement Park', 'Sea'] }
-]
+const backend = '192.168.10.134'
 
 export default function SignInScreen({ navigation }) {
   const dispatch = useDispatch();
+  const { token } = useSelector((state) => state.user.value);
   const [showError, setShowError] = useState(false);
   const [errorMsg, setErrorMsg] = useState('');
 
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
 
-  const checkForm = () => {
-    const currentUser = user.find(data => email === data.email);
-    if (password === currentUser.password) {
-      const user = { pseudo: 'User', password: password, email: email, phone: currentUser.phone };
-      const profile = { gender: 'Male', birthday: currentUser.birthday, homeCountry: currentUser.homeCountry,
-      favoriteCountry: currentUser.favoriteCountry, favoriteFood: currentUser.favoriteFood, interests: currentUser.interests };
-      dispatch(updateUser(user));
-      dispatch(updateProfile(profile));
+  const checkForm = async () => {
+    const user = {
+      email: email,
+      password: password,
+    }
+    const response = await fetch(`http://${backend}:3000/users/signin`, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(user),
+    });
+    const data = await response.json();
+    if (data.result) {
+      dispatch(getToken(data.token));
       return true
     } else {
       return false
@@ -43,10 +44,17 @@ export default function SignInScreen({ navigation }) {
       setErrorMsg('Invalid email or password');
       setShowError(true)
     } else {
-      setShowError(false);
-      setEmail('');
-      setPassword('');
-      navigation.navigate('Profile')
+      fetch(`http://${backend}:3000/users/access/${token}`)
+      .then(response => response.json()).then(data => {
+        if (data.result) {
+          setShowError(false);
+          setEmail('');
+          setPassword('');
+          dispatch(updateUser(data.user))
+          dispatch(updateProfile(data.user))
+          navigation.navigate('Profile')
+        }
+      })
     }
   }
 

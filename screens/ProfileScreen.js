@@ -6,8 +6,9 @@ import { logout } from '../reducers/user';
 
 export default function ProfileScreen({ navigation }) {
   const dispatch = useDispatch();
-  const { pseudo, birthday, gender, homeCountry, favoriteCountry, favoriteFood, interests } = useSelector((state) => state.user.value)
-  
+  const { username, birthday, gender, country, favoriteCountry, favoriteFoods, hobbies } = useSelector((state) => state.user.value)
+
+
     const handleLogout = () => {
         dispatch(logout());
         navigation.navigate('Login')
@@ -37,7 +38,7 @@ export default function ProfileScreen({ navigation }) {
               <FontAwesome name={'user-circle'} size={75} color={'#000000'}/>
             </View>
             <View style={styles.messageContainer}>
-              <Text style={styles.message}>{pseudo}</Text>
+              <Text style={styles.message}>{username}</Text>
             </View>
             <View style={styles.desc}>
               <Text style={styles.descText}>Description : </Text>
@@ -53,17 +54,17 @@ export default function ProfileScreen({ navigation }) {
             <Text>{gender}</Text>
           </View>
           <View style={styles.section}>
-            <Text>{homeCountry}</Text>
+            <Text>{country}</Text>
           </View>
           <View style={styles.section}>
             <Text>{favoriteCountry}</Text>
           </View>
           <Dropdown
-              style={styles.dropdown} data={favoriteFood} labelField='label' valueField='value' placeholder='Your favorites food type'
+              style={styles.dropdown} data={favoriteFoods} labelField='label' valueField='value' placeholder='Your favorites food type'
               placeholderStyle={styles.input} renderItem={display} maxHeight={100} value={'Your favorites hobbies'}
           />
           <Dropdown
-              style={styles.dropdown} data={interests} labelField='label' valueField='value' placeholder='Your favorites hobbies'
+              style={styles.dropdown} data={hobbies} labelField='label' valueField='value' placeholder='Your favorites hobbies'
               placeholderStyle={styles.input} renderItem={display} maxHeight={100} value={'Your favorites hobbies'}
           />
         </View>
