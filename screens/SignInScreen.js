@@ -87,8 +87,8 @@ export default function SignInScreen({ navigation }) {
             { showError && <View>
               <Text>{errorMsg}</Text>
             </View> }
-            <TouchableOpacity activeOpacity={0.8} onPress={() => handleReturn()}>
-                <Text>Go back</Text>
+            <TouchableOpacity activeOpacity={0.8} onPress={() => handleReturn()} style={styles.button}>
+                <Text style={styles.textBtn}>Go back</Text>
             </TouchableOpacity>
           </View>
         </KeyboardAvoidingView>
@@ -151,25 +151,26 @@ const styles = StyleSheet.create({
     paddingLeft: 8,
   },
   input: {
-    color: 'black',
+    color: '#FFFFFF',
   },
   forgot: {
     marginTop: 20,
     marginBottom: 15,
   },
   forgotText: {
-    color: '#000000',
+    color: '#FFFFFF',
     fontSize: 16
   },
   bottom: {
     flex: 1,
     width: '80%',
-    justifyContent: 'space-around',
+    justifyContent: 'center',
     alignItems: 'center',
   },
   button: {
     width: '60%',
     alignItems: 'center',
+    marginBottom: 10,
     paddingTop: 8,
     paddingBottom: 8,
     borderRadius: 8,

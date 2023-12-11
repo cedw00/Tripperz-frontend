@@ -112,8 +112,8 @@ export default function RegisterScreen({ navigation }) {
             { showError && <View>
               <Text>{errorMsg}</Text>
             </View> }
-            <TouchableOpacity activeOpacity={0.8} onPress={() => handleReturn()}>
-                <Text>Go back</Text>
+            <TouchableOpacity activeOpacity={0.8} onPress={() => handleReturn()} style={styles.button}>
+                <Text style={styles.textBtn}>Go back</Text>
             </TouchableOpacity>
           </View>
         </KeyboardAvoidingView>
@@ -170,6 +170,7 @@ const styles = StyleSheet.create({
   },
   inputContainer: {
     width: '80%',
+    height: '20%',
     borderStyle: 'solid',
     borderWidth: 1,
     borderColor: 'white',
@@ -177,9 +178,10 @@ const styles = StyleSheet.create({
     marginTop: 10,
     marginBottom: 10,
     paddingLeft: 8,
+    paddingTop: 5,
   },
   input: {
-    color: '#FFFFFF',
+    color: '#BFC0C5',
   },
   terms: {
     width: '70%',
@@ -195,12 +197,13 @@ const styles = StyleSheet.create({
   bottom: {
     flex: 1,
     width: '80%',
-    justifyContent: 'space-around',
+    justifyContent: 'center',
     alignItems: 'center',
   },
   button: {
     width: '60%',
     alignItems: 'center',
+    marginBottom: 10,
     paddingTop: 8,
     paddingBottom: 8,
     borderRadius: 8,

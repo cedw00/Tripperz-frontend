@@ -252,7 +252,7 @@ const styles = StyleSheet.create({
     paddingLeft: 8,
   },
   input: {
-    color: 'white',
+    color: '#BFC0C5',
   },
   bottom: {
     flex: 1,

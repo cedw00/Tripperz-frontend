@@ -9,70 +9,69 @@ export default function ProfileScreen({ navigation }) {
   const dispatch = useDispatch();
   const { username, birthday, gender, country, favoriteCountry, favoriteFoods, hobbies } = useSelector((state) => state.user.value)
 
+  const handleLogout = () => {
+      dispatch(logout());
+      navigation.navigate('Login')
+  }
 
-    const handleLogout = () => {
-        dispatch(logout());
-        navigation.navigate('Login')
-    }
-
-    const display = item => {
-      return (
-        <View>
-          <Text>{item}</Text>
-        </View>
-      )
-    }
+  const display = item => {
+    return (
+      <View>
+        <Text>{item}</Text>
+      </View>
+    )
+  }
 
   return (
-    <SafeAreaView style={styles.container}>
-      <View style={styles.header}>
-        <Image source={require('../assets/logo.png')}/>
+  <SafeAreaView style={styles.container}>
+    <View style={styles.header}>
+      <Image source={require('../assets/logo.png')}/>
+    </View>
+    <View style={styles.body}>
+      <View style={styles.top}>
+        <ImageBackground source={require('../assets/background_2.png')} style={styles.background} imageStyle={{borderRadius: 10}}>
+          <View style={styles.icon}>
+            <FontAwesome name={'user-circle'} size={75} color={'#000000'}/>
+          </View>
+          <View style={styles.messageContainer}>
+            <Text style={styles.message}>{username}</Text>
+          </View>
+          <View style={styles.desc}>
+            <Text style={styles.descText}>Description : </Text>
+            <Text style={styles.descText}>Globetrotter</Text>
+          </View>
+        </ImageBackground>
       </View>
-      <View style={styles.body}>
-        <View style={styles.top}>
-          <ImageBackground source={require('../assets/background_2.png')} style={styles.background} imageStyle={{borderRadius: 10}}>
-            <View style={styles.icon}>
-              <FontAwesome name={'user-circle'} size={75} color={'#000000'}/>
-            </View>
-            <View style={styles.messageContainer}>
-              <Text style={styles.message}>{username}</Text>
-            </View>
-            <View style={styles.desc}>
-              <Text style={styles.descText}>Description : </Text>
-              <Text style={styles.descText}>Globetrotter</Text>
-            </View>
-          </ImageBackground>
+      <View style={styles.main}>
+        <View style={styles.section}>
+          <Text>{birthday}</Text>
         </View>
-        <View style={styles.main}>
-          <View style={styles.section}>
-            <Text>{birthday}</Text>
-          </View>
-          <View style={styles.section}>
-            <Text>{gender}</Text>
-          </View>
-          <View style={styles.section}>
-            <Text>{country}</Text>
-          </View>
-          <View style={styles.section}>
-            <Text>{favoriteCountry}</Text>
-          </View>
-          <Dropdown
-              style={styles.dropdown} data={favoriteFoods} labelField='label' valueField='value' placeholder='Your favorites food type'
-              placeholderStyle={styles.input} renderItem={display} maxHeight={100} value={'Your favorites hobbies'} iconColor='#000000'
-          />
-          <Dropdown
-              style={styles.dropdown} data={hobbies} labelField='label' valueField='value' placeholder='Your favorites hobbies'
-              placeholderStyle={styles.input} renderItem={display} maxHeight={100} value={'Your favorites hobbies'} iconColor='#000000'
-          />
+        <View style={styles.section}>
+          <Text>{gender}</Text>
         </View>
-        <View style={styles.bottom}>
-          <TouchableOpacity activeOpacity={0.8} onPress={() => handleLogout()} style={styles.button}>
-            <Text style={styles.textBtn}>Logout</Text>
-          </TouchableOpacity>
-          <Footer/>
+        <View style={styles.section}>
+          <Text>{country}</Text>
         </View>
+        <View style={styles.section}>
+          <Text>{favoriteCountry}</Text>
+        </View>
+        <Dropdown
+            style={styles.dropdown} data={favoriteFoods} labelField='label' valueField='value' placeholder='Your favorites food type'
+            placeholderStyle={styles.input} renderItem={display} maxHeight={100} value={'Your favorites food'} iconColor='#000000'
+        />
+        <Dropdown
+            style={styles.dropdown} data={hobbies} labelField='label' valueField='value' placeholder='Your favorites hobbies'
+            placeholderStyle={styles.input} renderItem={display} maxHeight={100} value={'Your favorites hobbies'} iconColor='#000000'
+        />
       </View>
-    </SafeAreaView>
+      <View style={styles.bottom}>
+        <TouchableOpacity activeOpacity={0.8} onPress={() => handleLogout()} style={styles.button}>
+          <Text style={styles.textBtn}>Logout</Text>
+        </TouchableOpacity>
+        <Footer navigation={navigation}/>
+      </View>
+    </View>
+  </SafeAreaView>
   );
 }
 
