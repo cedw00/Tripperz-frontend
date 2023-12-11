@@ -52,7 +52,7 @@ export default function SignInScreen({ navigation }) {
           setPassword('');
           dispatch(updateUser(data.user))
           dispatch(updateProfile(data.user))
-          navigation.navigate('Profile')
+          navigation.navigate('Home')
         }
       })
     }
