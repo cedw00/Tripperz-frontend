@@ -3,15 +3,13 @@ import {
   StyleSheet,
   ScrollView,
   View,
-  SafeAreaView,
-  Dimensions,
   Text,
   Image,
+  Pressable,
 } from "react-native";
-import FontAwesome from "react-native-vector-icons/FontAwesome";
 import Day from "../components/Day";
 
-export default function TripPlanScreen() {
+export default function TripPlanScreen({ navigation }) {
   const [day, setDay] = useState([]);
 
   useEffect((i) => {
@@ -45,7 +43,16 @@ export default function TripPlanScreen() {
         </View>
       </ScrollView>
       <View style={styles.nextContainer}>
-        <Text style={{color: 'white'}}>CONFIRM</Text>
+        <Pressable onPress={() => navigation.navigate("Planning")}>
+          <View style={styles.confirm}>
+            <Text style={{ color: "black" }}>CONFIRM</Text>
+          </View>
+        </Pressable>
+        <Pressable onPress={() => navigation.navigate("Home")}>
+          <View style={styles.cancel}>
+            <Text style={{ color: "black" }}>CANCEL</Text>
+          </View>
+        </Pressable>
       </View>
     </View>
   );
@@ -59,7 +66,7 @@ const styles = StyleSheet.create({
   dayContainer: {
     flex: 1,
     backgroundColor: "white",
-    marginBottom: 80
+    marginBottom: 80,
   },
   titleContainer: {
     flex: 1,
@@ -70,10 +77,11 @@ const styles = StyleSheet.create({
     marginHorizontal: "5%",
   },
   nextContainer: {
+    flexDirection: "row",
     alignItems: "center",
-    justifyContent: "center",
+    justifyContent: "space-around",
     backgroundColor: "#067188",
-    paddingVertical: "8%",
+    paddingVertical: "6%",
   },
   imageContainer: {
     flex: 1,
@@ -88,4 +96,22 @@ const styles = StyleSheet.create({
     height: 150, // Adjust the height of the image as needed
     resizeMode: "contain", // Choose the resize mode for the image
   },
+  confirm: {
+    alignItems: "center",
+    justifyContent: "center",
+    borderWidth: 3,
+    backgroundColor: 'lightblue',
+    paddingHorizontal: '6%',
+    paddingVertical: '4%',
+    borderRadius: '10%'
+  },
+  cancel: {
+    alignItems: "center",
+    justifyContent: "center",
+    borderWidth: 3,
+    backgroundColor: '#eee',
+    paddingHorizontal: '6%',
+    paddingVertical: '4%',
+    borderRadius: '10%'
+  }
 });

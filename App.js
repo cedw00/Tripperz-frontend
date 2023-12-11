@@ -7,15 +7,17 @@ import RegisterScreen from "./screens/RegisterScreen";
 import SetProfileScreen from "./screens/SetProfileScreen";
 import HomeScreen from "./screens/HomeScreen";
 import TripPlanScreen from "./screens/TripPlanScreen";
+import PlanningScreen from "./screens/PlanningScreen";
 
 import { Provider } from "react-redux";
 import { configureStore } from "@reduxjs/toolkit";
 import user from "./reducers/user";
 import activ from "./reducers/activ";
+import tripper from "./reducers/tripper";
 
 
 const store = configureStore({
-  reducer: { user, activ },
+  reducer: { user, activ, tripper },
 });
 
 const Stack = createNativeStackNavigator();
@@ -26,6 +28,7 @@ export default function App() {
       <NavigationContainer>
         <Stack.Navigator screenOptions={{ headerShown: false }}>
           <Stack.Screen name="TripPlan" component={TripPlanScreen} />
+          <Stack.Screen name="Planning" component={PlanningScreen} />
           <Stack.Screen name="Login" component={LoginScreen} />
           <Stack.Screen name="SignIn" component={SignInScreen} />
           <Stack.Screen name="Register" component={RegisterScreen} />
