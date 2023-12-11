@@ -6,6 +6,8 @@ import { SelectList } from 'react-native-dropdown-select-list';
 function SelectedList(props) {
   const {   } = props;
   const [countries, setCountries] = useState([]);
+  const [selectedCountry, setSelectedCountry] = useState(null);
+  const [selectedCity, setSelectedCity] = useState(null);
 
   useEffect(() => {
     const fetchCountries = async () => {
@@ -27,16 +29,18 @@ function SelectedList(props) {
   let citiesList = [];
 
   const setCountrySelected = (value) => {
-    setSelected(value)
+    setSelectedCountry(value)
+ 
    // onCountrySelect(countrylist[value]?.value);
 
   }
-  
 
-  if (setCountrySelected) {
+
+  if (selectedCountry!==null) {
+
     const selectedCities = countries.find(item => item.country === countrylist[selectedCountry].value);
-    
-    console.log('selectedCountry',selectedCities)
+    console.log('selected cities',selectedCities)
+
 
     citiesList = selectedCities.cities;
   }
@@ -48,7 +52,7 @@ function SelectedList(props) {
 
 
   const setCitySelected = (value => {
-    setSelected(value)
+    setSelectedCity(value)
   })
   return (
 
