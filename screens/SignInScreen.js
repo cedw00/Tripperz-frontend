@@ -43,7 +43,7 @@ export default function SignInScreen({ navigation }) {
       setShowError(false);
       setEmail('');
       setPassword('');
-      navigation.navigate('Profile')
+      navigation.navigate('Home')
     }
   }
 
