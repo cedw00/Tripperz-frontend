@@ -8,32 +8,25 @@ import {
   Pressable,
   ScrollView,
 } from "react-native";
-import { useSelector } from "react-redux";
+import { useSelector, useDispatch } from "react-redux";
 import ModalSlot from "./ModalSlot";
 
 export default function Slot(props) {
+  const dispatch = useDispatch();
   const activities = useSelector((state) => state.activ.value);
   const [modalVisible, setModalVisible] = useState(false);
-//   const [activityModal, setActivityModal] = useState('')
-
-  //const otherActivities = activities.filter((activ) => activ < activities[7]);
-  //   const modalActivities = otherActivities.map((data, index) => {
-  //     return <ModalSlot key={index} activity={data} />;
-  //   });
+  const [slotActivity, setSlotActivity] = useState(props.activity)
 
   // INVERSE DATA FLOW MODALACTIVITY SWITCH
   const switchActivity = (act) => {
-    console.log(`SWITCH : Switching ${props.activity} with =>`, act);
+    console.log(`SWITCH : Switching ${slotActivity} with =>`, act);
+    setSlotActivity(act)
   };
 
   // MAPPING MODALACTIVITY
   const modalActivities = activities.map((data, index) => {
-    
-    //console.log("modalAct.current:", props.modalAct);
-    // console.log("modalAct:", modalAct);
-    
     return (
-      <Pressable key={index} >
+      <Pressable key={index}>
         <ModalSlot
           key={index}
           modalActivity={data}
@@ -78,7 +71,7 @@ export default function Slot(props) {
         <View style={styles.slotContainer}>
           <View style={styles.slotContent} title="Slot">
             <Text style={styles.text} title="Activity" name={props.activity}>
-              Going @ {props.activity}
+              Going @ {slotActivity}
             </Text>
           </View>
         </View>
@@ -116,10 +109,10 @@ const styles = StyleSheet.create({
     marginHorizontal: "10%",
     //borderWidth: 3, // Pour visualiser la zone du conteneur
     paddingHorizontal: "3%", // Ajouter un padding pour l'espace intérieur
-    paddingVertical: '2%',
+    paddingVertical: "2%",
     backgroundColor: "white",
     borderRadius: "20%",
-    maxHeight: '100%',
+    maxHeight: "100%",
     shadowColor: "#000",
     shadowOffset: { width: +3, height: 3 },
     shadowOpacity: 0.7,

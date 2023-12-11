@@ -497,7 +497,7 @@ const styles = StyleSheet.create({
     alignItems: "center",
     maxHeight: 230,
     marginTop: "5%",
-    marginBottom: "8%",
+    marginBottom: "15%",
   },
   iconContainer: {
     flexDirection: "row",
