@@ -122,28 +122,28 @@ export default function SetProfileScreen({ navigation }) {
               </View>
               <View style={styles.inputContainer}>
                 <Dropdown
-                    style={styles.dropdown} data={genderData} labelField='label' valueField='value' placeholder='Select your gender' placeholderStyle={styles.input}
+                    style={styles.dropdown} data={genderData} labelField='label' valueField='value' placeholder='Gender' placeholderStyle={styles.input}
                     value={gender} onChange={(item) => {setGender(item.value)}} renderItem={display} maxHeight={100}
                 />
               </View>
               <View style={styles.inputContainer}>
-                <TextInput placeholder="Enter your home country" onChangeText={(value) => setCountry(value)} placeholderTextColor={'#FFFFFF'}
+                <TextInput placeholder="Home country" onChangeText={(value) => setCountry(value)} placeholderTextColor={'#FFFFFF'}
                 value={country} style={styles.input}/>  
               </View>
               <View style={styles.inputContainer}>
-                <TextInput placeholder="Enter your favorite country" onChangeText={(value) => setFavoriteCountry(value)} placeholderTextColor={'#FFFFFF'}
+                <TextInput placeholder="Favorite Destination" onChangeText={(value) => setFavoriteCountry(value)} placeholderTextColor={'#FFFFFF'}
                 value={favoriteCountry} style={styles.input}/>  
               </View>
               <View style={styles.inputContainer}>
                 <MultiSelect
-                    style={styles.dropdown} data={foodData} labelField='label' valueField='value' placeholder='Choose your favorites food type'
+                    style={styles.dropdown} data={foodData} labelField='label' valueField='value' placeholder='Favorite food types'
                     placeholderStyle={styles.input} value={selectedFood} onChange={(item) => {setSelectedFood(item)}} renderItem={display} maxHeight={100}
                     visibleSelectedItem={false} activeColor='lightblue'
                 />
               </View>
               <View style={styles.inputContainer}>
                 <MultiSelect
-                    style={styles.dropdown} data={mockData} labelField='label' valueField='value' placeholder='Choose your favorites activities'
+                    style={styles.dropdown} data={mockData} labelField='label' valueField='value' placeholder='Favorites activities'
                     placeholderStyle={styles.input} value={selectedActivities} onChange={(item) => {setSelectedActivities(item)}} renderItem={display}
                     maxHeight={100} visibleSelectedItem={false} activeColor='lightblue'
                 />

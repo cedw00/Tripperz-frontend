@@ -14,10 +14,6 @@ export default function ProfileScreen({ navigation }) {
         navigation.navigate('Login')
     }
 
-    const handleReturn = () => {
-      navigation.navigate('SetProfile')
-    }
-
     const display = item => {
       return (
         <View>
@@ -61,19 +57,16 @@ export default function ProfileScreen({ navigation }) {
           </View>
           <Dropdown
               style={styles.dropdown} data={favoriteFoods} labelField='label' valueField='value' placeholder='Your favorites food type'
-              placeholderStyle={styles.input} renderItem={display} maxHeight={100} value={'Your favorites hobbies'}
+              placeholderStyle={styles.input} renderItem={display} maxHeight={100} value={'Your favorites hobbies'} iconColor='#000000'
           />
           <Dropdown
               style={styles.dropdown} data={hobbies} labelField='label' valueField='value' placeholder='Your favorites hobbies'
-              placeholderStyle={styles.input} renderItem={display} maxHeight={100} value={'Your favorites hobbies'}
+              placeholderStyle={styles.input} renderItem={display} maxHeight={100} value={'Your favorites hobbies'} iconColor='#000000'
           />
         </View>
         <View style={styles.bottom}>
           <TouchableOpacity activeOpacity={0.8} onPress={() => handleLogout()} style={styles.button}>
             <Text style={styles.textBtn}>Logout</Text>
-          </TouchableOpacity>
-          <TouchableOpacity activeOpacity={0.8} onPress={() => handleReturn()}>
-            <Text>Go back</Text>
           </TouchableOpacity>
         </View>
       </View>
