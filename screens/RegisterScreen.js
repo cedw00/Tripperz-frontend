@@ -1,5 +1,5 @@
-import { StyleSheet, Text, View, Image, TextInput,
-    SafeAreaView, Dimensions, TouchableOpacity, KeyboardAvoidingView } from 'react-native';
+import { StyleSheet, Text, View, Image, ImageBackground, TextInput,
+    SafeAreaView, Dimensions, TouchableOpacity, KeyboardAvoidingView, Platform } from 'react-native';
 import CheckBox from 'expo-checkbox';
 import { useState } from 'react';
 import { useDispatch } from 'react-redux'
@@ -61,58 +61,65 @@ export default function RegisterScreen({ navigation }) {
   }
 
   return (
-    <SafeAreaView style={styles.container}>
-      <KeyboardAvoidingView behavior={Platform.OS === 'ios' ? 'padding' : 'height'} style={styles.view}>
-        <View style={styles.header}>
-            <Text style={styles.title}>Trippers</Text>
-        </View>
-        <View style={styles.form}>
-          <View style={styles.top}>
-              <Text>Inscription</Text>
+    <ImageBackground source={require('../assets/background_2.png')} style={styles.background}>
+      <SafeAreaView style={styles.container}>
+        <KeyboardAvoidingView behavior={Platform.OS === 'ios' ? 'padding' : 'height'} style={styles.view}>
+          <View style={styles.header}>
+            <Image source={require('../assets/logo.png')}/>
           </View>
-          <View style={styles.textArea}>
-              <View behavior={Platform.OS === 'ios' ? 'padding' : 'height'} style={styles.inputContainer}>
-                  <TextInput placeholder="Pseudo" onChangeText={(value) => setPseudo(value)} value={pseudo} style={styles.input}/>
-              </View>
-              <View behavior={Platform.OS === 'ios' ? 'padding' : 'height'} style={styles.inputContainer}>
-                  <TextInput placeholder="Email" onChangeText={(value) => setEmail(value)} value={email} style={styles.input}/>
-              </View>
-              <View behavior={Platform.OS === 'ios' ? 'padding' : 'height'} style={styles.inputContainer}>
-                  <TextInput placeholder="Phone number" onChangeText={(value) => setPhoneNb(value)} value={phoneNb} style={styles.input}/>  
-              </View>
-              <View behavior={Platform.OS === 'ios' ? 'padding' : 'height'} style={styles.inputContainer}>
-                  <TextInput placeholder="Password" secureTextEntry={true} onChangeText={(value) => setPassword(value)} value={password} style={styles.input}/>
-              </View>
+          <View style={styles.form}>
+            <View style={styles.top}>
+                <Text style={styles.title}>Register</Text>
+            </View>
+            <View style={styles.textArea}>
+                <View style={styles.inputContainer}>
+                    <TextInput placeholder="Pseudo" placeholderTextColor={'#FFFFFF'} onChangeText={(value) => setPseudo(value)} value={pseudo}
+                    style={styles.input}/>
+                </View>
+                <View style={styles.inputContainer}>
+                    <TextInput placeholder="Email" placeholderTextColor={'#FFFFFF'} onChangeText={(value) => setEmail(value)} value={email}
+                    style={styles.input}/>
+                </View>
+                <View style={styles.inputContainer}>
+                    <TextInput placeholder="Phone number" placeholderTextColor={'#FFFFFF'} onChangeText={(value) => setPhoneNb(value)} value={phoneNb}
+                    style={styles.input}/>  
+                </View>
+                <View style={styles.inputContainer}>
+                    <TextInput placeholder="Password" placeholderTextColor={'#FFFFFF'} secureTextEntry={true} onChangeText={(value) => setPassword(value)}
+                    value={password} style={styles.input}/>
+                </View>
+            </View>
+            <View style={styles.terms}>
+              <CheckBox disabled={false} value={toggleCheckBox} onValueChange={(newValue) => setToggleCheckBox(newValue)}/>
+              <Text style={styles.conditions}>Accept general use terms</Text>
+            </View>
           </View>
-          <View style={styles.terms}>
-            <CheckBox disabled={false} value={toggleCheckBox} onValueChange={(newValue) => setToggleCheckBox(newValue)}/>
-            <Text style={styles.conditions}>Accept general use terms</Text>
+          <View style={styles.bottom}>
+            <TouchableOpacity activeOpacity={0.8} onPress={() => handleRegister()} style={styles.button}>
+                <Text style={styles.textBtn}>Register</Text>
+            </TouchableOpacity>
+            { showError && <View>
+              <Text>{errorMsg}</Text>
+            </View> }
+            <TouchableOpacity activeOpacity={0.8} onPress={() => handleReturn()}>
+                <Text>Go back</Text>
+            </TouchableOpacity>
           </View>
-        </View>
-        <View style={styles.bottom}>
-          <TouchableOpacity activeOpacity={0.8} onPress={() => handleRegister()} style={styles.button}>
-              <Text style={styles.textBtn}>Register</Text>
-          </TouchableOpacity>
-          { showError && <View>
-            <Text>{errorMsg}</Text>
-          </View> }
-          <TouchableOpacity activeOpacity={0.8} onPress={() => handleReturn()}>
-              <Text>Go back</Text>
-          </TouchableOpacity>
-        </View>
-      </KeyboardAvoidingView>
-    </SafeAreaView>
+        </KeyboardAvoidingView>
+      </SafeAreaView>
+    </ImageBackground>
   );
 }
 
 const styles = StyleSheet.create({
-  container: {
-    flex: 1,
+  background: {
     width: Dimensions.get('screen').width,
     height: Dimensions.get('screen').height,
+  },
+  container: {
+    flex: 1,
     justifyContent: "center",
     alignItems: "center",
-    backgroundColor: '#96D3E8',
   },
   view: {
     flex: 1,
@@ -140,6 +147,10 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     alignItems: 'center',
   },
+  title: {
+    color: '#FFFFFF',
+    fontSize: 24,
+  },
   textArea: {
     width: '100%',
     flex: 3,
@@ -148,24 +159,27 @@ const styles = StyleSheet.create({
   },
   inputContainer: {
     width: '80%',
-    backgroundColor: '#AFBBE8',
     borderStyle: 'solid',
-    borderWidth: 2,
+    borderWidth: 1,
     borderColor: 'white',
     borderRadius: 5,
+    marginTop: 10,
+    marginBottom: 10,
+    paddingLeft: 8,
   },
   input: {
     color: 'black',
   },
   terms: {
-    width: '80%',
+    width: '70%',
     flex: 1,
     flexDirection: 'row',
-    justifyContent: 'center',
+    justifyContent: 'space-around',
     alignItems: 'center',
   },
   conditions: {
     marginLeft: 5,
+    color: '#FFFFFF'
   },
   bottom: {
     flex: 1,

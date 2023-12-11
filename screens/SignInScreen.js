@@ -1,12 +1,14 @@
-import { StyleSheet, Text, View, Image, TextInput,
+import { StyleSheet, Text, View, Image, ImageBackground, TextInput,
     SafeAreaView, Dimensions, TouchableOpacity, KeyboardAvoidingView } from 'react-native';
 import { useState } from 'react';
 import { useDispatch } from 'react-redux';
 import { updateUser, updateProfile } from '../reducers/user';
 
 const user = [
-  { email: 'user.admin@admin.fr', password: 'admin123', phone: '0652882068', birthday: '10/08/1990', interests: ['Sea', 'Restaurant', 'Theater'] },
-  { email: 'user.test@test.com', password: 'azerty000', phone: '0617935077', birthday: '21/05/1997', interests: ['Sport', 'Amusement Park', 'Sea'] }
+  { email: 'user.admin@admin.fr', password: 'admin123', phone: '0652882068', birthday: '10/08/1990', gender: 'Male',
+    homeCountry: 'France', favoriteCountry: 'Greece', favoriteFood: ['Vegan'], interests: ['Sea', 'Restaurant', 'Theater'] },
+  { email: 'user.test@test.com', password: 'azerty000', phone: '0617935077', birthday: '21/05/1997', gender: 'Female',
+    homeCountry: 'France', favoriteCountry: 'United States', favoriteFood: ['Fast-Food', 'Cakes'], interests: ['Sport', 'Amusement Park', 'Sea'] }
 ]
 
 export default function SignInScreen({ navigation }) {
@@ -21,7 +23,8 @@ export default function SignInScreen({ navigation }) {
     const currentUser = user.find(data => email === data.email);
     if (password === currentUser.password) {
       const user = { pseudo: 'User', password: password, email: email, phone: currentUser.phone };
-      const profile = { gender: 'Male', birthday: currentUser.birthday, interests: currentUser.interests };
+      const profile = { gender: 'Male', birthday: currentUser.birthday, homeCountry: currentUser.homeCountry,
+      favoriteCountry: currentUser.favoriteCountry, favoriteFood: currentUser.favoriteFood, interests: currentUser.interests };
       dispatch(updateUser(user));
       dispatch(updateProfile(profile));
       return true
@@ -48,48 +51,53 @@ export default function SignInScreen({ navigation }) {
   }
 
   return (
-    <SafeAreaView style={styles.container}>
-      <KeyboardAvoidingView style={styles.view} behavior={Platform.OS === 'ios' ? 'padding' : 'height'}>
-        <View style={styles.header}>
-            <Text style={styles.title}>Trippers</Text>
-        </View>
-        <View style={styles.form}>
-          <View style={styles.top}>
-              <Text>Connection with email</Text>
+    <ImageBackground source={require('../assets/background_1.png')} style={styles.background}>
+      <SafeAreaView style={styles.container}>
+        <KeyboardAvoidingView style={styles.view} behavior={Platform.OS === 'ios' ? 'padding' : 'height'}>
+          <View style={styles.header}>
+            <Image source={require('../assets/logo.png')}/>
           </View>
-          <View style={styles.textArea}>
-              <View style={styles.inputContainer}>
-                  <TextInput placeholder="Email" onChangeText={(value) => setEmail(value)} value={email} style={styles.input}/>
-              </View>
-              <View style={styles.inputContainer}>
-                  <TextInput placeholder="Password" secureTextEntry={true} onChangeText={(value) => setPassword(value)} value={password} style={styles.input}/>
-              </View>
+          <View style={styles.form}>
+            <View style={styles.textArea}>
+                <View style={styles.inputContainer}>
+                    <TextInput placeholder="Email" placeholderTextColor={'#FFFFFF'} onChangeText={(value) => setEmail(value)} value={email}
+                    style={styles.input}/>
+                </View>
+                <View style={styles.inputContainer}>
+                    <TextInput placeholder="Password" placeholderTextColor={'#FFFFFF'} secureTextEntry={true} onChangeText={(value) => setPassword(value)}
+                    value={password} style={styles.input}/>
+                </View>
+                <View style={styles.forgot}>
+                  <Text style={styles.forgotText}>Forgotten password</Text>
+                </View>
+            </View>
           </View>
-        </View>
-        <View style={styles.bottom}>
-          <TouchableOpacity activeOpacity={0.8} onPress={() => handleRegister()} style={styles.button}>
-              <Text style={styles.textBtn}>Connect</Text>
-          </TouchableOpacity>
-          { showError && <View>
-            <Text>{errorMsg}</Text>
-          </View> }
-          <TouchableOpacity activeOpacity={0.8} onPress={() => handleReturn()}>
-              <Text>Go back</Text>
-          </TouchableOpacity>
-        </View>
-      </KeyboardAvoidingView>
-    </SafeAreaView>
+          <View style={styles.bottom}>
+            <TouchableOpacity activeOpacity={0.8} onPress={() => handleRegister()} style={styles.button}>
+                <Text style={styles.textBtn}>Connect</Text>
+            </TouchableOpacity>
+            { showError && <View>
+              <Text>{errorMsg}</Text>
+            </View> }
+            <TouchableOpacity activeOpacity={0.8} onPress={() => handleReturn()}>
+                <Text>Go back</Text>
+            </TouchableOpacity>
+          </View>
+        </KeyboardAvoidingView>
+      </SafeAreaView>
+    </ImageBackground>
   );
 }
 
 const styles = StyleSheet.create({
-  container: {
-    flex: 1,
+  background: {
     width: Dimensions.get('screen').width,
     height: Dimensions.get('screen').height,
+  },
+  container: {
+    flex: 1,
     justifyContent: "center",
     alignItems: "center",
-    backgroundColor: '#96D3E8',
   },
   view: {
     flex: 1,
@@ -107,8 +115,9 @@ const styles = StyleSheet.create({
     color: '#1AB4E7'
   },
   form: {
-    flex: 1,
+    flex: 2,
     width: '80%',
+    justifyContent: 'flex-start',
     alignItems: 'center',
     borderRadius: 10,
   },
@@ -119,29 +128,30 @@ const styles = StyleSheet.create({
   },
   textArea: {
     width: '100%',
-    flex: 3,
+    flex: 1,
     justifyContent: 'center',
     alignItems: 'center',
   },
   inputContainer: {
     width: '80%',
-    backgroundColor: '#AFBBE8',
     borderStyle: 'solid',
-    borderWidth: 2,
+    borderWidth: 1,
     borderColor: 'white',
     borderRadius: 5,
     marginTop: 10,
     marginBottom: 10,
+    paddingLeft: 8,
   },
   input: {
     color: 'black',
   },
-  terms: {
-    width: '80%',
-    flex: 1,
-    flexDirection: 'row',
-    justifyContent: 'space-around',
-    alignItems: 'center',
+  forgot: {
+    marginTop: 20,
+    marginBottom: 15,
+  },
+  forgotText: {
+    color: '#000000',
+    fontSize: 16
   },
   bottom: {
     flex: 1,

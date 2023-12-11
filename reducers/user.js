@@ -8,6 +8,9 @@ const initialState = {
     phone: null,
     birthday: null,
     gender: null,
+    homeCountry: null,
+    favoriteCountry: null,
+    favoriteFood: null,
     password: null,
     interests: [],
   },
@@ -26,10 +29,16 @@ export const userSlice = createSlice({
    updateProfile: (state, action) => {
     state.value.birthday = action.payload.birthday;
     state.value.gender = action.payload.gender;
+    state.value.homeCountry = action.payload.homeCountry;
+    state.value.favoriteCountry = action.payload.favoriteCountry;
+    state.value.favoriteFood = action.payload.favoriteFood;
     state.value.interests = action.payload.interests;
+   },
+   logout: (state) => {
+    state.value = {};
    }
  },
 });
 
-export const { updateUser, updateProfile } = userSlice.actions;
+export const { updateUser, updateProfile, logout } = userSlice.actions;
 export default userSlice.reducer;
