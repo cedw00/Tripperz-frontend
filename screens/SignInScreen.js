@@ -1,101 +1,83 @@
 import { StyleSheet, Text, View, Image, TextInput,
     SafeAreaView, Dimensions, TouchableOpacity, KeyboardAvoidingView } from 'react-native';
-import CheckBox from 'expo-checkbox';
 import { useState } from 'react';
-import { useDispatch } from 'react-redux'
-import { updateUser } from '../reducers/user';
+import { useDispatch } from 'react-redux';
+import { updateUser, updateProfile } from '../reducers/user';
+
+const user = [
+  { email: 'user.admin@admin.fr', password: 'admin123', phone: '0652882068', birthday: '10/08/1990', interests: ['Sea', 'Restaurant', 'Theater'] },
+  { email: 'user.test@test.com', password: 'azerty000', phone: '0617935077', birthday: '21/05/1997', interests: ['Sport', 'Amusement Park', 'Sea'] }
+]
 
 export default function SignInScreen({ navigation }) {
   const dispatch = useDispatch();
-  const [toggleCheckBox, setToggleCheckBox] = useState(false);
   const [showError, setShowError] = useState(false);
   const [errorMsg, setErrorMsg] = useState('');
 
-  const [pseudo, setPseudo] = useState('');
   const [email, setEmail] = useState('');
-  const [phoneNb, setPhoneNb] = useState('');
   const [password, setPassword] = useState('');
 
   const checkForm = () => {
-    let isValid = false;
-    const pattern = /^[0-9a-z._-]+@{1}[0-9a-z.-]{2,}[.]{1}[a-z]{2,5}$/gi;
-    email.match(pattern) ? isValid = true : isValid = false;
-    if (isValid) {
-        return true
+    const currentUser = user.find(data => email === data.email);
+    if (password === currentUser.password) {
+      const user = { pseudo: 'User', password: password, email: email, phone: currentUser.phone };
+      const profile = { gender: 'Male', birthday: currentUser.birthday, interests: currentUser.interests };
+      dispatch(updateUser(user));
+      dispatch(updateProfile(profile));
+      return true
     } else {
-        return false
+      return false
     }
   }
 
   const handleReturn = () => {
     setShowError(false)
-      navigation.navigate('Login')
+    navigation.navigate('Login')
   }
 
   const handleRegister = () => {
     if (!checkForm()) {
-      setErrorMsg('Missing or invalid field(s)');
+      setErrorMsg('Invalid email or password');
       setShowError(true)
     } else {
-      if (toggleCheckBox) {
-        setShowError(false)
-        const user = {
-          email: email,
-          pseudo: pseudo,
-          phone: phoneNb,
-          password: password,
-        }
-        setEmail('');
-        setPseudo('');
-        setPhoneNb('');
-        dispatch(updateUser(user))
-        navigation.navigate('SetProfile')
-      } else {
-        setErrorMsg('Accept terms is required');
-        setShowError(true)
-      }
+      setShowError(false);
+      setEmail('');
+      setPassword('');
+      navigation.navigate('Home')
     }
   }
 
   return (
     <SafeAreaView style={styles.container}>
-      <View style={styles.header}>
-          <Text style={styles.title}>Trippers</Text>
-      </View>
-      <View style={styles.form}>
-        <View style={styles.top}>
-            <Text>Connection</Text>
+      <KeyboardAvoidingView style={styles.view} behavior={Platform.OS === 'ios' ? 'padding' : 'height'}>
+        <View style={styles.header}>
+            <Text style={styles.title}>Trippers</Text>
         </View>
-        <View style={styles.textArea}>
-            <KeyboardAvoidingView behavior={Platform.OS === 'ios' ? 'padding' : 'height'} style={styles.inputContainer}>
-                <TextInput placeholder="Pseudo" onChangeText={(value) => setPseudo(value)} value={pseudo} style={styles.input}/>
-            </KeyboardAvoidingView>
-            <KeyboardAvoidingView behavior={Platform.OS === 'ios' ? 'padding' : 'height'} style={styles.inputContainer}>
-                <TextInput placeholder="Email" onChangeText={(value) => setEmail(value)} value={email} style={styles.input}/>
-            </KeyboardAvoidingView>
-            <KeyboardAvoidingView behavior={Platform.OS === 'ios' ? 'padding' : 'height'} style={styles.inputContainer}>
-                <TextInput placeholder="Phone number" onChangeText={(value) => setPhoneNb(value)} value={phoneNb} style={styles.input}/>  
-            </KeyboardAvoidingView>
-            <KeyboardAvoidingView behavior={Platform.OS === 'ios' ? 'padding' : 'height'} style={styles.inputContainer}>
-                <TextInput placeholder="Password" secureTextEntry={true} onChangeText={(value) => setPassword(value)} value={password} style={styles.input}/>
-            </KeyboardAvoidingView>
+        <View style={styles.form}>
+          <View style={styles.top}>
+              <Text>Connection with email</Text>
+          </View>
+          <View style={styles.textArea}>
+              <View style={styles.inputContainer}>
+                  <TextInput placeholder="Email" onChangeText={(value) => setEmail(value)} value={email} style={styles.input}/>
+              </View>
+              <View style={styles.inputContainer}>
+                  <TextInput placeholder="Password" secureTextEntry={true} onChangeText={(value) => setPassword(value)} value={password} style={styles.input}/>
+              </View>
+          </View>
         </View>
-        <View style={styles.terms}>
-          <CheckBox disabled={false} value={toggleCheckBox} onValueChange={(newValue) => setToggleCheckBox(newValue)}/>
-            <Text>Accept general use terms</Text>
+        <View style={styles.bottom}>
+          <TouchableOpacity activeOpacity={0.8} onPress={() => handleRegister()} style={styles.button}>
+              <Text style={styles.textBtn}>Connect</Text>
+          </TouchableOpacity>
+          { showError && <View>
+            <Text>{errorMsg}</Text>
+          </View> }
+          <TouchableOpacity activeOpacity={0.8} onPress={() => handleReturn()}>
+              <Text>Go back</Text>
+          </TouchableOpacity>
         </View>
-      </View>
-      <View style={styles.test}>
-        <TouchableOpacity activeOpacity={0.8} onPress={() => handleRegister()} style={styles.button}>
-            <Text style={styles.textBtn}>Connect</Text>
-        </TouchableOpacity>
-        { showError && <View>
-          <Text>{errorMsg}</Text>
-        </View> }
-        <TouchableOpacity activeOpacity={0.8} onPress={() => handleReturn()}>
-            <Text>Return</Text>
-        </TouchableOpacity>
-      </View>
+      </KeyboardAvoidingView>
     </SafeAreaView>
   );
 }
@@ -107,6 +89,12 @@ const styles = StyleSheet.create({
     height: Dimensions.get('screen').height,
     justifyContent: "center",
     alignItems: "center",
+    backgroundColor: '#96D3E8',
+  },
+  view: {
+    flex: 1,
+    width: '100%',
+    alignItems: 'center',
   },
   header: {
     flex: 1,
@@ -116,13 +104,13 @@ const styles = StyleSheet.create({
   title: {
     fontWeight: 'bold',
     fontSize: 48,
-    color: 'blue'
+    color: '#1AB4E7'
   },
   form: {
     flex: 1,
-    width: '70%',
-    backgroundColor: 'gray',
+    width: '80%',
     alignItems: 'center',
+    borderRadius: 10,
   },
   top: {
     flex: 1,
@@ -132,7 +120,7 @@ const styles = StyleSheet.create({
   textArea: {
     width: '100%',
     flex: 3,
-    justifyContent: 'space-around',
+    justifyContent: 'center',
     alignItems: 'center',
   },
   inputContainer: {
@@ -142,6 +130,8 @@ const styles = StyleSheet.create({
     borderWidth: 2,
     borderColor: 'white',
     borderRadius: 5,
+    marginTop: 10,
+    marginBottom: 10,
   },
   input: {
     color: 'black',
@@ -153,10 +143,10 @@ const styles = StyleSheet.create({
     justifyContent: 'space-around',
     alignItems: 'center',
   },
-  test: {
+  bottom: {
     flex: 1,
     width: '80%',
-    justifyContent: 'center',
+    justifyContent: 'space-around',
     alignItems: 'center',
   },
   button: {
@@ -164,6 +154,7 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     paddingTop: 8,
     paddingBottom: 8,
+    borderRadius: 8,
     backgroundColor: 'black',
   },
   textBtn: {

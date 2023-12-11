@@ -16,6 +16,8 @@ import activ from "./reducers/activ";
 import tripper from "./reducers/tripper";
 
 
+
+
 const store = configureStore({
   reducer: { user, activ, tripper },
 });
@@ -34,6 +36,7 @@ export default function App() {
           <Stack.Screen name="Home" component={HomeScreen} />
           <Stack.Screen name="TripPlan" component={TripPlanScreen} />
           <Stack.Screen name="Planning" component={PlanningScreen} />
+
         </Stack.Navigator>
       </NavigationContainer>
     </Provider>

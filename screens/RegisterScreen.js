@@ -28,12 +28,11 @@ export default function RegisterScreen({ navigation }) {
     } else {
       return false;
     }
-
   }
 
   const handleReturn = () => {
     setShowError(false)
-      navigation.navigate('Login')
+    navigation.navigate('Login')
   }
 
   const handleRegister = () => {
@@ -63,43 +62,45 @@ export default function RegisterScreen({ navigation }) {
 
   return (
     <SafeAreaView style={styles.container}>
-      <View style={styles.header}>
-          <Text style={styles.title}>Trippers</Text>
-      </View>
-      <View style={styles.form}>
-        <View style={styles.top}>
-            <Text>Inscription</Text>
+      <KeyboardAvoidingView behavior={Platform.OS === 'ios' ? 'padding' : 'height'} style={styles.view}>
+        <View style={styles.header}>
+            <Text style={styles.title}>Trippers</Text>
         </View>
-        <View style={styles.textArea}>
-            <KeyboardAvoidingView behavior={Platform.OS === 'ios' ? 'padding' : 'height'} style={styles.inputContainer}>
-                <TextInput placeholder="Pseudo" onChangeText={(value) => setPseudo(value)} value={pseudo} style={styles.input}/>
-            </KeyboardAvoidingView>
-            <KeyboardAvoidingView behavior={Platform.OS === 'ios' ? 'padding' : 'height'} style={styles.inputContainer}>
-                <TextInput placeholder="Email" onChangeText={(value) => setEmail(value)} value={email} style={styles.input}/>
-            </KeyboardAvoidingView>
-            <KeyboardAvoidingView behavior={Platform.OS === 'ios' ? 'padding' : 'height'} style={styles.inputContainer}>
-                <TextInput placeholder="Phone number" onChangeText={(value) => setPhoneNb(value)} value={phoneNb} style={styles.input}/>  
-            </KeyboardAvoidingView>
-            <KeyboardAvoidingView behavior={Platform.OS === 'ios' ? 'padding' : 'height'} style={styles.inputContainer}>
-                <TextInput placeholder="Password" secureTextEntry={true} onChangeText={(value) => setPassword(value)} value={password} style={styles.input}/>
-            </KeyboardAvoidingView>
+        <View style={styles.form}>
+          <View style={styles.top}>
+              <Text>Inscription</Text>
+          </View>
+          <View style={styles.textArea}>
+              <View behavior={Platform.OS === 'ios' ? 'padding' : 'height'} style={styles.inputContainer}>
+                  <TextInput placeholder="Pseudo" onChangeText={(value) => setPseudo(value)} value={pseudo} style={styles.input}/>
+              </View>
+              <View behavior={Platform.OS === 'ios' ? 'padding' : 'height'} style={styles.inputContainer}>
+                  <TextInput placeholder="Email" onChangeText={(value) => setEmail(value)} value={email} style={styles.input}/>
+              </View>
+              <View behavior={Platform.OS === 'ios' ? 'padding' : 'height'} style={styles.inputContainer}>
+                  <TextInput placeholder="Phone number" onChangeText={(value) => setPhoneNb(value)} value={phoneNb} style={styles.input}/>  
+              </View>
+              <View behavior={Platform.OS === 'ios' ? 'padding' : 'height'} style={styles.inputContainer}>
+                  <TextInput placeholder="Password" secureTextEntry={true} onChangeText={(value) => setPassword(value)} value={password} style={styles.input}/>
+              </View>
+          </View>
+          <View style={styles.terms}>
+            <CheckBox disabled={false} value={toggleCheckBox} onValueChange={(newValue) => setToggleCheckBox(newValue)}/>
+            <Text style={styles.conditions}>Accept general use terms</Text>
+          </View>
         </View>
-        <View style={styles.terms}>
-          <CheckBox disabled={false} value={toggleCheckBox} onValueChange={(newValue) => setToggleCheckBox(newValue)}/>
-            <Text>Accept general use terms</Text>
+        <View style={styles.bottom}>
+          <TouchableOpacity activeOpacity={0.8} onPress={() => handleRegister()} style={styles.button}>
+              <Text style={styles.textBtn}>Register</Text>
+          </TouchableOpacity>
+          { showError && <View>
+            <Text>{errorMsg}</Text>
+          </View> }
+          <TouchableOpacity activeOpacity={0.8} onPress={() => handleReturn()}>
+              <Text>Go back</Text>
+          </TouchableOpacity>
         </View>
-      </View>
-      <View style={styles.test}>
-        <TouchableOpacity activeOpacity={0.8} onPress={() => handleRegister()} style={styles.button}>
-            <Text style={styles.textBtn}>Register</Text>
-        </TouchableOpacity>
-        { showError && <View>
-          <Text>{errorMsg}</Text>
-        </View> }
-        <TouchableOpacity activeOpacity={0.8} onPress={() => handleReturn()}>
-            <Text>Return</Text>
-        </TouchableOpacity>
-      </View>
+      </KeyboardAvoidingView>
     </SafeAreaView>
   );
 }
@@ -111,6 +112,12 @@ const styles = StyleSheet.create({
     height: Dimensions.get('screen').height,
     justifyContent: "center",
     alignItems: "center",
+    backgroundColor: '#96D3E8',
+  },
+  view: {
+    flex: 1,
+    width: '100%',
+    alignItems: 'center',
   },
   header: {
     flex: 1,
@@ -120,13 +127,13 @@ const styles = StyleSheet.create({
   title: {
     fontWeight: 'bold',
     fontSize: 48,
-    color: 'blue'
+    color: '#1AB4E7'
   },
   form: {
     flex: 1,
-    width: '70%',
-    backgroundColor: 'gray',
+    width: '80%',
     alignItems: 'center',
+    borderRadius: 10,
   },
   top: {
     flex: 1,
@@ -154,13 +161,16 @@ const styles = StyleSheet.create({
     width: '80%',
     flex: 1,
     flexDirection: 'row',
-    justifyContent: 'space-around',
+    justifyContent: 'center',
     alignItems: 'center',
   },
-  test: {
+  conditions: {
+    marginLeft: 5,
+  },
+  bottom: {
     flex: 1,
     width: '80%',
-    justifyContent: 'center',
+    justifyContent: 'space-around',
     alignItems: 'center',
   },
   button: {
@@ -168,6 +178,7 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     paddingTop: 8,
     paddingBottom: 8,
+    borderRadius: 8,
     backgroundColor: 'black',
   },
   textBtn: {
