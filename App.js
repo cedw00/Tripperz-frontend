@@ -27,13 +27,13 @@ export default function App() {
     <Provider store={store}>
       <NavigationContainer>
         <Stack.Navigator screenOptions={{ headerShown: false }}>
-          <Stack.Screen name="TripPlan" component={TripPlanScreen} />
-          <Stack.Screen name="Planning" component={PlanningScreen} />
           <Stack.Screen name="Login" component={LoginScreen} />
           <Stack.Screen name="SignIn" component={SignInScreen} />
           <Stack.Screen name="Register" component={RegisterScreen} />
           <Stack.Screen name="SetProfile" component={SetProfileScreen} />
           <Stack.Screen name="Home" component={HomeScreen} />
+          <Stack.Screen name="TripPlan" component={TripPlanScreen} />
+          <Stack.Screen name="Planning" component={PlanningScreen} />
         </Stack.Navigator>
       </NavigationContainer>
     </Provider>
