@@ -1,5 +1,6 @@
 import { StyleSheet, Text, View, Image, SafeAreaView, Dimensions, TouchableOpacity, ImageBackground } from 'react-native';
 import { useDispatch, useSelector } from 'react-redux';
+import { useEffect, useState } from 'react';
 import FontAwesome from 'react-native-vector-icons/FontAwesome';
 import { Dropdown } from 'react-native-element-dropdown';
 import { logout } from '../reducers/user';
@@ -7,15 +8,19 @@ import Footer from '../components/Footer';
 
 export default function ProfileScreen({ navigation }) {
   const dispatch = useDispatch();
-  const { username, birthday, gender, country, favoriteCountry, favoriteFoods, hobbies } = useSelector((state) => state.user.value)
+  const { username, birthday, gender, country, favoriteDestinations, favoriteFoods, hobbies } = useSelector((state) => state.user.value)
+  const [destinations, setDestinations] = useState('');
+
+  useEffect(() => {
+    const str = favoriteDestinations.toString();
+    const pattern = /,/g;
+    const newStr = str.replace(pattern, ', ');
+    setDestinations(newStr);
+  }, [])
 
   const handleLogout = () => {
       dispatch(logout());
       navigation.navigate('Login')
-  }
-
-  const handlePlan = () => {
-    navigation.navigate('Home');
   }
 
   const display = item => {
@@ -57,7 +62,7 @@ export default function ProfileScreen({ navigation }) {
           <Text>{country}</Text>
         </View>
         <View style={styles.section}>
-          <Text>{favoriteCountry}</Text>
+          <Text>{destinations}</Text>
         </View>
         <Dropdown
             style={styles.dropdown} data={favoriteFoods} labelField='label' valueField='value' placeholder='Your favorites food type'
@@ -72,9 +77,6 @@ export default function ProfileScreen({ navigation }) {
         <View style={styles.btnContainer}>
           <TouchableOpacity activeOpacity={0.8} onPress={() => handleLogout()} style={styles.button}>
             <Text style={styles.textBtn}>Logout</Text>
-          </TouchableOpacity>
-          <TouchableOpacity activeOpacity={0.8} onPress={() => handlePlan()} style={styles.button}>
-            <Text style={styles.textBtn}>Plan your trips</Text>
           </TouchableOpacity>
         </View>
         <Footer navigation={navigation}/>

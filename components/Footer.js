@@ -1,7 +1,7 @@
 import Entypo from 'react-native-vector-icons/Entypo';
 import Feather from 'react-native-vector-icons/Feather';
 import Ionicons from 'react-native-vector-icons/Ionicons';
-import { View, Text, StyleSheet } from 'react-native';
+import { View, Text, StyleSheet, TouchableOpacity } from 'react-native';
 
 export default function Footer({ navigation }) {
     const redirect = (path) => {
@@ -10,18 +10,18 @@ export default function Footer({ navigation }) {
 
     return (
         <View style={styles.footer}>
-            <View style={styles.footerSection}>
-                <Entypo name={'home'} size={35} color={'#000000'} onPress={() => redirect('Home')}/>
-                <Text style={styles.text}>Dashboard</Text>
-            </View>
-            <View style={styles.footerMiddle}>
-                <Feather name={'message-circle'} size={35} color={'#000000'} onPress={() => redirect('Messages')}/>
-                <Text style={styles.text}>Messages</Text>
-            </View>
-            <View style={styles.footerSection}>
-                <Ionicons name={'notifications-outline'} size={35} color={'#000000'} onPress={() => redirect('Notifications')}/>
+            <TouchableOpacity style={styles.footerSection} onPress={() => navigation.openDrawer()}>
+                <Feather name={'menu'} size={25} color={'#000000'}/>
+                <Text style={styles.text}>Menu</Text>
+            </TouchableOpacity>
+            <TouchableOpacity style={styles.footerMiddle} onPress={() => redirect('Home')}>
+                <Entypo name={'home'} size={25} color={'#000000'}/>
+                <Text style={styles.text}>Home</Text>
+            </TouchableOpacity>
+            <TouchableOpacity style={styles.footerSection} onPress={() => redirect('Notifications')}>
+                <Ionicons name={'notifications-outline'} size={25} color={'#000000'}/>
                 <Text style={styles.text}>Notifications</Text>
-            </View>
+            </TouchableOpacity>
         </View>
     )
 }

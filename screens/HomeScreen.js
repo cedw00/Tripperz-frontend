@@ -2,11 +2,12 @@ import { StyleSheet, Text, View, Image, SafeAreaView, Dimensions, TouchableOpaci
 import Activities from '../components/HomePage/Activities/Activities'
 import Destination from '../components/HomePage/Destinations/Destinations'
 import { useState } from 'react';
-
+import Footer from '../components/Footer';
 
 
 
 export default function HomeScreen({ navigation }) {
+
     const handleNext = () => {
       navigation.navigate('TripPlan')
   }
@@ -18,6 +19,7 @@ export default function HomeScreen({ navigation }) {
   const handleSearch = () => {
     navigation.navigate('Result')
   }
+
 
   const handleClickActivities = () => {
     const content = (<Activities  />)
@@ -71,6 +73,7 @@ export default function HomeScreen({ navigation }) {
           <TouchableOpacity activeOpacity={0.8} onPress={() => handleNext()}>
             <Text>Go to plan Trip</Text>
           </TouchableOpacity>
+          <Footer navigation={navigation}/>
         </View>
 
       </View>
@@ -171,7 +174,7 @@ const styles = StyleSheet.create({
   },
   top: {
     width: '100%',
-    height: '80%',
+    height: '70%',
     marginTop:'10%',
     justifyContent: 'center',
     alignItems: 'center',
@@ -180,10 +183,10 @@ const styles = StyleSheet.create({
   },
 
   bottom: {
-    height: '15%',
+    height: '30%',
     alignItems: 'center',
    
-  
+    
     marginTop:'10%'
     
   },
