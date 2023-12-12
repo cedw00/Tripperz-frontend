@@ -20,6 +20,7 @@ export default function HomeScreen({ navigation }) {
     navigation.navigate('Result')
   }
 
+
   const handleClickActivities = () => {
     const content = (<Activities  />)
     setActiv(content)
@@ -32,6 +33,11 @@ export default function HomeScreen({ navigation }) {
     setIsClickedActiv(false);
 
   }
+
+  const handleSearch = () => {
+    navigation.navigate('ResultPage')
+  }
+
 
 // COUNTRY AND CITY TO SEARCH
 

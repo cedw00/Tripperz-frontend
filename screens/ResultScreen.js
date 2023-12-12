@@ -6,11 +6,17 @@ import {
     Dimensions,
     FlatList,
     SafeAreaView,
-    Item
+    Image
 
 } from 'react-native';
 import React, { useState, useEffect } from 'react';
-import SelectedList from '../components/HomePage/Destinations/SelectedList';
+import HomeScreen from './HomeScreen';
+import Destinations from '../components/HomePage/Destinations/Destinations';
+import { useSelector } from 'react-redux';
+
+
+
+
 
 
 
@@ -21,29 +27,117 @@ export default function ResultScreen({ navigation }) {
     const API_URL = 'https://api.unsplash.com/search/photos';
     const API_KEY = 'fvgvM9uXT8ssXYBvJizIKG51rXub6fRglrJYde76qXY'
 
-    const countries = [
-        { id: 1, name: 'france', photo: 'IMG' },
-        { id: 2, name: 'france', photo: 'IMG' },
-        { id: 3, name: 'france', photo: 'IMG' },
-        { id: 4, name: 'france', photo: 'IMG' },
-        { id: 5, name: 'france', photo: 'IMG' }
-    ];
+    // const country = 'France';
+    // const city = ['paris', 'rome', 'tunis'];
 
-    const [country, setCountry] = useState(null)
-    const [city, setCity] = useState(null)
+
+    const [searchCountry, setSearchCountry] = useState('');
+
+
+
+    const { country } = useSelector((state) => state.search.value)
+    const { city } = useSelector((state) => state.search.value)
+    const { cityList } = useSelector((state) => state.search.value)
+    const { countryList } = useSelector((state) => state.search.value)
+console.log
+    const [itemsToDisplay, setItemsToDisplay] = useState([])
+
+
+    console.log('country',country)
+    console.log('city list',cityList)
+    useEffect(() => {
+        const fetchData = async () => {
+            switch (country.length) {
+              
+                case 0:
+
+                    let newItemsToDisplay = [];
+
+                    for (let i = 0; i < 5; i++) {
+
+                        fetch(`https://api.unsplash.com/search/photos?query=${countryList[i].value}&page=1&per_page=1&client_id=${API_KEY}`)
+                            .then(response => response.json())
+                            .then(data => {
+                               
+
+                                const item = { name: countryList[i].value, image: data.results[0].urls.raw, key: data.results[0].id };
+                                newItemsToDisplay.push(item);
+                            }).then(() => {
+                                setItemsToDisplay(newItemsToDisplay);
+                            })
+                    }
+                    break;
+
+
+                default:
+                    newItemsToDisplay = [];
+                    if (city === null) {
+
+                        for (let i = 0; i < cityList[i].length; i++) {
+                            console.log('city lis de i',cityList[i])
+
+                            fetch(`https://api.unsplash.com/search/photos?query=${cityList[i]}&page=1&per_page=1&client_id=${API_KEY}`)
+                                .then(response => response.json())
+                                .then(data => {
+                                    console.log('data', data.results[0].urls.raw);
+
+                                    const item = { name: cityList[i], image: data.results[0].urls.raw, key: data.results[0].id };
+                                    newItemsToDisplay.push(item);
+                                }).then(() => {
+                                    setItemsToDisplay(newItemsToDisplay);
+                                })
+                        }
+
+                    } else {
+                        fetch(`https://api.unsplash.com/search/photos?query=${city}&page=1&per_page=1&client_id=${API_KEY}`)
+                        .then(response => response.json())
+                        .then(data => {
+                            console.log('data', data.results[0].urls.raw);
+
+                            const item = { name: city, image: data.results[0].urls.raw, key: data.results[0].id };
+                            newItemsToDisplay.push(item);
+                        }).then(() => {
+                            setItemsToDisplay(newItemsToDisplay);
+                        })
+                    }
+
+                    break;
+            }
+        };
+
+        fetchData();
+    }, [country, city, countryList, cityList]);
+
+   
 
 
     const Item = (item) => (
 
-        <View style={styles.card}>
-            <Text>{item.name}</Text>
+        <View style={styles.card} key={item.key}>
+
+            <Image style={styles.tinyLogo} source={{ uri: item.image }} />
+            <Text style={styles.itemtext}>{item.name}</Text>
+
+
         </View>
 
     )
 
-    // const onCountrySelect = (data) => {
-    //     console.log('country coming from select list',data)
-    // }
+    //ON CLICK ACTIVITIES
+
+    const handleClickActivities = () => {
+        navigation.navigate('Home')
+    }
+
+    //ON CLICK Destinations
+
+    const handleClickDestination = () => {
+        navigation.navigate('Home')
+
+
+    };
+
+
 
 
 
@@ -51,6 +145,7 @@ export default function ResultScreen({ navigation }) {
 
         <SafeAreaView>
             <View style={styles.container}>
+
                 <View style={styles.header}>
 
                     <Text style={styles.title}>Trippers</Text>
@@ -58,7 +153,7 @@ export default function ResultScreen({ navigation }) {
                     <View style={styles.buttons}>
 
                         <TouchableOpacity onPress={() => handleClickActivities()} style={styles.activities} activeOpacity={0.8}>
-                            <Text style={styles.textButton}>Activités</Text>
+                            <Text style={styles.textButton}>Activities</Text>
                         </TouchableOpacity>
 
                         <TouchableOpacity onPress={() => handleClickDestination()} style={styles.destination} activeOpacity={0.8}>
@@ -68,17 +163,19 @@ export default function ResultScreen({ navigation }) {
                     </View>
 
                 </View>
+
+
                 <View style={styles.body}>
                     <FlatList
                         style={styles.flatlist}
-                        data={countries}
-                        renderItem={({ item }) => <Item name={item.name} />}
+                        data={itemsToDisplay}
+                        renderItem={({ item }) => <Item name={item.name} image={item.image} id={item.key} />}
                         keyExtractor={item => item.id}
-                        initialNumToRender={3}
+
                     />
 
                 </View>
-               
+
             </View>
         </SafeAreaView>
 
@@ -89,14 +186,18 @@ export default function ResultScreen({ navigation }) {
 const styles = StyleSheet.create({
     container: {
         position: 'absolute',
-        backgroundColor: 'linear-gradient(180deg, #067188 0%, rgba(79, 141, 162, 0.744948) 99.99%, rgba(174, 179, 197, 0.41) 100%)',
         filter: 'blur(2px)',
         width: Dimensions.get('screen').width,
         height: Dimensions.get('screen').height,
+        backgroundColor: 'transparent',
+        overflow: 'hidden',
 
 
     },
-
+    linearGradient: {
+        flex: 1,
+        borderRadius: 20,
+    },
     header: {
 
         justifyContent: "center",
@@ -181,19 +282,41 @@ const styles = StyleSheet.create({
 
     },
     flatlist: {
-        borderWidth: 1,
+
         width: '80%',
-        marginTop: '5%',
+        marginTop: '10%',
+
     },
     card: {
         alignItems: 'center',
-        justifyContent: 'center',
         backgroundColor: '#ffffff',
-        height: 206,
-        borderRadius: 5,
-        borderWidth: 1,
-        marginBottom: '3%'
-    },
+        height: 195,
+        borderTopLeftRadius: 10,
+        borderTopRightRadius: 10,
+        overflow: 'hidden',
+        marginBottom: '5%',
 
+    },
+    tinyLogo: {
+        borderWidth: 1,
+        borderColor: 'transparent',
+        borderRadius: 5,
+        resizeMode: 'center',
+        height: '80%',
+        width: '100%',
+
+
+
+
+    },
+    itemtext: {
+        width: '100%',
+        height: '20%',
+        textAlignVertical: 'center',
+        paddingLeft: '10%',
+        fontWeight: 'bold',
+        fontSize: 20,
+
+    }
 
 })
