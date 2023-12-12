@@ -5,7 +5,7 @@ import { useState } from 'react';
 import { useDispatch } from 'react-redux'
 import { getToken } from '../reducers/user';
 
-const backend = '192.168.10.134'
+const backend = '192.168.10.158'
 
 export default function RegisterScreen({ navigation }) {
   const dispatch = useDispatch();

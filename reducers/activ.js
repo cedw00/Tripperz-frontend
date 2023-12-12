@@ -2,6 +2,7 @@ import { createSlice } from '@reduxjs/toolkit';
 
 const initialState = {
  value: [],
+ plannedValue: [],
  tempActivities: [],
  tempActivString: '',
  cardActiv: [],
@@ -18,6 +19,9 @@ export const activSlice = createSlice({
    updateActivList: (state, action) => {
      state.value = action.payload;
    },
+   updatePlannedActivList: (state, action) => {
+    state.plannedValue = action.payload;
+  },
    updateTempActiv: (state, action) => {
     state.tempActivities = action.payload
    },
@@ -42,5 +46,5 @@ export const activSlice = createSlice({
  },
 });
 
-export const { updateActivList, updateTempActiv, updateCardActiv, updateMorningValue, updateAfternoonValue, updateMorningActiv, updateAfternoonActiv, switchFunction } = activSlice.actions;
+export const { updateActivList, updatePlannedActivList, updateTempActiv, updateCardActiv, updateMorningValue, updateAfternoonValue, updateMorningActiv, updateAfternoonActiv, switchFunction } = activSlice.actions;
 export default activSlice.reducer;

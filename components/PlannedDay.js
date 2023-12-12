@@ -10,15 +10,14 @@ export default function PlannedDay(props) {
   //   const cardActivities = useSelector((state) => state.activ.cardActiv);
   const confirmedMorning = useSelector((state) => state.activ.morningActiv);
   const confirmedAfternoon = useSelector((state) => state.activ.afternoonActiv);
-  const tempActivities = useSelector((state) => state.activ.tempActivities);
 
   useEffect(() => {
-    const morningActivities = props.thisMorning.map((data, index) => {
+    const morningActivities = props.myMorning.map((data, index) => {
       return <PlannedSlot activity={data} key={index} />;
     });
     setMorning(morningActivities);
 
-    const afternoonActivities = props.thisAfternoon.map((data, index) => {
+    const afternoonActivities = props.myAfternoon.map((data, index) => {
       return <PlannedSlot activity={data} key={index} />;
     });
     setAfternoon(afternoonActivities);

@@ -18,16 +18,28 @@ export default function TripPlanScreen({ navigation }) {
   const [plannedDay, setPlannedDay] = useState([]);
   const [modalVisible, setModalVisible] = useState(false);
   const [otherTripperz, setOtherTripperz] = useState("");
-  const cardActiv = useSelector((state) => state.activ.cardActiv);
-  const thisMorning = useSelector((state) => state.activ.morningActiv);
-  const thisAfternoon = useSelector((state) => state.activ.afternoonActiv);
+  const plannedActivities = useSelector((state) => state.activ.plannedValue);
+  const sizeOfMorning = useSelector((state) => state.activ.morningValue);
+  const sizeOfAfternoon = useSelector((state) => state.activ.afternoonValue);
 
   const dispatch = useDispatch();
   const tripperz = useSelector((state) => state.tripper.value);
 
-  useEffect((i) => {
-    setPlannedDay(<PlannedDay key={i} thisMorning={thisMorning} thisAfternoon={thisAfternoon} />);
+  //   const myMorning = plannedActivities.slice(0, sizeOfMorning);
+  //   const myAfternoon = plannedActivities.slice(4, sizeOfAfternoon);
 
+  //   const stockPlannedActivities = () => {
+  //     dispatch(updateMorningActiv(myMorning));
+  //     dispatch(updateAfternoonActiv(myAfternoon));
+  //   };
+
+  useEffect((i) => {
+    const myMorning = plannedActivities.slice(0, sizeOfMorning);
+    const myAfternoon = plannedActivities.slice(4, sizeOfAfternoon);
+
+    setPlannedDay(
+      <PlannedDay key={i} myMorning={myMorning} myAfternoon={myAfternoon} />
+    );
   }, []);
 
   const handleTextChange = (newText) => {

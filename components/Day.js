@@ -9,6 +9,7 @@ import {
   updateTempActiv,
   updateMorningValue,
   updateAfternoonValue,
+  updatePlannedActivList
 } from "../reducers/activ";
 
 export default function Day(props) {
@@ -332,6 +333,7 @@ export default function Day(props) {
   const [afternoonSize, setAfternoonSize] = useState(8);
   const activities = useSelector((state) => state.activ.value);
   const tempActiv = useSelector((state) => state.activ.tempActivString);
+  const plannedActivities = useSelector((state) => state.activ.plannedValue);
   const dispatch = useDispatch();
 
   // INVERSE DATA FLOW MODALACTIVITY SWITCH
@@ -344,9 +346,9 @@ export default function Day(props) {
         let activityToSwitch = altDay.indexOf(actFound);
          const newActiv = altDay.splice(activityToSwitch, 1, tempActiv);
          console.log(`ACTIV SWITCH : Switching ${actFound} with =>`, tempActiv);
-         return newActiv;
+         dispatch(updatePlannedActivList(newActiv));
        } else {
-     return activities;
+        dispatch(updatePlannedActivList(activities));
    }
   //
   //
@@ -377,6 +379,8 @@ export default function Day(props) {
   useEffect(() => {
     return () => {
       loadActivities();
+      // switchActInParent();
+      // console.log("DAY => plannedActivities", plannedActivities);
     };
   }, []);
 
@@ -401,7 +405,7 @@ export default function Day(props) {
   useEffect(() => {
     const cardActivities = activities.map((data, index) => {
       day.push(data);
-      return <Slot activity={data} key={index} />;
+      return <Slot activity={data} key={index} switchActInParent={switchActInParent} />;
     });
     console.log("DAY => Activities Length", activities.length);
 

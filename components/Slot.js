@@ -15,6 +15,7 @@ import ModalSlot from "./ModalSlot";
 export default function Slot(props) {
   const dispatch = useDispatch();
   const activities = useSelector((state) => state.activ.value);
+  const plannedActivities = useSelector((state) => state.activ.plannedValue);
   const [modalVisible, setModalVisible] = useState(false);
   const [slotActivity, setSlotActivity] = useState(props.activity);
 
@@ -23,7 +24,9 @@ export default function Slot(props) {
     console.log(`SWITCH : Switching ${slotActivity} with =>`, act);
     if (act) {
       setSlotActivity(act);
-      dispatch(switchFunction(act))
+      dispatch(switchFunction(act));
+      props.switchActInParent();
+      console.log("SLOT => plannedActivities", plannedActivities);
     }
   };
 
