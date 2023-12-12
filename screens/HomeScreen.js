@@ -28,9 +28,8 @@ export default function HomeScreen({ navigation }) {
   const [activ, setActiv] = useState((<Activities activity={'Activités'} date={'date'} />));
   const [isClickedActiv, setIsClickedActiv] = useState(true);
 
-  const handleSearch = () => {
-    navigation.navigate('ResultPage')
-  }
+
+
 
   const handleClickActivities = () => {
     const content = (<Activities  />)
@@ -44,6 +43,11 @@ export default function HomeScreen({ navigation }) {
     setIsClickedActiv(false);
 
   }
+
+  const handleSearch = () => {
+    navigation.navigate('ResultPage')
+  }
+
 
 // COUNTRY AND CITY TO SEARCH
 
