@@ -9,7 +9,7 @@ const initialState = {
     birthday: null,
     gender: null,
     country: null,
-    favoriteCountry: null,
+    favoriteDestinations: [],
     favoriteFoods: null,
     hobbies: [],
     token: null
@@ -32,7 +32,7 @@ export const userSlice = createSlice({
     state.value.birthday = action.payload.birthday;
     state.value.gender = action.payload.gender;
     state.value.country = action.payload.country;
-    state.value.favoriteCountry = action.payload.favoriteCountry;
+    state.value.favoriteDestinations = action.payload.favoriteDestinations;
     state.value.favoriteFoods = action.payload.favoriteFoods;
     state.value.hobbies = action.payload.hobbies;
    },

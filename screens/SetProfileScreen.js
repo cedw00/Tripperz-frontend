@@ -39,7 +39,7 @@ export default function SetProfileScreen({ navigation }) {
   const { token } = useSelector((state) => state.user.value);
   const [gender, setGender] = useState(null);
   const [country, setCountry] = useState('');
-  const [favoriteCountry, setFavoriteCountry] = useState('');
+  const [favoriteDestinations, setFavoriteDestinations] = useState('');
   const [selectedActivities, setSelectedActivities] = useState([]);
   const [selectedFood, setSelectedFood] = useState([]);
   const [date, setDate] = useState(new Date());
@@ -64,7 +64,7 @@ export default function SetProfileScreen({ navigation }) {
         birthday: str,
         gender: gender,
         country: country,
-        favDest: favoriteCountry,
+        favDest: favoriteDestinations.split(', '),
         favFood: favoriteFood,
         hobbies: interests,
         token: token
@@ -77,7 +77,7 @@ export default function SetProfileScreen({ navigation }) {
       const data = await response.json();
       if (data.result) {
         dispatch(updateProfile(data.user))
-        navigation.navigate('Profile')
+        navigation.navigate('DrawerNavigator')
       }
     };
 
@@ -131,8 +131,8 @@ export default function SetProfileScreen({ navigation }) {
                 value={country} style={styles.input}/>  
               </View>
               <View style={styles.inputContainer}>
-                <TextInput placeholder="Favorite Destination" onChangeText={(value) => setFavoriteCountry(value)} placeholderTextColor={'#FFFFFF'}
-                value={favoriteCountry} style={styles.input}/>  
+                <TextInput placeholder="Favorite Destinations" onChangeText={(value) => setFavoriteDestinations(value)} placeholderTextColor={'#FFFFFF'}
+                value={favoriteDestinations} style={styles.input}/>  
               </View>
               <View style={styles.inputContainer}>
                 <MultiSelect
