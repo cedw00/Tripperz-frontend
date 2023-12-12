@@ -62,6 +62,9 @@ export default function RegisterScreen({ navigation }) {
             setPassword('');
             dispatch(getToken(data.token));
             navigation.navigate('SetProfile')
+          } else {
+            setErrorMsg(data.error);
+            setShowError(true)
           }
         })
       } else {
