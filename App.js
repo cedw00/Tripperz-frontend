@@ -1,14 +1,22 @@
-import { NavigationContainer } from '@react-navigation/native';
-import { createNativeStackNavigator } from '@react-navigation/native-stack';
+import { NavigationContainer } from "@react-navigation/native";
+import { createNativeStackNavigator } from "@react-navigation/native-stack";
 
-import LoginScreen from './screens/LoginScreen';
-import SignInScreen from './screens/SignInScreen';
-import RegisterScreen from './screens/RegisterScreen';
-import SetProfileScreen from './screens/SetProfileScreen';
-import ProfileScreen from './screens/ProfileScreen';
-import HomeScreen from './screens/HomeScreen';
-import ResultScreen from './screens/ResultScreen';
+import LoginScreen from "./screens/LoginScreen";
+import SignInScreen from "./screens/SignInScreen";
+import RegisterScreen from "./screens/RegisterScreen";
+import SetProfileScreen from "./screens/SetProfileScreen";
+import HomeScreen from "./screens/HomeScreen";
+import TripPlanScreen from "./screens/TripPlanScreen";
+import PlanningScreen from "./screens/PlanningScreen";
 
+import { Provider } from "react-redux";
+import { configureStore } from "@reduxjs/toolkit";
+import user from "./reducers/user";
+import activ from "./reducers/activ";
+import tripper from "./reducers/tripper";
+
+
+<<<<<<< HEAD
 import { Provider } from 'react-redux';
 import { configureStore } from '@reduxjs/toolkit';
 import user from './reducers/user';
@@ -17,6 +25,12 @@ import search from './reducers/search';
 
 const store = configureStore({
   reducer: { user,search },
+=======
+
+
+const store = configureStore({
+  reducer: { user, activ, tripper },
+>>>>>>> ff0e59f7190f9a1f8f8b466515ab0a7c2611d812
 });
 
 const Stack = createNativeStackNavigator();
@@ -30,9 +44,9 @@ export default function App() {
           <Stack.Screen name="SignIn" component={SignInScreen} />
           <Stack.Screen name="Register" component={RegisterScreen} />
           <Stack.Screen name="SetProfile" component={SetProfileScreen} />
-          <Stack.Screen name="Profile" component={ProfileScreen} />  
-           <Stack.Screen name="Home" component={HomeScreen} />
-           <Stack.Screen name="ResultPage" component={ResultScreen} />
+          <Stack.Screen name="Home" component={HomeScreen} />
+          <Stack.Screen name="TripPlan" component={TripPlanScreen} />
+          <Stack.Screen name="Planning" component={PlanningScreen} />
 
         </Stack.Navigator>
       </NavigationContainer>

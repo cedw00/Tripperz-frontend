@@ -1,5 +1,6 @@
-import { StyleSheet, Text, View, Image, SafeAreaView, Dimensions, TouchableOpacity } from 'react-native';
-import { useDispatch } from 'react-redux';
+import { StyleSheet, Text, View, Image, ImageBackground, SafeAreaView, Dimensions, TouchableOpacity,
+  KeyboardAvoidingView, Platform, TextInput  } from 'react-native';
+import { useDispatch, useSelector } from 'react-redux';
 import { useState } from 'react';
 import FontAwesome from 'react-native-vector-icons/FontAwesome';
 import { Dropdown, MultiSelect } from 'react-native-element-dropdown';
@@ -22,13 +23,26 @@ const mockData = [
   { label: 'Mountain', value: '7' },
 ];
 
+const foodData = [
+  { label: 'Italian', value: '0' },
+  { label: 'Cakes', value: '1' },
+  { label: 'French', value: '2' },
+  { label: 'Fast-Food', value: '3' },
+  { label: 'Asian', value: '4' },
+  { label: 'Vegan', value: '5' },
+];
+
+const backend = '192.168.10.134'
+
 export default function SetProfileScreen({ navigation }) {
   const dispatch = useDispatch();
-  const [birthday, setBirthday] = useState('');
+  const { token } = useSelector((state) => state.user.value);
   const [gender, setGender] = useState(null);
-  const [selected, setSelected] = useState([]);
+  const [country, setCountry] = useState('');
+  const [favoriteCountry, setFavoriteCountry] = useState('');
+  const [selectedActivities, setSelectedActivities] = useState([]);
+  const [selectedFood, setSelectedFood] = useState([]);
   const [date, setDate] = useState(new Date());
-  const [mode, setMode] = useState('date');
   const [show, setShow] = useState(false);
 
   const onChange = (event, selectedDate) => {
@@ -37,31 +51,34 @@ export default function SetProfileScreen({ navigation }) {
     setDate(currentDate);
   };
 
-  const showMode = (currentMode) => {
-    setShow(true);
-    setMode(currentMode);
-  };
-
-  const showDatepicker = () => {
-    showMode('date');
-  };
-
     const handleReturn = () => {
         navigation.navigate('Register')
     };
 
-    const handleSubmit = () => {
+    const handleSubmit = async () => {
       const month = date.getMonth() + 1;
       const str = `${date.getDate()}/${month}/${date.getFullYear()}`;
-      setBirthday(str)
-      const interests = selected.map(data => mockData[data].label);
-      const infos = {
-        birthday: birthday,
+      const interests = selectedActivities.map(data => mockData[data].label);
+      const favoriteFood = selectedFood.map(data => foodData[data].label);
+      const profile = {
+        birthday: str,
         gender: gender,
-        interests: interests,
+        country: country,
+        favDest: favoriteCountry,
+        favFood: favoriteFood,
+        hobbies: interests,
+        token: token
       };
-      dispatch(updateProfile(infos));
-      navigation.navigate('Profile')
+      const response = await fetch(`http://${backend}:3000/profile/create`, {
+        method: 'PUT',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(profile),
+      });
+      const data = await response.json();
+      if (data.result) {
+        dispatch(updateProfile(data.user))
+        navigation.navigate('Profile')
+      }
     };
 
     const display = item => {
@@ -73,141 +90,185 @@ export default function SetProfileScreen({ navigation }) {
     }
 
   return (
-    <SafeAreaView style={styles.container}>
-      <View style={styles.header}>
-        <Text style={styles.title}>Trippers</Text>
-      </View>
-      <View style={styles.body}>
-        <View style={styles.top}>
-          <FontAwesome name={'user-circle'} size={100} color={'#000000'} />
-          <View style={styles.messageContainer}>
-            <Text style={styles.message}>Configure your profile</Text>
+    <ImageBackground source={require('../assets/background_2.png')} style={styles.background}>
+      <SafeAreaView style={styles.container}>
+        <KeyboardAvoidingView behavior={Platform.OS === 'ios' ? 'padding' : 'height'} style={styles.view}>
+          <View style={styles.header}>
+            <Image source={require('../assets/logo.png')}/>
           </View>
-        </View>
-        <View style={styles.main}>
-          <View style={styles.show}>
-            <TouchableOpacity activeOpacity={0.8} onPress={() => showDatepicker()} style={styles.button}>
-                <Text style={styles.textBtn}>Select Date</Text>
-            </TouchableOpacity>
+          <View style={styles.body}>
+            <View style={styles.top}>
+              <FontAwesome name={'user-circle'} size={100} color={'#FFFFFF'}/>
+              <View style={styles.messageContainer}>
+                <Text style={styles.message}>Create your profile</Text>
+              </View>
+            </View>
+            <View style={styles.main}>
+              <View style={styles.show}>
+                <Text style={styles.date}>{date.getDate()}/{date.getMonth() + 1}/{date.getFullYear()}</Text>
+                {show && (
+                <DateTimePicker
+                  testID="dateTimePicker"
+                  value={date}
+                  mode={'date'}
+                  maximumDate={new Date()}
+                  is24Hour={true}
+                  onChange={onChange}
+                />
+              )}
+                <TouchableOpacity activeOpacity={0.8} onPress={() => setShow(true)} style={styles.selector}>
+                    <Text style={styles.selectorText}>Select Date</Text>
+                </TouchableOpacity>
+              </View>
+              <View style={styles.inputContainer}>
+                <Dropdown
+                    style={styles.dropdown} data={genderData} labelField='label' valueField='value' placeholder='Gender' placeholderStyle={styles.input}
+                    value={gender} onChange={(item) => {setGender(item.value)}} renderItem={display} maxHeight={100}
+                />
+              </View>
+              <View style={styles.inputContainer}>
+                <TextInput placeholder="Home country" onChangeText={(value) => setCountry(value)} placeholderTextColor={'#FFFFFF'}
+                value={country} style={styles.input}/>  
+              </View>
+              <View style={styles.inputContainer}>
+                <TextInput placeholder="Favorite Destination" onChangeText={(value) => setFavoriteCountry(value)} placeholderTextColor={'#FFFFFF'}
+                value={favoriteCountry} style={styles.input}/>  
+              </View>
+              <View style={styles.inputContainer}>
+                <MultiSelect
+                    style={styles.dropdown} data={foodData} labelField='label' valueField='value' placeholder='Favorite food types'
+                    placeholderStyle={styles.input} value={selectedFood} onChange={(item) => {setSelectedFood(item)}} renderItem={display} maxHeight={100}
+                    visibleSelectedItem={false} activeColor='lightblue'
+                />
+              </View>
+              <View style={styles.inputContainer}>
+                <MultiSelect
+                    style={styles.dropdown} data={mockData} labelField='label' valueField='value' placeholder='Favorites activities'
+                    placeholderStyle={styles.input} value={selectedActivities} onChange={(item) => {setSelectedActivities(item)}} renderItem={display}
+                    maxHeight={100} visibleSelectedItem={false} activeColor='lightblue'
+                />
+              </View>
+            </View>
+            <View style={styles.bottom}>
+              <TouchableOpacity activeOpacity={0.8} onPress={() => handleSubmit()} style={styles.button}>
+                  <Text style={styles.textBtn}>Plan your trip</Text>
+              </TouchableOpacity>
+              <TouchableOpacity activeOpacity={0.8} onPress={() => handleReturn()}>
+                <Text>Return</Text>
+              </TouchableOpacity>
+            </View>
           </View>
-          <Text>{date.getDate()}/{date.getMonth() + 1}/{date.getFullYear()}</Text>
-          {show && (
-            <DateTimePicker
-              testID="dateTimePicker"
-              value={date}
-              mode={mode}
-              is24Hour={true}
-              onChange={onChange}
-            />
-          )}
-          <Dropdown
-              style={styles.dropdown} data={genderData} labelField='label' valueField='value' placeholder='Select your gender' placeholderStyle={styles.input}
-              value={gender} onChange={(item) => {setGender(item.value)}} renderItem={display} maxHeight={100}
-          />
-          <MultiSelect
-              style={styles.dropdown} data={mockData} labelField='label' valueField='value' placeholder='Choose your favorites activities'
-              placeholderStyle={styles.input} value={selected} onChange={(item) => {setSelected(item)}} renderItem={display} maxHeight={100}
-              visibleSelectedItem={false} activeColor='lightblue'
-          />
-        </View>
-        <View style={styles.bottom}>
-          <TouchableOpacity activeOpacity={0.8} onPress={() => handleSubmit()} style={styles.button}>
-              <Text style={styles.textBtn}>Plan your trip</Text>
-          </TouchableOpacity>
-          <TouchableOpacity activeOpacity={0.8} onPress={() => handleReturn()}>
-            <Text>Return</Text>
-          </TouchableOpacity>
-        </View>
-      </View>
-    </SafeAreaView>
+        </KeyboardAvoidingView>
+      </SafeAreaView>
+    </ImageBackground>
   );
 }
 
 const styles = StyleSheet.create({
-    container: {
-      flex: 1,
-      width: Dimensions.get('screen').width,
-      height: Dimensions.get('screen').height,
-      justifyContent: "center",
-      alignItems: "center",
-      backgroundColor: '#96D3E8',
-    },
-    header: {
-      flex: 1,
-      justifyContent: 'center',
-      alignItems: 'center',
-    },
-    title: {
-      fontWeight: 'bold',
-      fontSize: 48,
-      color: '#1AB4E7'
-    },
-    body: {
-      flex: 8,
-      width: '80%',
-      justifyContent: 'center',
-      alignItems: 'center',
-    },
-    top: {
-      flex: 1,
-      width: '70%',
-      justifyContent: 'center',
-      alignItems: 'center',
-    },
-    show: {
-      flex: 1,
-      flexDirection: 'row',
-      justifyContent: 'space-around',
-      alignItems: 'center',
-    },
-    messageContainer: {
-      flex: 1,
-      alignItems: 'center',
-      justifyContent: 'center',
-    },
-    message: {
-      fontSize: 20,
-    },
-    main: {
-      flex: 1,
-      width: '100%',
-      alignItems: 'center',
-      justifyContent: 'space-around'
-    },
-    dropdown: {
-      width: '80%',
-      backgroundColor: '#AFBBE8',
-      borderStyle: 'solid',
-      borderWidth: 2,
-      borderColor: 'black',
-      borderRadius: 5,
-    },
-    inputContainer: {
-      width: '80%',
-      backgroundColor: '#AFBBE8',
-      borderStyle: 'solid',
-      borderWidth: 2,
-      borderColor: 'black',
-      borderRadius: 5,
-    },
-    input: {
-      color: 'black',
-    },
-    bottom: {
-      flex: 1,
-      width: '80%',
-      justifyContent: 'space-around',
-      alignItems: 'center',
-    },
-    button: {
-      width: '60%',
-      alignItems: 'center',
-      paddingTop: 8,
-      paddingBottom: 8,
-      backgroundColor: 'black',
-      borderRadius: 8,
-    },
-    textBtn: {
-      color: 'white',
-    }
+  background: {
+    width: Dimensions.get('screen').width,
+    height: Dimensions.get('screen').height,
+  },
+  container: {
+    flex: 1,
+    justifyContent: "center",
+    alignItems: "center",
+  },
+  view: {
+    flex: 1,
+    width: '100%',
+    alignItems: 'center',
+  },
+  header: {
+    flex: 1,
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
+  body: {
+    flex: 4,
+    width: '95%',
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
+  top: {
+    flex: 1,
+    width: '70%',
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
+  show: {
+    flex: 1,
+    width: '90%',
+    flexDirection: 'row',
+    justifyContent: 'space-around',
+    alignItems: 'center',
+    borderStyle: 'solid',
+    borderWidth: 1,
+    borderColor: 'white',
+    borderRadius: 5,
+    paddingLeft: 8,
+  },
+  date: {
+    flex: 1,
+    flexDirection: 'row',
+    color: 'white',
+  },
+  selector: {
+    flex: 1,
+    flexDirection: 'row',
+    justifyContent: 'flex-end',
+    paddingRight: 5,
+  },
+  selectorText: {
+    color: '#FFFFFF'
+  },
+  messageContainer: {
+    flex: 1,
+    alignItems: 'center',
+    justifyContent: 'center',
+  },
+  message: {
+    fontSize: 20,
+    color: '#FFFFFF'
+  },
+  main: {
+    flex: 1,
+    width: '100%',
+    alignItems: 'center',
+    justifyContent: 'space-around'
+  },
+  dropdown: {
+    width: '100%',
+  },
+  inputContainer: {
+    width: '90%',
+    flex: 1,
+    justifyContent: 'center',
+    borderStyle: 'solid',
+    borderWidth: 1,
+    borderColor: 'white',
+    borderRadius: 5,
+    marginTop: 5,
+    paddingLeft: 8,
+  },
+  input: {
+    color: '#BFC0C5',
+  },
+  bottom: {
+    flex: 1,
+    width: '80%',
+    justifyContent: 'space-around',
+    alignItems: 'center',
+  },
+  button: {
+    width: '60%',
+    alignItems: 'center',
+    paddingTop: 8,
+    paddingBottom: 8,
+    backgroundColor: 'black',
+    borderRadius: 8,
+  },
+  textBtn: {
+    color: 'white',
+  }
 });
