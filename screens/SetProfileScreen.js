@@ -77,7 +77,7 @@ export default function SetProfileScreen({ navigation }) {
       const data = await response.json();
       if (data.result) {
         dispatch(updateProfile(data.user))
-        navigation.navigate('Profile')
+        navigation.navigate('Home')
       }
     };
 
