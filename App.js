@@ -22,15 +22,8 @@ import { configureStore } from '@reduxjs/toolkit';
 import user from './reducers/user';
 import search from './reducers/search';
 
-
 const store = configureStore({
-  reducer: { user,search },
-=======
-
-
-const store = configureStore({
-  reducer: { user, activ, tripper },
->>>>>>> ff0e59f7190f9a1f8f8b466515ab0a7c2611d812
+  reducer: { user, activ, tripper, search },
 });
 
 const Stack = createNativeStackNavigator();
