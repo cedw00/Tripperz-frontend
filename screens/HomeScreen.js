@@ -34,11 +34,6 @@ export default function HomeScreen({ navigation }) {
 
   }
 
-  const handleSearch = () => {
-    navigation.navigate('ResultPage')
-  }
-
-
 // COUNTRY AND CITY TO SEARCH
 
 

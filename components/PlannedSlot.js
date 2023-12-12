@@ -3,83 +3,22 @@ import {
   StyleSheet,
   Text,
   View,
-  Alert,
-  Modal,
-  Pressable,
-  ScrollView,
 } from "react-native";
 import { useSelector, useDispatch } from "react-redux";
-import { updateTempActiv, switchFunction } from "../reducers/activ";
+import { updateTempActiv } from "../reducers/activ";
 import ModalSlot from "./ModalSlot";
 
-export default function Slot(props) {
-  const dispatch = useDispatch();
-  const activities = useSelector((state) => state.activ.value);
-  const [modalVisible, setModalVisible] = useState(false);
-  const [slotActivity, setSlotActivity] = useState(props.activity);
-
-  // INVERSE DATA FLOW MODALACTIVITY SWITCH
-  const switchActivity = (act) => {
-    console.log(`SWITCH : Switching ${slotActivity} with =>`, act);
-    if (act) {
-      setSlotActivity(act);
-      dispatch(switchFunction(act))
-    }
-  };
-
-  // MAPPING MODALACTIVITY
-  const modalActivities = activities.map((data, index) => {
-    return (
-      <Pressable key={index}>
-        <ModalSlot
-          key={index}
-          modalActivity={data}
-          switchActivity={switchActivity}
-        />
-      </Pressable>
-    );
-  });
+export default function PlannedSlot(props) {
 
   return (
     <View style={styles.cont}>
-      <View style={styles.centeredView}>
-        <Modal
-          animationType="slide"
-          transparent={true}
-          visible={modalVisible}
-          onRequestClose={() => {
-            Alert.alert("Modal has been closed.");
-            setModalVisible(!modalVisible);
-          }}
-        >
-          <View style={styles.centeredView}>
-            <View style={styles.modalView}>
-              <Text style={styles.text} title="Switch title">
-                SWITCH DEFAULT ACTIVITY
-              </Text>
-              <ScrollView contentContainerStyle={styles.scrollView}>
-                {modalActivities}
-              </ScrollView>
-              <Pressable
-                style={[styles.button, styles.buttonClose]}
-                onPress={() => setModalVisible(!modalVisible)}
-              >
-                <Text style={styles.textStyle}>Hide Modal</Text>
-              </Pressable>
-            </View>
-          </View>
-        </Modal>
-      </View>
-
-      <Pressable onPress={() => setModalVisible(true)}>
         <View style={styles.slotContainer}>
           <View style={styles.slotContent} title="Slot">
             <Text style={styles.text} title="Activity" name={props.activity}>
-              Going @ {slotActivity}
+              Going @ {props.activity}
             </Text>
           </View>
         </View>
-      </Pressable>
     </View>
   );
 }
