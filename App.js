@@ -12,10 +12,11 @@ import ResultScreen from './screens/ResultScreen';
 import { Provider } from 'react-redux';
 import { configureStore } from '@reduxjs/toolkit';
 import user from './reducers/user';
+import search from './reducers/search';
 
 
 const store = configureStore({
-  reducer: { user },
+  reducer: { user,search },
 });
 
 const Stack = createNativeStackNavigator();

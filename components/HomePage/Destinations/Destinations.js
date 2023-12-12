@@ -19,30 +19,34 @@ import AntDesign from 'react-native-vector-icons/AntDesign'
 
 
 
-export default function Activities() {
+export default function Destinations(searchCountry, city) {
 
 
     //COUNTRY  DROPDOWN
 
-    const [selectedCountry, setSelectedCountry] = useState(null);
-
-    const handleSelectCountry = (country) => {
-        setSelectedCountry(country);
-
-    };
+    // const [selectedCountry, setSelectedCountry] = useState('');
 
 
+    // const handleSelectCountry = (country) => {
+    //     setSelectedCountry(country);
+    //     searchCountry(country)
 
-    //City DROPDOWN
+    // };
 
-    const [selectedCity, setSelectedCity] = useState(null);
+  
+   
 
-    const handleSelectCity = (city) => {
-        setSelectedCity(city);
+    // //countryToSearch(selectedCountry);
 
-    };
+    // //City DROPDOWN
 
- 
+    // const [selectedCity, setSelectedCity] = useState(null);
+
+    // console.log('selected city',selectedCity)
+    // const handleSelectCity = (city) => {
+    //     setSelectedCity(city);
+      
+    // }
 
 
     //DATE INPUT
@@ -87,12 +91,7 @@ export default function Activities() {
                     <Text style={styles.destText}>Destination</Text>
 
                     <View style={styles.countrylist}>
-                        <SelectedList
-
-                            selectedCountry={handleSelectCountry}
-                            SelectedCity={handleSelectCity}
-                        
-                        />
+                        <SelectedList />
 
                     </View>
 
@@ -121,12 +120,6 @@ export default function Activities() {
                         />
 
                     </Text>
-
-
-
-
-
-
 
                 </View>
 
