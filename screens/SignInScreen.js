@@ -30,6 +30,8 @@ export default function SignInScreen({ navigation }) {
       dispatch(getToken(data.token));
       return true
     } else {
+      setErrorMsg(data.error);
+      setShowError(true)
       return false
     }
   }
@@ -52,7 +54,7 @@ export default function SignInScreen({ navigation }) {
           setPassword('');
           dispatch(updateUser(data.user))
           dispatch(updateProfile(data.user))
-          navigation.navigate('Home')
+          navigation.navigate('DrawerNavigator')
         }
       })
     }
