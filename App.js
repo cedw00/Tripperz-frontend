@@ -18,11 +18,6 @@ import { configureStore } from "@reduxjs/toolkit";
 import user from "./reducers/user";
 import activ from "./reducers/activ";
 import tripper from "./reducers/tripper";
-
-
-import { Provider } from 'react-redux';
-import { configureStore } from '@reduxjs/toolkit';
-import user from './reducers/user';
 import search from './reducers/search';
 
 const store = configureStore({
