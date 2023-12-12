@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from "react";
+import { useDispatch, useSelector } from "react-redux";
 import {
   StyleSheet,
   ScrollView,
@@ -8,12 +9,35 @@ import {
   Pressable,
 } from "react-native";
 import Day from "../components/Day";
+import {
+  updateCardActiv,
+  updateMorningActiv,
+  updateAfternoonActiv,
+} from "../reducers/activ";
 
 export default function TripPlanScreen({ navigation }) {
   const [day, setDay] = useState([]);
+  const cardActiv = useSelector((state) => state.activ.cardActiv);
+  const tempActivities = useSelector((state) => state.activ.tempActivities);
+  const sizeOfMorning = useSelector((state) => state.activ.morningValue);
+  const sizeOfAfternoon = useSelector((state) => state.activ.afternoonValue);
+  const dispatch = useDispatch();
+
+  console.log("TPS => stockAct", tempActivities);
+  console.log("TPS => sizes", sizeOfMorning, sizeOfAfternoon)
+  
+  const myMorning = tempActivities.slice(0, sizeOfMorning);
+  const myAfternoon = tempActivities.slice(4, sizeOfAfternoon);
+
+  const stockActivities = () => {
+    dispatch(updateMorningActiv(myMorning));
+    dispatch(updateAfternoonActiv(myAfternoon));
+  };
 
   useEffect((i) => {
-    setDay(<Day key={i} />);
+    setDay(<Day key={i} stockActivities={stockActivities}/>);
+    console.log("TPS => day", day);
+    console.log("TPS => day", tempActivities);
   }, []);
 
   return (
@@ -25,7 +49,7 @@ export default function TripPlanScreen({ navigation }) {
         />
       </View>
       <View style={styles.titleBlock}>
-      <Text style={styles.title}>Plan your{'\n'}next Trip</Text>
+        <Text style={styles.title}>Plan your{"\n"}next Trip</Text>
       </View>
       <ScrollView>
         <View title="Day Card" style={styles.dayContainer}>
@@ -45,7 +69,11 @@ export default function TripPlanScreen({ navigation }) {
         </View>
       </ScrollView>
       <View style={styles.nextContainer}>
-        <Pressable onPress={() => navigation.navigate("Planning")}>
+        <Pressable
+          onPress={() => {
+            stockActivities(), navigation.navigate("Planning");
+          }}
+        >
           <View style={styles.confirm}>
             <Text style={{ color: "white" }}>CONFIRM</Text>
           </View>
@@ -120,10 +148,10 @@ const styles = StyleSheet.create({
     paddingHorizontal: "6%",
     paddingVertical: "4%",
     borderRadius: "10%",
-    borderStyle: 'solid',
-    borderColor: '#067188',
+    borderStyle: "solid",
+    borderColor: "#067188",
     fallback: {
-      borderColor: '#067188', // Couleur de secours
+      borderColor: "#067188", // Couleur de secours
     },
     shadowColor: "#000",
     shadowOffset: { width: +3, height: 3 },
@@ -138,10 +166,10 @@ const styles = StyleSheet.create({
     paddingHorizontal: "6%",
     paddingVertical: "4%",
     borderRadius: "10%",
-    borderStyle: 'solid',
-    borderColor: '#067188',
+    borderStyle: "solid",
+    borderColor: "#067188",
     fallback: {
-      borderColor: '#067188', // Couleur de secours
+      borderColor: "#067188", // Couleur de secours
     },
     shadowColor: "#000",
     shadowOffset: { width: +3, height: 3 },

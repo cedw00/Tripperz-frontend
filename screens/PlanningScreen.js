@@ -11,22 +11,27 @@ import {
 } from "react-native";
 import { useSelector, useDispatch } from "react-redux";
 import Day from "../components/Day";
+import PlannedDay from "../components/PlannedDay";
 import { updateTripperList } from "../reducers/tripper";
 
 export default function TripPlanScreen({ navigation }) {
-  const [day, setDay] = useState([]);
+  const [plannedDay, setPlannedDay] = useState([]);
   const [modalVisible, setModalVisible] = useState(false);
   const [otherTripperz, setOtherTripperz] = useState("");
+  const cardActiv = useSelector((state) => state.activ.cardActiv);
+  const thisMorning = useSelector((state) => state.activ.morningActiv);
+  const thisAfternoon = useSelector((state) => state.activ.afternoonActiv);
 
   const dispatch = useDispatch();
   const tripperz = useSelector((state) => state.tripper.value);
 
   useEffect((i) => {
-    setDay(<Day key={i} />);
+    setPlannedDay(<PlannedDay key={i} thisMorning={thisMorning} thisAfternoon={thisAfternoon} />);
+
   }, []);
 
   const handleTextChange = (newText) => {
-    setOtherTripperz('  @'+newText);
+    setOtherTripperz("  @" + newText);
   };
 
   const inviteTripperz = () => {
@@ -79,7 +84,7 @@ export default function TripPlanScreen({ navigation }) {
           style={styles.image}
         />
       </View>
-      <Text style={styles.title}>Your{'\n'}Planning</Text>
+      <Text style={styles.title}>Your{"\n"}Planning</Text>
       <View style={styles.inviteContainer}>
         <Pressable onPress={() => setModalVisible(true)}>
           <View style={styles.inviteBtn}>
@@ -87,24 +92,30 @@ export default function TripPlanScreen({ navigation }) {
           </View>
         </Pressable>
         <View>
-        <Text style={{ color: "black" }}>{tripperz.length > 0 ? 'Invited Tripperz : ' + tripperz : <View></View>}</Text>
+          <Text style={{ color: "black" }}>
+            {tripperz.length > 0 ? (
+              "Invited Tripperz : " + tripperz
+            ) : (
+              <View></View>
+            )}
+          </Text>
         </View>
       </View>
       <ScrollView>
         <View title="Day Card" style={styles.dayContainer}>
-          {day}
+          {plannedDay}
         </View>
         <View title="Day Card" style={styles.dayContainer}>
-          {day}
+          {plannedDay}
         </View>
         <View title="Day Card" style={styles.dayContainer}>
-          {day}
+          {plannedDay}
         </View>
         <View title="Day Card" style={styles.dayContainer}>
-          {day}
+          {plannedDay}
         </View>
         <View title="Day Card" style={styles.dayContainer}>
-          {day}
+          {plannedDay}
         </View>
       </ScrollView>
       <View style={styles.nextContainer}>
@@ -175,10 +186,10 @@ const styles = StyleSheet.create({
     paddingHorizontal: "6%",
     paddingVertical: "4%",
     borderRadius: "10%",
-    borderStyle: 'solid',
-    borderColor: '#067188',
+    borderStyle: "solid",
+    borderColor: "#067188",
     fallback: {
-      borderColor: '#067188', // Couleur de secours
+      borderColor: "#067188", // Couleur de secours
     },
     shadowColor: "#000",
     shadowOffset: { width: +3, height: 3 },
@@ -193,10 +204,10 @@ const styles = StyleSheet.create({
     paddingHorizontal: "6%",
     paddingVertical: "4%",
     borderRadius: "10%",
-    borderStyle: 'solid',
-    borderColor: '#067188',
+    borderStyle: "solid",
+    borderColor: "#067188",
     fallback: {
-      borderColor: '#067188', // Couleur de secours
+      borderColor: "#067188", // Couleur de secours
     },
     shadowColor: "#000",
     shadowOffset: { width: +3, height: 3 },
@@ -206,7 +217,7 @@ const styles = StyleSheet.create({
   inviteContainer: {
     alignItems: "center",
     justifyContent: "center",
-    marginBottom: '1%',
+    marginBottom: "1%",
   },
   inviteBtn: {
     shadowColor: "#000",
@@ -221,7 +232,7 @@ const styles = StyleSheet.create({
     paddingVertical: "2%",
     borderRadius: "10%",
     maxWidth: "80%",
-    marginVertical: '2%',
+    marginVertical: "2%",
   },
   centeredView: {
     flex: 1,
@@ -266,18 +277,18 @@ const styles = StyleSheet.create({
     textAlign: "center",
   },
   inputContainer: {
-    justifyContent: 'center',
-    alignItems: 'center',
+    justifyContent: "center",
+    alignItems: "center",
   },
   input: {
-    width: '80%',
+    width: "80%",
     height: 40,
     paddingHorizontal: 10,
     marginVertical: 10,
     borderWidth: 1,
-    borderColor: '#ccc',
+    borderColor: "#ccc",
     borderRadius: 5,
-    backgroundColor: '#f9f9f9',
-    color: '#333', // Couleur du texte saisi
+    backgroundColor: "#f9f9f9",
+    color: "#333", // Couleur du texte saisi
   },
 });
