@@ -3,8 +3,9 @@ import { StyleSheet, Text, View, Image, ImageBackground, TextInput,
 import { useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { updateUser, updateProfile, getToken } from '../reducers/user';
+import Constants from 'expo-constants';
 
-const backend = '192.168.10.130'
+const backend = Constants.expoConfig.hostUri.split(`:`)[0]
 
 export default function SignInScreen({ navigation }) {
   const dispatch = useDispatch();
