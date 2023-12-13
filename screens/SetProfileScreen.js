@@ -76,6 +76,7 @@ export default function SetProfileScreen({ navigation }) {
         body: JSON.stringify(profile),
       });
       const data = await response.json();
+      console.log(data);
       if (data.result) {
         dispatch(updateProfile(data.user))
         navigation.navigate('DrawerNavigator')

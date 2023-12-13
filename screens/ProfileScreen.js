@@ -37,9 +37,12 @@ const genderData = [
   ];
 
 export default function ProfileScreen({ navigation }) {
+  const dispatch = useDispatch();
+  const { username, birthday, gender, country, favoriteDestinations, favoriteFoods, hobbies, token } = useSelector((state) => state.user.value)
+  
   const [destinations, setDestinations] = useState('');
-  const [newGender, setNewGender] = useState(null);
-  const [newCountry, setNewCountry] = useState('');
+  const [newGender, setNewGender] = useState(gender);
+  const [newCountry, setNewCountry] = useState(country);
   const [newFavoriteDestinations, setNewFavoriteDestinations] = useState('');
   const [selectedActivities, setSelectedActivities] = useState([]);
   const [selectedFood, setSelectedFood] = useState([]);
@@ -47,9 +50,6 @@ export default function ProfileScreen({ navigation }) {
   const [show, setShow] = useState(false);
   const [showModal, setShowModal] = useState(false);
   const [trigger, setTrigger] = useState(false);
-
-  const dispatch = useDispatch();
-  const { username, birthday, gender, country, favoriteDestinations, favoriteFoods, hobbies, token } = useSelector((state) => state.user.value)
 
   useEffect(() => {
     const str = favoriteDestinations.toString();
@@ -138,12 +138,12 @@ export default function ProfileScreen({ navigation }) {
             </View>
             <View style={styles.inputContainer}>
                 <Dropdown
-                    style={styles.list} data={genderData} labelField='label' valueField='value' placeholder='Gender' placeholderStyle={styles.input}
+                    style={styles.list} data={genderData} labelField='label' valueField='value' placeholder={gender} placeholderStyle={styles.input}
                     value={newGender} onChange={(item) => {setNewGender(item.value)}} renderItem={editDisplay} maxHeight={100}
                 />
             </View>
             <View style={styles.inputContainer}>
-                <TextInput placeholder="Home country" onChangeText={(value) => setNewCountry(value)} placeholderTextColor={'#FFFFFF'}
+                <TextInput placeholder={country} onChangeText={(value) => setNewCountry(value)} placeholderTextColor={'#FFFFFF'}
                 value={newCountry} style={styles.input}/>  
             </View>
             <View style={styles.inputContainer}>

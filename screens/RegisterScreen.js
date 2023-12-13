@@ -3,7 +3,7 @@ import { StyleSheet, Text, View, Image, ImageBackground, TextInput,
 import CheckBox from 'expo-checkbox';
 import { useState } from 'react';
 import { useDispatch } from 'react-redux'
-import { getToken } from '../reducers/user';
+import { updateUser } from '../reducers/user';
 import Constants from 'expo-constants';
 
 const backend = Constants.expoConfig.hostUri.split(`:`)[0]
@@ -61,7 +61,7 @@ export default function RegisterScreen({ navigation }) {
             setPseudo('');
             setPhoneNb('');
             setPassword('');
-            dispatch(getToken(data.token));
+            dispatch(updateUser(data.user));
             navigation.navigate('SetProfile')
           } else {
             setErrorMsg(data.error);
@@ -114,7 +114,7 @@ export default function RegisterScreen({ navigation }) {
                 <Text style={styles.textBtn}>Register</Text>
             </TouchableOpacity>
             { showError && <View>
-              <Text>{errorMsg}</Text>
+              <Text style={{color: '#FFFFFF'}}>{errorMsg}</Text>
             </View> }
             <TouchableOpacity activeOpacity={0.8} onPress={() => handleReturn()} style={styles.button}>
                 <Text style={styles.textBtn}>Go back</Text>
@@ -185,7 +185,7 @@ const styles = StyleSheet.create({
     paddingTop: 5,
   },
   input: {
-    color: '#BFC0C5',
+    color: '#FFFFFF',
   },
   terms: {
     width: '70%',
