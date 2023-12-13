@@ -379,8 +379,6 @@ export default function Day(props) {
   useEffect(() => {
     return () => {
       loadActivities();
-      // switchActInParent();
-      // console.log("DAY => plannedActivities", plannedActivities);
     };
   }, []);
 
@@ -405,7 +403,7 @@ export default function Day(props) {
   useEffect(() => {
     const cardActivities = activities.map((data, index) => {
       day.push(data);
-      return <Slot activity={data} key={index} switchActInParent={switchActInParent} />;
+      return <Slot activity={data} key={index} />;
     });
     console.log("DAY => Activities Length", activities.length);
 
@@ -426,6 +424,7 @@ export default function Day(props) {
     console.log("morningSize :", morningSize, "afternoonSize :", afternoonSize);
 
     dispatch(updateTempActiv(day));
+
   }, [activities, morningSize, afternoonSize]);
 
   const moreMorningActivity = () => {
