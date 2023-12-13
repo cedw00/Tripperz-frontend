@@ -4,14 +4,9 @@ import PlannedSlot from "./PlannedSlot";
 import { useSelector } from "react-redux";
 
 export default function PlannedDay(props) {
-  const [morning, setMorning] = useState([]);
-  const [afternoon, setAfternoon] = useState([]);
   const activities = useSelector((state) => state.activ.value);
   const morningSize = useSelector((state) => state.activ.morningValue);
   const afternoonSize = useSelector((state) => state.activ.afternoonValue);
-  const confirmedMorning = useSelector((state) => state.activ.morningActiv);
-  const confirmedAfternoon = useSelector((state) => state.activ.afternoonActiv);
-  const tempActivities = useSelector((state) => state.activ.tempActivities);
 
    // TEST STARTING
    const newMorning = activities.slice(0, morningSize);
@@ -23,27 +18,6 @@ export default function PlannedDay(props) {
   const afternoonActivities = newAfternoon.map((data, index) => {
     return <PlannedSlot activity={data} key={index} />;
   });
-
-  useEffect(() => {
-    //     const morningActivities = props.thisMorning.map((data, index) => {
-    //   return <PlannedSlot activity={data} key={index} />;
-    // });
-    //setMorning(morningActivities);
-
-    // const afternoonActivities = props.thisAfternoon.map((data, index) => {
-    //   return <PlannedSlot activity={data} key={index} />;
-    // });
-    //setAfternoon(afternoonActivities);
-
-    // console.log("PLANNED DAY => morning", morningActivities);
-    // console.log("PLANNED DAY => afternoon", afternoonActivities);
-    // console.log(
-    //   "PLANNED DAY => confMorn :",
-    //   confirmedMorning,
-    //   "confAfter :",
-    //   confirmedAfternoon
-    // );
-  }, []);
 
   return (
     <View style={styles.container}>

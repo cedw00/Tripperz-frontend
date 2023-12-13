@@ -12,6 +12,7 @@ import {
 import React, { useState, useEffect } from "react";
 import {
   updateActivList,
+  getTripDuration
 } from "../reducers/activ";
 import { useDispatch, useSelector } from "react-redux";
 import SelectedList from "../components/HomePage/Destinations/SelectedList";
@@ -360,6 +361,7 @@ export default function ResultScreen({ navigation }) {
       }
     };
     dispatch(updateActivList(Array.from(uniqueActivities)));
+    dispatch(getTripDuration()); // RANDOM TRIP DURATION
   };
 
   const Item = (item) => (

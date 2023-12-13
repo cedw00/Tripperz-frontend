@@ -10,30 +10,16 @@ import {
   TextInput,
 } from "react-native";
 import { useSelector, useDispatch } from "react-redux";
-import Day from "../components/Day";
 import PlannedDay from "../components/PlannedDay";
 import { updateTripperList } from "../reducers/tripper";
 
 export default function TripPlanScreen({ navigation }) {
-  //const activities = useSelector((state) => state.activ.value);
-  const [plannedDay, setPlannedDay] = useState([]);
   const [modalVisible, setModalVisible] = useState(false);
   const [otherTripperz, setOtherTripperz] = useState("");
 
-  // const thisMorning = useSelector((state) => state.activ.morningActiv);
-  // const thisAfternoon = useSelector((state) => state.activ.afternoonActiv);
   const tripperz = useSelector((state) => state.tripper.value);
 
   const dispatch = useDispatch();
- 
-  // console.log('PS => This Morning', thisMorning);
-  // console.log('PS => This Afternoon', thisAfternoon);
-
-  // useEffect(() => {
-  //   //<PlannedDay key={i} thisMorning={thisMorning} thisAfternoon={thisAfternoon} />;
-  //   // console.log('PS => This Morning', thisMorning);
-  //   // console.log('PS => This Afternoon', thisAfternoon);
-  // }, []);
 
   const handleTextChange = (newText) => {
     setOtherTripperz("  @" + newText);

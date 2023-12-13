@@ -9,55 +9,47 @@ import {
   ScrollView,
 } from "react-native";
 import { useSelector, useDispatch } from "react-redux";
-import {
-  switchMorningActivity,
-  switchAfternoonActivity,
-  updateActivString,
-  updateActivToSwitch,
-  switchingActivity,
-  updateActivList
-} from "../reducers/activ";
+import { updateActivToSwitch, switchingActivity } from "../reducers/activ";
 import ModalSlot from "./ModalSlot";
 
 export default function Slot(props) {
-  const dispatch = useDispatch();
   const activities = useSelector((state) => state.activ.value);
-  const thisMorning = useSelector((state) => state.activ.morningActiv);
-  const thisAfternoon = useSelector((state) => state.activ.afternoonActiv);
   const activToChange = useSelector((state) => state.activ.activToSwitch);
   const tempActivSwitch = useSelector((state) => state.activ.tempActivString);
+
   const [modalVisible, setModalVisible] = useState(false);
   const [slotActivity, setSlotActivity] = useState(props.activity);
-  const tempActivities = useSelector((state) => state.activ.tempActivities);
-  const [updatedMorning, setUpdatedMorning] = useState([]);
-  const [updateAfternoon, setUpdatedAfternoon] = useState([]);
+
+  const dispatch = useDispatch();
 
   // MAPPING MODALACTIVITY
   const modalActivities = activities.map((data, index) => {
     return (
       <Pressable key={index}>
-        <ModalSlot
-          key={index}
-          modalActivity={data}
-        />
+        <ModalSlot key={index} modalActivity={data} />
       </Pressable>
     );
   });
 
   // FUNCTION SAVING THE VALUE OF PROPS.ACTIVITY IN REDUX (ACTIVTOSWITCH)
   const prepareSwitch = () => {
-    console.log('This activity might change', props.activity);
-    dispatch(updateActivToSwitch(props.activity))
+    console.log("This activity might change", props.activity);
+    dispatch(updateActivToSwitch(props.activity));
+    if (slotActivity !== props.activity) {
+      setSlotActivity(props.activity);
+    }
   };
 
-   const executeSwitch = () => {
-     console.log('This activity', activToChange, 'switched with', tempActivSwitch);
-     dispatch(switchingActivity());
-   }
-
-  // REDUX CAPTURE OF PRESS ON HIDE MODAL 
-  //TO SAVE INFO AND READ IT IN DAY COMPONENT
-
+  const executeSwitch = () => {
+    console.log(
+      "This activity",
+      activToChange,
+      "switched with",
+      tempActivSwitch
+    );
+    dispatch(switchingActivity());
+    setSlotActivity(tempActivSwitch);
+  };
 
   return (
     <View style={styles.cont}>
@@ -81,7 +73,9 @@ export default function Slot(props) {
               </ScrollView>
               <Pressable
                 style={[styles.button, styles.buttonClose]}
-                onPress={() => {setModalVisible(!modalVisible), executeSwitch()}}
+                onPress={() => {
+                  setModalVisible(!modalVisible), executeSwitch();
+                }}
               >
                 <Text style={styles.textStyle}>Hide Modal</Text>
               </Pressable>
@@ -90,7 +84,11 @@ export default function Slot(props) {
         </Modal>
       </View>
 
-      <Pressable onPress={() => {setModalVisible(true), prepareSwitch()}}>
+      <Pressable
+        onPress={() => {
+          setModalVisible(true), prepareSwitch();
+        }}
+      >
         <View style={styles.slotContainer}>
           <View style={styles.slotContent} title="Slot">
             <Text style={styles.text} title="Activity" name={props.activity}>

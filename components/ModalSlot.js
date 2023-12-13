@@ -13,12 +13,10 @@ import { useSelector, useDispatch } from "react-redux";
 
 export default function ModalSlot(props) {
   const activString = useSelector((state) => state.activ.tempActivString);
-  //const tempActivities = useSelector((state) => state.activ.tempActivities);
+
   const dispatch = useDispatch();
-    // const modalActRef = useRef("");
 
   const selectActivity = () => {
-    // modalActRef.current = props.modalActivity;
     dispatch(updateActivString(props.modalActivity))
   };
 

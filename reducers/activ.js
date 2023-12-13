@@ -11,6 +11,7 @@ const initialState = {
   afternoonActiv: [],
   morningValue: null,
   afternoonValue: null,
+  tripDuration: null
 };
 
 export const activSlice = createSlice({
@@ -64,6 +65,12 @@ export const activSlice = createSlice({
         console.log('activities after switch', state.value)
       }
     },
+    getTripDuration: (state, action) => {
+      state.tripDuration = Math.floor(Math.random() * 30) + 1;
+    },
+    nullifyDuration: (state, action) => {
+      state.tripDuration = null;
+    }
   },
 });
 
@@ -80,6 +87,8 @@ export const {
   switchAfternoonActivity,
   updateActivString,
   updateActivToSwitch,
-  switchingActivity
+  switchingActivity,
+  getTripDuration,
+  nullifyDuration
 } = activSlice.actions;
 export default activSlice.reducer;
