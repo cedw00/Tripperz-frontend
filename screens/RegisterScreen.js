@@ -6,7 +6,7 @@ import { useDispatch } from 'react-redux'
 import { getToken } from '../reducers/user';
 import Constants from 'expo-constants';
 
-const backend = '192.168.10.158'
+const backend = Constants.expoConfig.hostUri.split(`:`)[0]
 
 export default function RegisterScreen({ navigation }) {
   const dispatch = useDispatch();
