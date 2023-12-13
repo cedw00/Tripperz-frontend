@@ -6,6 +6,7 @@ import FontAwesome from 'react-native-vector-icons/FontAwesome';
 import { Dropdown, MultiSelect } from 'react-native-element-dropdown';
 import DateTimePicker from '@react-native-community/datetimepicker';
 import { updateProfile } from '../reducers/user';
+import Constants from 'expo-constants';
 
 const genderData = [
   { label: 'Male', value: 'Male' },
@@ -32,7 +33,7 @@ const foodData = [
   { label: 'Vegan', value: '5' },
 ];
 
-const backend = '192.168.10.159'
+const backend = Constants.expoConfig.hostUri.split(`:`)[0]
 
 export default function SetProfileScreen({ navigation }) {
   const dispatch = useDispatch();
@@ -69,7 +70,7 @@ export default function SetProfileScreen({ navigation }) {
         hobbies: interests,
         token: token
       };
-      const response = await fetch(`http://${backend}:3000/profile/create`, {
+      const response = await fetch(`http://${backend}:3000/profile/update`, {
         method: 'PUT',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(profile),

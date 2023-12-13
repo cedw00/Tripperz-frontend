@@ -389,24 +389,6 @@ export default function Day(props) {
   //   };
   // }, []);
 
-  // useEffect(() => {
-  //   const uniqueActivities = new Set();
-
-  //   for (let i = uniqueActivities.size; i < 20; i++) {
-  //     const randomActivity = getRandomActivityByInput(
-  //       activitiesList,
-  //       allActivNames
-  //     );
-  //     uniqueActivities.add(randomActivity);
-  //     if (uniqueActivities.size >= 20) {
-  //       break;
-  //     }
-  //   }
-
-  //   dispatch(updateActivList(Array.from(uniqueActivities)));
-  //   // console.log("DAY => activities", activities);
-  //   dispatch(updateTempActiv(activities));
-  // }, []);
 
   useEffect(() => {
     
