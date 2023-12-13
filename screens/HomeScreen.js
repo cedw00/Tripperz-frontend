@@ -34,8 +34,6 @@ export default function HomeScreen({ navigation }) {
 
   }
 
-
-
 // COUNTRY AND CITY TO SEARCH
 
 

@@ -1,24 +1,17 @@
 import React, { useState, useEffect } from "react";
-import {
-  StyleSheet,
-  Text,
-  View,
-  SafeAreaView,
-  ScrollView,
-  Dimensions,
-  Pressable,
-} from "react-native";
+import { StyleSheet, Text, View, ScrollView, Pressable } from "react-native";
 import FontAwesome from "react-native-vector-icons/FontAwesome";
 import Slot from "./Slot";
-import {
-  getUniqueElements,
-  getRandomActivityByInput,
-  getUniqueRandomIndex,
-} from "../modules/slotMods";
+import { getRandomActivityByInput } from "../modules/slotMods";
 import { useDispatch, useSelector } from "react-redux";
-import { updateActivList } from "../reducers/activ";
+import {
+  updateActivList,
+  updateTempActiv,
+  updateMorningValue,
+  updateAfternoonValue,
+} from "../reducers/activ";
 
-export default function Day() {
+export default function Day(props) {
   const activitiesList = [
     {
       shoppingPlaces: [
@@ -333,10 +326,59 @@ export default function Day() {
     "shopping restaurants culturePlaces landscapes sportActivities";
   const [morning, setMorning] = useState([]);
   const [afternoon, setAfternoon] = useState([]);
+  let day = [];
+  let altDay = [];
   const [morningSize, setMorningSize] = useState(4);
   const [afternoonSize, setAfternoonSize] = useState(8);
   const activities = useSelector((state) => state.activ.value);
+  const tempActiv = useSelector((state) => state.activ.tempActivString);
   const dispatch = useDispatch();
+
+  // INVERSE DATA FLOW MODALACTIVITY SWITCH
+     const switchActInParent = () => {
+  //     const actFoundInMorning = morning.find((e) => e === tempActiv);
+  //     const actFoundInAfternoon = afternoon.find((e) => e === tempActiv);
+        const actFound = activities.find((e) => e === tempActiv);
+      if (actFound) {
+        altDay.push(activities);
+        let activityToSwitch = altDay.indexOf(actFound);
+         const newActiv = altDay.splice(activityToSwitch, 1, tempActiv);
+         console.log(`ACTIV SWITCH : Switching ${actFound} with =>`, tempActiv);
+         return newActiv;
+       } else {
+     return activities;
+   }
+  //
+  //
+  //
+  //     if (actFoundInMorning) {
+  //       let activityToSwitch = morning.indexOf(actFoundInMorning);
+  //       const newMorn = morning.splice(activityToSwitch, 1, tempActiv);
+  //       console.log(
+  //         `MORNING SWITCH : Switching ${actFoundInMorning} with =>`,
+  //         tempActiv
+  //       );
+  //     } else if (actFoundInAfternoon) {
+  //       activityToSwitch = afternoon.indexOf(actFoundInAfternoon);
+  //       afternoon.splice(activityToSwitch, 1, tempActiv);
+  //       console.log(
+  //         `AFTERNOON SWITCH : Switching afternoon ${actFoundInAfternoon} with =>`,
+  //         tempActiv
+  //       );
+  //     } else {
+  //       return;
+  //     }
+     };
+
+  const loadActivities = () => {
+    props.stockActivities();
+  };
+
+  useEffect(() => {
+    return () => {
+      loadActivities();
+    };
+  }, []);
 
   useEffect(() => {
     const uniqueActivities = new Set();
@@ -358,108 +400,122 @@ export default function Day() {
 
   useEffect(() => {
     const cardActivities = activities.map((data, index) => {
+      day.push(data);
       return <Slot activity={data} key={index} />;
     });
     console.log("DAY => Activities Length", activities.length);
 
     console.log("DAY => cardContent", cardActivities);
+
+    console.log("DAY => day", day);
+
     const newMorning = cardActivities.slice(0, morningSize);
     setMorning(newMorning);
+    dispatch(updateMorningValue(morningSize));
 
     const newAfternoon = cardActivities.slice(4, afternoonSize);
     setAfternoon(newAfternoon);
+    dispatch(updateAfternoonValue(afternoonSize));
 
     console.log("DAY => morning", morning);
     console.log("DAY => afternoon", afternoon);
-    console.log(
-      "morningSize :",
-      morningSize,
-      "afternoonSize :",
-      afternoonSize
-    );
+    console.log("morningSize :", morningSize, "afternoonSize :", afternoonSize);
+
+    dispatch(updateTempActiv(day));
   }, [activities, morningSize, afternoonSize]);
 
   const moreMorningActivity = () => {
     setMorningSize(morningSize + 1);
+    dispatch(updateMorningValue(morningSize));
+
     setAfternoonSize(afternoonSize + 1);
+    dispatch(updateAfternoonValue(afternoonSize));
   };
 
   const moreAfternoonActivity = () => {
     setAfternoonSize(afternoonSize + 1);
+    dispatch(updateAfternoonValue(afternoonSize));
   };
 
   const lessMorningActivity = () => {
-        if (morningSize > 0) {
-        setMorningSize(morningSize - 1);
-        } else {
-        setMorningSize(1);
-        }
+    if (morningSize > 0) {
+      setMorningSize(morningSize - 1);
+      dispatch(updateMorningValue(morningSize));
+    } else {
+      setMorningSize(1);
+      dispatch(updateMorningValue(morningSize));
+    }
   };
 
   const lessAfternoonActivity = () => {
     if (afternoonSize > 0) {
-        setAfternoonSize(afternoonSize - 1);
-        } else {
-        setAfternoonSize(1);
-        }
+      setAfternoonSize(afternoonSize - 1);
+      dispatch(updateAfternoonValue(afternoonSize));
+    } else {
+      setAfternoonSize(1);
+      dispatch(updateAfternoonValue(afternoonSize));
+    }
   };
+
+  //   console.log("isNotUseEffect DAY => morning", morning);
+  //   console.log("isNotUseEffect DAY => afternoon", afternoon);
 
   return (
     <View style={styles.container}>
       <View title="Day" style={styles.dayContainer}>
-          <Text style={styles.dayTitle}>Day 1 - 01/01/2024</Text>
-          <View title="halfDay" style={styles.morning}>
-            <Text style={{ fontSize: 18, marginBottom: "2%" }}>Morning</Text>
-            <View style={styles.daySlots}>
-              <ScrollView contentContainerStyle={styles.scrollView}>
-                <View>{morning}</View>
-              </ScrollView>
-              <View style={styles.iconContainer}>
-                <Pressable onPress={() => moreMorningActivity()}>
-                  <FontAwesome
-                    name="plus-square"
-                    color="black"
-                    size={25}
-                    style={styles.plusIcon}
-                  />
-                </Pressable>
-                <Pressable onPress={() => lessMorningActivity()}>
-                  <FontAwesome
-                    name="minus-square"
-                    color="black"
-                    size={25}
-                    style={styles.plusIcon}
-                  />
-                </Pressable>
-              </View>
+        <Text style={styles.dayTitle}>Day 1 - 01/01/2024</Text>
+        <View title="halfDay" style={styles.morning}>
+          <Text style={{ fontSize: 18, marginBottom: "2%" }}>Morning</Text>
+          <View style={styles.daySlots}>
+            <ScrollView contentContainerStyle={styles.scrollView}>
+              <View>{morning}</View>
+            </ScrollView>
+            <View style={styles.iconContainer}>
+              <Pressable onPress={() => moreMorningActivity()}>
+                <FontAwesome
+                  name="plus-square"
+                  color="#067188"
+                  size={25}
+                  style={styles.plusIcon}
+                />
+              </Pressable>
+              <Pressable onPress={() => lessMorningActivity()}>
+                <FontAwesome
+                  name="minus-square"
+                  color="black"
+                  size={25}
+                  style={styles.plusIcon}
+                />
+              </Pressable>
             </View>
           </View>
-          <View title="halfDay" style={styles.afternoon}>
-            <Text style={{ fontSize: 18, marginVertical: "2%" }}>Afternoon</Text>
-            <View style={styles.daySlots}>
-              <ScrollView contentContainerStyle={styles.scrollView}>
-                <View>{afternoon}</View>
-              </ScrollView>
-              <View style={styles.iconContainer}>
-                <Pressable onPress={() => moreAfternoonActivity()}>
-                  <FontAwesome
-                    name="plus-square"
-                    color="black"
-                    size={25}
-                    style={styles.plusIcon}
-                  />
-                </Pressable>
-                <Pressable onPress={() => lessAfternoonActivity()}>
-                  <FontAwesome
-                    name="minus-square"
-                    color="black"
-                    size={25}
-                    style={styles.plusIcon}
-                  />
-                </Pressable>
-              </View>
+        </View>
+        <View title="halfDay" style={styles.afternoon}>
+          <Text style={{ fontSize: 18, marginVertical: "2%" }}>Afternoon</Text>
+          <View style={styles.daySlots}>
+            <ScrollView contentContainerStyle={styles.scrollView}>
+              <View>{afternoon}</View>
+            </ScrollView>
+            <View style={styles.iconContainer}>
+              <Pressable onPress={() => moreAfternoonActivity()}>
+                <FontAwesome
+                  name="plus-square"
+                  color="#067188"
+                  size={25}
+                  style={styles.plusIcon}
+                />
+              </Pressable>
+              <Pressable onPress={() => lessAfternoonActivity()}>
+                <FontAwesome
+                  name="minus-square"
+                  color="black"
+                  size={25}
+                  style={styles.plusIcon}
+                />
+              </Pressable>
             </View>
           </View>
+        </View>
       </View>
     </View>
   );
@@ -467,12 +523,22 @@ export default function Day() {
 
 const styles = StyleSheet.create({
   dayContainer: {
-    marginTop: "5%",
+    marginTop: "2%",
     alignItems: "center",
     borderWidth: 3,
+    borderStyle: "solid",
+    borderColor: "#067188",
+    fallback: {
+      borderColor: "#fff", // Couleur de secours
+    },
     borderRadius: "10%",
     paddingHorizontal: "5%",
     height: "100%",
+    backgroundColor: "white",
+    shadowColor: "#000",
+    shadowOffset: { width: +3, height: 3 },
+    shadowOpacity: 0.7,
+    shadowRadius: 2,
   },
   container: {
     alignItems: "center",
@@ -480,24 +546,24 @@ const styles = StyleSheet.create({
   dayTitle: {
     fontSize: 25,
     marginTop: "5%",
+    color: "#067188",
   },
   morning: {
     alignItems: "center",
     maxHeight: 230,
     marginTop: "5%",
-    marginBottom: "9%",
-
+    marginBottom: "15%",
   },
   afternoon: {
     alignItems: "center",
     maxHeight: 230,
     marginTop: "5%",
-    marginBottom: "8%",
+    marginBottom: "15%",
   },
   iconContainer: {
     flexDirection: "row",
-    marginLeft: '4%',
-    paddingVertical: '2%'
+    marginLeft: "4%",
+    paddingVertical: "2%",
   },
   plusIcon: {
     marginHorizontal: "3%",
@@ -507,10 +573,11 @@ const styles = StyleSheet.create({
     justifyContent: "center",
     alignItems: "center",
     flexDirection: "column",
-    backgroundColor: "lightblue",
+    backgroundColor: "white",
     borderRadius: "10%",
-    maxHeight: 300,
-    paddingTop: '3%'
+    maxHeight: 450,
+    borderWidth: "1%",
+    //paddingTop: "3%",
   },
   scrollView: {
     flexDirection: "column", // Organiser les éléments en colonnes
