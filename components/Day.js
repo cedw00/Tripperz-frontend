@@ -9,7 +9,8 @@ import {
   updateTempActiv,
   updateMorningValue,
   updateAfternoonValue,
-  updatePlannedActivList
+  updatePlannedActivList,
+  switchingActivity
 } from "../reducers/activ";
 
 export default function Day(props) {
@@ -382,51 +383,38 @@ export default function Day(props) {
     props.stockActivities();
   };
 
-  // useEffect(() => {
-  //   return () => {
-  //     loadActivities();
-  //     selectSwitch();
-  //   };
-  // }, []);
-
-
-  useEffect(() => {
-    
-    setCard(prevCard => [...prevCard, ...cardActivities]);
-    // console.log("DAY => stateCARD", card);
-
-    // console.log("DAY => Activities Length", activities.length);
-
-    // console.log("DAY => cardContent", cardActivities);
-
-    // console.log("DAY => day", day);
-
-    const newMorning = cardActivities.slice(0, morningSize);
-    // console.log("DAY => newMorning", newMorning);
-    //setMorning(newMorning);
-    dispatch(updateMorningValue(morningSize));
-
-    const newAfternoon = cardActivities.slice(4, afternoonSize);
-    // console.log("DAY => newAfternoon", newAfternoon);
-    //setAfternoon(newAfternoon);
-    dispatch(updateAfternoonValue(afternoonSize));
-
-    // console.log("morningSize :", morningSize, "afternoonSize :", afternoonSize);
-
-    dispatch(updateTempActiv(day));
-    //console.log("DAY => TempActivities", tempActivities);
-    loadActivities(); // CALLED FUNC TO RELOAD
-
-    setMorning(newMorning);
-    setAfternoon(newAfternoon);
-
-    // console.log("DAY => morning", morning);
-    // console.log("DAY => afternoon", afternoon);
-  }, [morningSize, afternoonSize]);
-  const cardActivities = activities.map((data, index) => {
-    day.push(data);
+  // TEST STARTING
+  // 
+  const newMorning = activities.slice(0, morningSize);
+  const morningActivities = newMorning.map((data, index) => {
+    //day.push(data);
+    //dispatch(updateTempActiv(data));
     return <Slot activity={data} key={index} />;
   });
+
+  const newAfternoon = activities.slice(4, afternoonSize);
+  const afternoonActivities = newAfternoon.map((data, index) => {
+    //day.push(data);
+    //dispatch(updateTempActiv(data));
+    return <Slot activity={data} key={index} />;
+  });
+
+  useEffect(() => {
+    // const cardActivities = activities.map((data, index) => {
+    //   day.push(data);
+    //   return <Slot activity={data} key={index} />;
+    // });
+    // setCard(prevCard => [...prevCard, ...cardActivities]);
+
+    
+    dispatch(updateMorningValue(morningSize));
+
+    dispatch(updateAfternoonValue(afternoonSize));
+
+    loadActivities(); // CALLED FUNC TO RELOAD
+
+  }, [morningSize, afternoonSize]);
+
   const moreMorningActivity = () => {
     setMorningSize(morningSize + 1);
     dispatch(updateMorningValue(morningSize));
@@ -460,9 +448,6 @@ export default function Day(props) {
     }
   };
 
-  //   console.log("isNotUseEffect DAY => morning", morning);
-  //   console.log("isNotUseEffect DAY => afternoon", afternoon);
-
   return (
     <View style={styles.container}>
       <View title="Day" style={styles.dayContainer}>
@@ -471,7 +456,7 @@ export default function Day(props) {
           <Text style={{ fontSize: 18, marginBottom: "2%" }}>Morning</Text>
           <View style={styles.daySlots}>
             <ScrollView contentContainerStyle={styles.scrollView}>
-              <View>{morning}</View>
+              <View>{morningActivities}</View>
             </ScrollView>
             <View style={styles.iconContainer}>
               <Pressable onPress={() => moreMorningActivity()}>
@@ -497,7 +482,7 @@ export default function Day(props) {
           <Text style={{ fontSize: 18, marginVertical: "2%" }}>Afternoon</Text>
           <View style={styles.daySlots}>
             <ScrollView contentContainerStyle={styles.scrollView}>
-              <View>{afternoon}</View>
+              <View>{afternoonActivities}</View>
             </ScrollView>
             <View style={styles.iconContainer}>
               <Pressable onPress={() => moreAfternoonActivity()}>

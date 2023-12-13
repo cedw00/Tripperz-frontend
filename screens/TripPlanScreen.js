@@ -16,6 +16,7 @@ import {
   updateCardActiv,
   updateMorningActiv,
   updateAfternoonActiv,
+  switchingActivity
 } from "../reducers/activ";
 
 const activitiesList = [
@@ -331,7 +332,7 @@ const activitiesList = [
 const allActivNames = "shopping restaurants culturePlaces landscapes sportActivities";
 
 export default function TripPlanScreen({ navigation }) {
-  const [day, setDay] = useState([]);
+  //const [day, setDay] = useState([]);
   const activities = useSelector((state) => state.activ.value);
   const cardActiv = useSelector((state) => state.activ.cardActiv);
   const tempActivities = useSelector((state) => state.activ.tempActivities);
@@ -339,6 +340,8 @@ export default function TripPlanScreen({ navigation }) {
   const thisAfternoon = useSelector((state) => state.activ.afternoonActiv);
   const sizeOfMorning = useSelector((state) => state.activ.morningValue);
   const sizeOfAfternoon = useSelector((state) => state.activ.afternoonValue);
+  const activToChange = useSelector((state) => state.activ.activToSwitch);
+  const tempActivSwitch = useSelector((state) => state.activ.tempActivString);
   const dispatch = useDispatch();
 
   // console.log("TPS => stockAct", tempActivities);
@@ -352,26 +355,12 @@ export default function TripPlanScreen({ navigation }) {
     dispatch(updateAfternoonActiv(myAfternoon));
   };
 
-  useEffect((i) => {
-    const uniqueActivities = new Set();
+  // const executeSwitch = () => {
+  //   console.log('This activity', activToChange, 'switched with', tempActivSwitch);
+  //   dispatch(switchingActivity());
+  // }
 
-    for (let i = uniqueActivities.size; i < 20; i++) {
-      const randomActivity = getRandomActivityByInput(
-        activitiesList,
-        allActivNames
-      );
-      uniqueActivities.add(randomActivity);
-      if (uniqueActivities.size >= 20) {
-        break;
-      }
-    }
-
-    dispatch(updateActivList(Array.from(uniqueActivities)));
-    dispatch(updateTempActiv(activities));
-    setDay(<Day key={i} stockActivities={stockActivities}/>);
-    // console.log("TPS => day", day);
-    // console.log("TPS => tempActivities", tempActivities);
-  }, []);
+  console.log("TPS => day", activities);
 
   return (
     <View style={styles.planContainer}>
@@ -386,19 +375,19 @@ export default function TripPlanScreen({ navigation }) {
       </View>
       <ScrollView>
         <View title="Day Card" style={styles.dayContainer}>
-          {day}
+          <Day stockActivities={stockActivities}/>
         </View>
         <View title="Day Card" style={styles.dayContainer}>
-          {day}
+          <Day stockActivities={stockActivities}/>
         </View>
         <View title="Day Card" style={styles.dayContainer}>
-          {day}
+          <Day stockActivities={stockActivities}/>
         </View>
         <View title="Day Card" style={styles.dayContainer}>
-          {day}
+          <Day stockActivities={stockActivities}/>
         </View>
         <View title="Day Card" style={styles.dayContainer}>
-          {day}
+          <Day stockActivities={stockActivities}/>
         </View>
       </ScrollView>
       <View style={styles.nextContainer}>

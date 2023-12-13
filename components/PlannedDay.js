@@ -6,21 +6,34 @@ import { useSelector } from "react-redux";
 export default function PlannedDay(props) {
   const [morning, setMorning] = useState([]);
   const [afternoon, setAfternoon] = useState([]);
-
+  const activities = useSelector((state) => state.activ.value);
+  const morningSize = useSelector((state) => state.activ.morningValue);
+  const afternoonSize = useSelector((state) => state.activ.afternoonValue);
   const confirmedMorning = useSelector((state) => state.activ.morningActiv);
   const confirmedAfternoon = useSelector((state) => state.activ.afternoonActiv);
   const tempActivities = useSelector((state) => state.activ.tempActivities);
 
-  useEffect(() => {
-        const morningActivities = props.thisMorning.map((data, index) => {
-      return <PlannedSlot activity={data} key={index} />;
-    });
-    setMorning(morningActivities);
+   // TEST STARTING
+   const newMorning = activities.slice(0, morningSize);
+   const morningActivities = newMorning.map((data, index) => {
+    return <PlannedSlot activity={data} key={index} />;
+  });
 
-    const afternoonActivities = props.thisAfternoon.map((data, index) => {
-      return <PlannedSlot activity={data} key={index} />;
-    });
-    setAfternoon(afternoonActivities);
+  const newAfternoon = activities.slice(4, afternoonSize);
+  const afternoonActivities = newAfternoon.map((data, index) => {
+    return <PlannedSlot activity={data} key={index} />;
+  });
+
+  useEffect(() => {
+    //     const morningActivities = props.thisMorning.map((data, index) => {
+    //   return <PlannedSlot activity={data} key={index} />;
+    // });
+    //setMorning(morningActivities);
+
+    // const afternoonActivities = props.thisAfternoon.map((data, index) => {
+    //   return <PlannedSlot activity={data} key={index} />;
+    // });
+    //setAfternoon(afternoonActivities);
 
     // console.log("PLANNED DAY => morning", morningActivities);
     // console.log("PLANNED DAY => afternoon", afternoonActivities);
@@ -40,7 +53,7 @@ export default function PlannedDay(props) {
           <Text style={{ fontSize: 18, marginBottom: "2%" }}>Morning</Text>
           <View style={styles.daySlots}>
             <ScrollView contentContainerStyle={styles.scrollView}>
-              <View>{morning}</View>
+              <View>{morningActivities}</View>
             </ScrollView>
           </View>
         </View>
@@ -48,7 +61,7 @@ export default function PlannedDay(props) {
           <Text style={{ fontSize: 18, marginVertical: "2%" }}>Afternoon</Text>
           <View style={styles.daySlots}>
             <ScrollView contentContainerStyle={styles.scrollView}>
-              <View>{afternoon}</View>
+              <View>{afternoonActivities}</View>
             </ScrollView>
           </View>
         </View>

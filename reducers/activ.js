@@ -5,6 +5,7 @@ const initialState = {
   plannedValue: [],
   tempActivities: [],
   tempActivString: "",
+  activToSwitch: "",
   cardActiv: [],
   morningActiv: [],
   afternoonActiv: [],
@@ -42,16 +43,26 @@ export const activSlice = createSlice({
     },
     switchMorningActivity: (state, action) => {
       console.log('before', state.morningActiv);
-      let activityToSwitch = state.morningActiv.indexOf(action.payload);
+      let activityToSwitch = state.morningActiv.indexOf(state.activToSwitch);
       state.morningActiv.splice(activityToSwitch, 1, state.tempActivString);
       console.log('after', state.morningActiv);
     },
     switchAfternoonActivity: (state, action) => {
-      let activityToSwitch = state.afternoonActiv.indexOf(action.payload);
+      let activityToSwitch = state.afternoonActiv.indexOf(state.activToSwitch);
       state.afternoonActiv.splice(activityToSwitch, 1, state.tempActivString);
     },
     updateActivString: (state, action) => {
       state.tempActivString = action.payload;
+    },
+    updateActivToSwitch: (state, action) => {
+      state.activToSwitch = action.payload;
+    },
+    switchingActivity: (state, action) => {
+      if ((state.activToSwitch !== '') && (state.tempActivString !== '')) {
+        let activityToSwitch = state.value.indexOf(state.activToSwitch);
+        state.value.splice(activityToSwitch, 1, state.tempActivString);
+        console.log('activities after switch', state.value)
+      }
     },
   },
 });
@@ -67,6 +78,8 @@ export const {
   updateAfternoonActiv,
   switchMorningActivity,
   switchAfternoonActivity,
-  updateActivString
+  updateActivString,
+  updateActivToSwitch,
+  switchingActivity
 } = activSlice.actions;
 export default activSlice.reducer;

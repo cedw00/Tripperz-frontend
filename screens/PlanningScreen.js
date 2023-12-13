@@ -15,24 +15,25 @@ import PlannedDay from "../components/PlannedDay";
 import { updateTripperList } from "../reducers/tripper";
 
 export default function TripPlanScreen({ navigation }) {
+  //const activities = useSelector((state) => state.activ.value);
   const [plannedDay, setPlannedDay] = useState([]);
   const [modalVisible, setModalVisible] = useState(false);
   const [otherTripperz, setOtherTripperz] = useState("");
 
-  const thisMorning = useSelector((state) => state.activ.morningActiv);
-  const thisAfternoon = useSelector((state) => state.activ.afternoonActiv);
+  // const thisMorning = useSelector((state) => state.activ.morningActiv);
+  // const thisAfternoon = useSelector((state) => state.activ.afternoonActiv);
   const tripperz = useSelector((state) => state.tripper.value);
 
   const dispatch = useDispatch();
  
-  console.log('PS => This Morning', thisMorning);
-    console.log('PS => This Afternoon', thisAfternoon);
+  // console.log('PS => This Morning', thisMorning);
+  // console.log('PS => This Afternoon', thisAfternoon);
 
-  // useEffect((i) => {
-  //   <PlannedDay key={i} thisMorning={thisMorning} thisAfternoon={thisAfternoon} />;
+  // useEffect(() => {
+  //   //<PlannedDay key={i} thisMorning={thisMorning} thisAfternoon={thisAfternoon} />;
   //   // console.log('PS => This Morning', thisMorning);
   //   // console.log('PS => This Afternoon', thisAfternoon);
-  // }, [thisMorning, thisAfternoon]);
+  // }, []);
 
   const handleTextChange = (newText) => {
     setOtherTripperz("  @" + newText);
@@ -107,19 +108,19 @@ export default function TripPlanScreen({ navigation }) {
       </View>
       <ScrollView>
         <View title="Day Card" style={styles.dayContainer}>
-        <PlannedDay thisMorning={thisMorning} thisAfternoon={thisAfternoon} />
+        <PlannedDay />
         </View>
         <View title="Day Card" style={styles.dayContainer}>
-        <PlannedDay thisMorning={thisMorning} thisAfternoon={thisAfternoon} />
+        <PlannedDay />
         </View>
         <View title="Day Card" style={styles.dayContainer}>
-          <PlannedDay thisMorning={thisMorning} thisAfternoon={thisAfternoon} />
+          <PlannedDay />
         </View>
         <View title="Day Card" style={styles.dayContainer}>
-          <PlannedDay thisMorning={thisMorning} thisAfternoon={thisAfternoon} />
+          <PlannedDay />
         </View>
         <View title="Day Card" style={styles.dayContainer}>
-          <PlannedDay thisMorning={thisMorning} thisAfternoon={thisAfternoon} />
+          <PlannedDay />
         </View>
       </ScrollView>
       <View style={styles.nextContainer}>
