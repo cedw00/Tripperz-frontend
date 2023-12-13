@@ -4,6 +4,7 @@ import CheckBox from 'expo-checkbox';
 import { useState } from 'react';
 import { useDispatch } from 'react-redux'
 import { getToken } from '../reducers/user';
+import Constants from 'expo-constants';
 
 const backend = '192.168.10.158'
 

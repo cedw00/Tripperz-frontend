@@ -20,6 +20,7 @@
     "dayjs": "^1.11.10",
     "expo": "~49.0.15",
     "expo-checkbox": "~2.4.0",
+    "expo-constants": "~14.4.2",
     "expo-status-bar": "~1.6.0",
     "moment": "^2.29.4",
     "node-fetch": "2",
