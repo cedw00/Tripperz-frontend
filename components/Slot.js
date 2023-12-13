@@ -12,7 +12,7 @@ import { useSelector, useDispatch } from "react-redux";
 import {
   switchMorningActivity,
   switchAfternoonActivity,
-  updateActivString
+  updateActivString,
 } from "../reducers/activ";
 import ModalSlot from "./ModalSlot";
 
@@ -35,22 +35,27 @@ export default function Slot(props) {
     setSlotActivity(act);
     //dispatch(updateActivString(props.activity));
     dispatch(updateActivString(act));
-    console.log("SLOT => String in switch activity", activString);
   };
+  console.log("SLOT => String in switch activity", activString);
 
   const saveSwitch = () => {
+    console.log("SLOT => This Morning BEFORE", thisMorning);
+    console.log("SLOT => This Afternoon BEFORE", thisAfternoon);
     const foundInMorning = thisMorning.find((e) => e === props.activity);
+    console.log("foundmorning", foundInMorning);
+    console.log("props.activity", props.activity);
+
     const foundInAfternoon = thisAfternoon.find((e) => e === props.activity);
     if (foundInMorning) {
       console.log("SLOT => String in foundmorning", activString);
       dispatch(switchMorningActivity(slotActivity));
-      console.log("SLOT => This Morning", thisMorning);
+      console.log("SLOT => This Morning NOW", thisMorning);
     } else if (foundInAfternoon) {
       console.log("SLOT => String in foundafternoon", activString);
       dispatch(switchAfternoonActivity(slotActivity));
-      console.log("SLOT => This Afternoon", thisAfternoon);
+      console.log("SLOT => This Afternoon NOW", thisAfternoon);
     }
-  }
+  };
 
   // MAPPING MODALACTIVITY
   const modalActivities = activities.map((data, index) => {
@@ -61,6 +66,7 @@ export default function Slot(props) {
           modalActivity={data}
           switchActivity={switchActivity}
           saveSwitch={saveSwitch}
+          //slotActivity={slotActivity}
         />
       </Pressable>
     );

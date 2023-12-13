@@ -389,30 +389,27 @@ export default function Day(props) {
   //   };
   // }, []);
 
+  // useEffect(() => {
+  //   const uniqueActivities = new Set();
+
+  //   for (let i = uniqueActivities.size; i < 20; i++) {
+  //     const randomActivity = getRandomActivityByInput(
+  //       activitiesList,
+  //       allActivNames
+  //     );
+  //     uniqueActivities.add(randomActivity);
+  //     if (uniqueActivities.size >= 20) {
+  //       break;
+  //     }
+  //   }
+
+  //   dispatch(updateActivList(Array.from(uniqueActivities)));
+  //   // console.log("DAY => activities", activities);
+  //   dispatch(updateTempActiv(activities));
+  // }, []);
+
   useEffect(() => {
-    const uniqueActivities = new Set();
-
-    for (let i = uniqueActivities.size; i < 20; i++) {
-      const randomActivity = getRandomActivityByInput(
-        activitiesList,
-        allActivNames
-      );
-      uniqueActivities.add(randomActivity);
-      if (uniqueActivities.size >= 20) {
-        break;
-      }
-    }
-
-    dispatch(updateActivList(Array.from(uniqueActivities)));
-    // console.log("DAY => activities", activities);
-    dispatch(updateTempActiv(activities));
-  }, []);
-
-  useEffect(() => {
-    const cardActivities = activities.map((data, index) => {
-      day.push(data);
-      return <Slot activity={data} key={index} />;
-    });
+    
     setCard(prevCard => [...prevCard, ...cardActivities]);
     // console.log("DAY => stateCARD", card);
 
@@ -444,7 +441,10 @@ export default function Day(props) {
     // console.log("DAY => morning", morning);
     // console.log("DAY => afternoon", afternoon);
   }, [morningSize, afternoonSize]);
-
+  const cardActivities = activities.map((data, index) => {
+    day.push(data);
+    return <Slot activity={data} key={index} />;
+  });
   const moreMorningActivity = () => {
     setMorningSize(morningSize + 1);
     dispatch(updateMorningValue(morningSize));

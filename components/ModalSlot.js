@@ -8,6 +8,7 @@ import {
   Pressable,
   ScrollView,
 } from "react-native";
+import { switchMorningActivity } from "../reducers/activ";
 
 export default function ModalSlot(props) {
     const modalActRef = useRef("");
@@ -16,6 +17,7 @@ export default function ModalSlot(props) {
     modalActRef.current = props.modalActivity;
     props.switchActivity(modalActRef.current);
     props.saveSwitch();
+    //dispatch(switchMorningActivity(props.slotActivity))
   };
 
   return (

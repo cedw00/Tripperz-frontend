@@ -25,12 +25,14 @@ export default function TripPlanScreen({ navigation }) {
 
   const dispatch = useDispatch();
  
+  console.log('PS => This Morning', thisMorning);
+    console.log('PS => This Afternoon', thisAfternoon);
 
-  useEffect((i) => {
-    setPlannedDay(<PlannedDay key={i} thisMorning={thisMorning} thisAfternoon={thisAfternoon} />);
-    // console.log('PS => This Morning', thisMorning);
-    // console.log('PS => This Afternoon', thisAfternoon);
-  }, [thisMorning, thisAfternoon]);
+  // useEffect((i) => {
+  //   <PlannedDay key={i} thisMorning={thisMorning} thisAfternoon={thisAfternoon} />;
+  //   // console.log('PS => This Morning', thisMorning);
+  //   // console.log('PS => This Afternoon', thisAfternoon);
+  // }, [thisMorning, thisAfternoon]);
 
   const handleTextChange = (newText) => {
     setOtherTripperz("  @" + newText);
@@ -105,19 +107,19 @@ export default function TripPlanScreen({ navigation }) {
       </View>
       <ScrollView>
         <View title="Day Card" style={styles.dayContainer}>
-          {plannedDay}
+        <PlannedDay thisMorning={thisMorning} thisAfternoon={thisAfternoon} />
         </View>
         <View title="Day Card" style={styles.dayContainer}>
-          {plannedDay}
+        <PlannedDay thisMorning={thisMorning} thisAfternoon={thisAfternoon} />
         </View>
         <View title="Day Card" style={styles.dayContainer}>
-          {plannedDay}
+          <PlannedDay thisMorning={thisMorning} thisAfternoon={thisAfternoon} />
         </View>
         <View title="Day Card" style={styles.dayContainer}>
-          {plannedDay}
+          <PlannedDay thisMorning={thisMorning} thisAfternoon={thisAfternoon} />
         </View>
         <View title="Day Card" style={styles.dayContainer}>
-          {plannedDay}
+          <PlannedDay thisMorning={thisMorning} thisAfternoon={thisAfternoon} />
         </View>
       </ScrollView>
       <View style={styles.nextContainer}>
