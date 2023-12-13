@@ -15,6 +15,7 @@ export default function ModalSlot(props) {
   const selectActivity = () => {
     modalActRef.current = props.modalActivity;
     props.switchActivity(modalActRef.current);
+    props.saveSwitch();
   };
 
   return (

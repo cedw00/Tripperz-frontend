@@ -9,23 +9,48 @@ import {
   ScrollView,
 } from "react-native";
 import { useSelector, useDispatch } from "react-redux";
-import { updateTempActiv, switchFunction } from "../reducers/activ";
+import {
+  switchMorningActivity,
+  switchAfternoonActivity,
+  updateActivString
+} from "../reducers/activ";
 import ModalSlot from "./ModalSlot";
 
 export default function Slot(props) {
   const dispatch = useDispatch();
   const activities = useSelector((state) => state.activ.value);
+  const thisMorning = useSelector((state) => state.activ.morningActiv);
+  const thisAfternoon = useSelector((state) => state.activ.afternoonActiv);
+  const activString = useSelector((state) => state.activ.tempActivString);
   const [modalVisible, setModalVisible] = useState(false);
   const [slotActivity, setSlotActivity] = useState(props.activity);
+  const [updatedMorning, setUpdatedMorning] = useState([]);
+  const [updateAfternoon, setUpdatedAfternoon] = useState([]);
 
   // INVERSE DATA FLOW MODALACTIVITY SWITCH
+
   const switchActivity = (act) => {
     console.log(`SWITCH : Switching ${slotActivity} with =>`, act);
-    if (act) {
-      setSlotActivity(act);
-      dispatch(switchFunction(act))
-    }
+
+    setSlotActivity(act);
+    //dispatch(updateActivString(props.activity));
+    dispatch(updateActivString(act));
+    console.log("SLOT => String in switch activity", activString);
   };
+
+  const saveSwitch = () => {
+    const foundInMorning = thisMorning.find((e) => e === props.activity);
+    const foundInAfternoon = thisAfternoon.find((e) => e === props.activity);
+    if (foundInMorning) {
+      console.log("SLOT => String in foundmorning", activString);
+      dispatch(switchMorningActivity(slotActivity));
+      console.log("SLOT => This Morning", thisMorning);
+    } else if (foundInAfternoon) {
+      console.log("SLOT => String in foundafternoon", activString);
+      dispatch(switchAfternoonActivity(slotActivity));
+      console.log("SLOT => This Afternoon", thisAfternoon);
+    }
+  }
 
   // MAPPING MODALACTIVITY
   const modalActivities = activities.map((data, index) => {
@@ -35,6 +60,7 @@ export default function Slot(props) {
           key={index}
           modalActivity={data}
           switchActivity={switchActivity}
+          saveSwitch={saveSwitch}
         />
       </Pressable>
     );
