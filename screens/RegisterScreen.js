@@ -4,8 +4,9 @@ import CheckBox from 'expo-checkbox';
 import { useState } from 'react';
 import { useDispatch } from 'react-redux'
 import { getToken } from '../reducers/user';
+import Constants from 'expo-constants';
 
-const backend = '192.168.10.134'
+const backend = '192.168.10.130'
 
 export default function RegisterScreen({ navigation }) {
   const dispatch = useDispatch();

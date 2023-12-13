@@ -32,7 +32,7 @@ const foodData = [
   { label: 'Vegan', value: '5' },
 ];
 
-const backend = '192.168.10.134'
+const backend = '192.168.10.130'
 
 export default function SetProfileScreen({ navigation }) {
   const dispatch = useDispatch();
