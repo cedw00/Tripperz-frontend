@@ -9,6 +9,7 @@ import {
   updateTempActiv,
   updateMorningValue,
   updateAfternoonValue,
+  updatePlannedActivList
 } from "../reducers/activ";
 
 export default function Day(props) {
@@ -328,26 +329,29 @@ export default function Day(props) {
   const [afternoon, setAfternoon] = useState([]);
   let day = [];
   let altDay = [];
+  const [card, setCard] = useState([]);
   const [morningSize, setMorningSize] = useState(4);
   const [afternoonSize, setAfternoonSize] = useState(8);
   const activities = useSelector((state) => state.activ.value);
   const tempActiv = useSelector((state) => state.activ.tempActivString);
+  const tempActivities = useSelector((state) => state.activ.tempActivities);
+  const plannedActivities = useSelector((state) => state.activ.plannedValue);
   const dispatch = useDispatch();
 
   // INVERSE DATA FLOW MODALACTIVITY SWITCH
      const switchActInParent = () => {
   //     const actFoundInMorning = morning.find((e) => e === tempActiv);
   //     const actFoundInAfternoon = afternoon.find((e) => e === tempActiv);
-        const actFound = activities.find((e) => e === tempActiv);
-      if (actFound) {
-        altDay.push(activities);
-        let activityToSwitch = altDay.indexOf(actFound);
-         const newActiv = altDay.splice(activityToSwitch, 1, tempActiv);
-         console.log(`ACTIV SWITCH : Switching ${actFound} with =>`, tempActiv);
-         return newActiv;
-       } else {
-     return activities;
-   }
+  //       const actFound = activities.find((e) => e === tempActiv);
+  //     if (actFound) {
+  //       altDay.push(activities);
+  //       let activityToSwitch = altDay.indexOf(actFound);
+  //        const newActiv = altDay.splice(activityToSwitch, 1, tempActiv);
+  //        console.log(`ACTIV SWITCH : Switching ${actFound} with =>`, tempActiv);
+  //        dispatch(updatePlannedActivList(newActiv));
+  //      } else {
+  //       dispatch(updatePlannedActivList(activities));
+  //  }
   //
   //
   //
@@ -370,15 +374,20 @@ export default function Day(props) {
   //     }
      };
 
+     const selectSwitch = () => {
+      console.log('SWIIIITCH THAT')
+     }
+
   const loadActivities = () => {
     props.stockActivities();
   };
 
-  useEffect(() => {
-    return () => {
-      loadActivities();
-    };
-  }, []);
+  // useEffect(() => {
+  //   return () => {
+  //     loadActivities();
+  //     selectSwitch();
+  //   };
+  // }, []);
 
   useEffect(() => {
     const uniqueActivities = new Set();
@@ -395,7 +404,8 @@ export default function Day(props) {
     }
 
     dispatch(updateActivList(Array.from(uniqueActivities)));
-    console.log("DAY => activities", activities);
+    // console.log("DAY => activities", activities);
+    dispatch(updateTempActiv(activities));
   }, []);
 
   useEffect(() => {
@@ -403,26 +413,37 @@ export default function Day(props) {
       day.push(data);
       return <Slot activity={data} key={index} />;
     });
-    console.log("DAY => Activities Length", activities.length);
+    setCard(prevCard => [...prevCard, ...cardActivities]);
+    // console.log("DAY => stateCARD", card);
 
-    console.log("DAY => cardContent", cardActivities);
+    // console.log("DAY => Activities Length", activities.length);
 
-    console.log("DAY => day", day);
+    // console.log("DAY => cardContent", cardActivities);
+
+    // console.log("DAY => day", day);
 
     const newMorning = cardActivities.slice(0, morningSize);
-    setMorning(newMorning);
+    // console.log("DAY => newMorning", newMorning);
+    //setMorning(newMorning);
     dispatch(updateMorningValue(morningSize));
 
     const newAfternoon = cardActivities.slice(4, afternoonSize);
-    setAfternoon(newAfternoon);
+    // console.log("DAY => newAfternoon", newAfternoon);
+    //setAfternoon(newAfternoon);
     dispatch(updateAfternoonValue(afternoonSize));
 
-    console.log("DAY => morning", morning);
-    console.log("DAY => afternoon", afternoon);
-    console.log("morningSize :", morningSize, "afternoonSize :", afternoonSize);
+    // console.log("morningSize :", morningSize, "afternoonSize :", afternoonSize);
 
     dispatch(updateTempActiv(day));
-  }, [activities, morningSize, afternoonSize]);
+    //console.log("DAY => TempActivities", tempActivities);
+    loadActivities(); // CALLED FUNC TO RELOAD
+
+    setMorning(newMorning);
+    setAfternoon(newAfternoon);
+
+    // console.log("DAY => morning", morning);
+    // console.log("DAY => afternoon", afternoon);
+  }, [morningSize, afternoonSize]);
 
   const moreMorningActivity = () => {
     setMorningSize(morningSize + 1);

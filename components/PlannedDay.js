@@ -6,14 +6,13 @@ import { useSelector } from "react-redux";
 export default function PlannedDay(props) {
   const [morning, setMorning] = useState([]);
   const [afternoon, setAfternoon] = useState([]);
-  //   const activities = useSelector((state) => state.activ.value);
-  //   const cardActivities = useSelector((state) => state.activ.cardActiv);
+
   const confirmedMorning = useSelector((state) => state.activ.morningActiv);
   const confirmedAfternoon = useSelector((state) => state.activ.afternoonActiv);
   const tempActivities = useSelector((state) => state.activ.tempActivities);
 
   useEffect(() => {
-    const morningActivities = props.thisMorning.map((data, index) => {
+        const morningActivities = props.thisMorning.map((data, index) => {
       return <PlannedSlot activity={data} key={index} />;
     });
     setMorning(morningActivities);
@@ -23,14 +22,14 @@ export default function PlannedDay(props) {
     });
     setAfternoon(afternoonActivities);
 
-    console.log("PLANNED DAY => morning", morningActivities);
-    console.log("PLANNED DAY => afternoon", afternoonActivities);
-    console.log(
-      "PLANNED DAY => confMorn :",
-      confirmedMorning,
-      "confAfter :",
-      confirmedAfternoon
-    );
+    // console.log("PLANNED DAY => morning", morningActivities);
+    // console.log("PLANNED DAY => afternoon", afternoonActivities);
+    // console.log(
+    //   "PLANNED DAY => confMorn :",
+    //   confirmedMorning,
+    //   "confAfter :",
+    //   confirmedAfternoon
+    // );
   }, []);
 
   return (

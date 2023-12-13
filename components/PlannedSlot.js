@@ -4,9 +4,6 @@ import {
   Text,
   View,
 } from "react-native";
-import { useSelector, useDispatch } from "react-redux";
-import { updateTempActiv } from "../reducers/activ";
-import ModalSlot from "./ModalSlot";
 
 export default function PlannedSlot(props) {
 

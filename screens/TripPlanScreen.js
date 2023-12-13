@@ -19,12 +19,14 @@ export default function TripPlanScreen({ navigation }) {
   const [day, setDay] = useState([]);
   const cardActiv = useSelector((state) => state.activ.cardActiv);
   const tempActivities = useSelector((state) => state.activ.tempActivities);
+  const thisMorning = useSelector((state) => state.activ.morningActiv);
+  const thisAfternoon = useSelector((state) => state.activ.afternoonActiv);
   const sizeOfMorning = useSelector((state) => state.activ.morningValue);
   const sizeOfAfternoon = useSelector((state) => state.activ.afternoonValue);
   const dispatch = useDispatch();
 
-  console.log("TPS => stockAct", tempActivities);
-  console.log("TPS => sizes", sizeOfMorning, sizeOfAfternoon)
+  // console.log("TPS => stockAct", tempActivities);
+  // console.log("TPS => sizes", sizeOfMorning, sizeOfAfternoon)
   
   const myMorning = tempActivities.slice(0, sizeOfMorning);
   const myAfternoon = tempActivities.slice(4, sizeOfAfternoon);
@@ -36,8 +38,8 @@ export default function TripPlanScreen({ navigation }) {
 
   useEffect((i) => {
     setDay(<Day key={i} stockActivities={stockActivities}/>);
-    console.log("TPS => day", day);
-    console.log("TPS => day", tempActivities);
+    // console.log("TPS => day", day);
+    // console.log("TPS => tempActivities", tempActivities);
   }, []);
 
   return (
