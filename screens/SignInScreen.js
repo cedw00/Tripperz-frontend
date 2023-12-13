@@ -4,7 +4,7 @@ import { useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { updateUser, updateProfile, getToken } from '../reducers/user';
 
-const backend = '192.168.10.134'
+const backend = '192.168.10.130'
 
 export default function SignInScreen({ navigation }) {
   const dispatch = useDispatch();
