@@ -97,7 +97,7 @@ const styles = StyleSheet.create({
     alignItems: 'center',
   },
   register: {
-    color: '#818181',
+    color: '#000000',
     fontWeight: 'bold',
     fontSize: 16
   },
