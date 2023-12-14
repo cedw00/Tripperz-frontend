@@ -8,22 +8,27 @@ import {
   Pressable,
   ScrollView,
 } from "react-native";
+import { switchMorningActivity, updateActivString } from "../reducers/activ";
+import { useSelector, useDispatch } from "react-redux";
 
 export default function ModalSlot(props) {
-    const modalActRef = useRef("");
+  const activString = useSelector((state) => state.activ.tempActivString);
+
+  const dispatch = useDispatch();
 
   const selectActivity = () => {
-    modalActRef.current = props.modalActivity;
-    props.switchActivity(modalActRef.current);
+    dispatch(updateActivString(props.modalActivity))
   };
 
-  return (
+ console.log("activString", activString);
+ 
+ return (
     <View style={styles.cont}>
       <Pressable onPress={() => selectActivity()}>
         <View style={styles.slotContainer}>
           <View style={styles.slotContent} title="Slot">
             <Text style={styles.text} title="Activity">
-            {props.modalActivity || 'No Activity'}
+            {props.modalActivity}
             </Text>
           </View>
         </View>

@@ -10,21 +10,19 @@ import {
 } from "react-native";
 import Day from "../components/Day";
 import {
-  updateCardActiv,
   updateMorningActiv,
   updateAfternoonActiv,
+  nullifyDuration
 } from "../reducers/activ";
 
 export default function TripPlanScreen({ navigation }) {
-  const [day, setDay] = useState([]);
-  const cardActiv = useSelector((state) => state.activ.cardActiv);
+  const activities = useSelector((state) => state.activ.value);
   const tempActivities = useSelector((state) => state.activ.tempActivities);
   const sizeOfMorning = useSelector((state) => state.activ.morningValue);
   const sizeOfAfternoon = useSelector((state) => state.activ.afternoonValue);
-  const dispatch = useDispatch();
+  const tripLength = useSelector((state) => state.activ.tripDuration);
 
-  console.log("TPS => stockAct", tempActivities);
-  console.log("TPS => sizes", sizeOfMorning, sizeOfAfternoon)
+  const dispatch = useDispatch();
   
   const myMorning = tempActivities.slice(0, sizeOfMorning);
   const myAfternoon = tempActivities.slice(4, sizeOfAfternoon);
@@ -34,11 +32,11 @@ export default function TripPlanScreen({ navigation }) {
     dispatch(updateAfternoonActiv(myAfternoon));
   };
 
-  useEffect((i) => {
-    setDay(<Day key={i} stockActivities={stockActivities}/>);
-    console.log("TPS => day", day);
-    console.log("TPS => day", tempActivities);
-  }, []);
+  const durationToNull = () => {
+    dispatch(nullifyDuration());
+  };
+  
+  console.log("TPS => day", activities);
 
   return (
     <View style={styles.planContainer}>
@@ -53,19 +51,19 @@ export default function TripPlanScreen({ navigation }) {
       </View>
       <ScrollView>
         <View title="Day Card" style={styles.dayContainer}>
-          {day}
+          <Day stockActivities={stockActivities}/>
         </View>
         <View title="Day Card" style={styles.dayContainer}>
-          {day}
+          <Day stockActivities={stockActivities}/>
         </View>
         <View title="Day Card" style={styles.dayContainer}>
-          {day}
+          <Day stockActivities={stockActivities}/>
         </View>
         <View title="Day Card" style={styles.dayContainer}>
-          {day}
+          <Day stockActivities={stockActivities}/>
         </View>
         <View title="Day Card" style={styles.dayContainer}>
-          {day}
+          <Day stockActivities={stockActivities}/>
         </View>
       </ScrollView>
       <View style={styles.nextContainer}>
@@ -78,7 +76,7 @@ export default function TripPlanScreen({ navigation }) {
             <Text style={{ color: "white" }}>CONFIRM</Text>
           </View>
         </Pressable>
-        <Pressable onPress={() => navigation.navigate("Result")}>
+        <Pressable onPress={() => {durationToNull(), navigation.navigate("Result")}}>
           <View style={styles.cancel}>
             <Text style={{ color: "black" }}>CANCEL</Text>
           </View>

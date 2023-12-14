@@ -9,36 +9,47 @@ import {
   ScrollView,
 } from "react-native";
 import { useSelector, useDispatch } from "react-redux";
-import { updateTempActiv, switchFunction } from "../reducers/activ";
+import { updateActivToSwitch, switchingActivity } from "../reducers/activ";
 import ModalSlot from "./ModalSlot";
 
 export default function Slot(props) {
-  const dispatch = useDispatch();
   const activities = useSelector((state) => state.activ.value);
+  const activToChange = useSelector((state) => state.activ.activToSwitch);
+  const tempActivSwitch = useSelector((state) => state.activ.tempActivString);
+
   const [modalVisible, setModalVisible] = useState(false);
   const [slotActivity, setSlotActivity] = useState(props.activity);
 
-  // INVERSE DATA FLOW MODALACTIVITY SWITCH
-  const switchActivity = (act) => {
-    console.log(`SWITCH : Switching ${slotActivity} with =>`, act);
-    if (act) {
-      setSlotActivity(act);
-      dispatch(switchFunction(act))
-    }
-  };
+  const dispatch = useDispatch();
 
   // MAPPING MODALACTIVITY
   const modalActivities = activities.map((data, index) => {
     return (
       <Pressable key={index}>
-        <ModalSlot
-          key={index}
-          modalActivity={data}
-          switchActivity={switchActivity}
-        />
+        <ModalSlot key={index} modalActivity={data} />
       </Pressable>
     );
   });
+
+  // FUNCTION SAVING THE VALUE OF PROPS.ACTIVITY IN REDUX (ACTIVTOSWITCH)
+  const prepareSwitch = () => {
+    console.log("This activity might change", props.activity);
+    dispatch(updateActivToSwitch(props.activity));
+    if (slotActivity !== props.activity) {
+      setSlotActivity(props.activity);
+    }
+  };
+
+  const executeSwitch = () => {
+    console.log(
+      "This activity",
+      activToChange,
+      "switched with",
+      tempActivSwitch
+    );
+    dispatch(switchingActivity());
+    setSlotActivity(tempActivSwitch);
+  };
 
   return (
     <View style={styles.cont}>
@@ -62,7 +73,9 @@ export default function Slot(props) {
               </ScrollView>
               <Pressable
                 style={[styles.button, styles.buttonClose]}
-                onPress={() => setModalVisible(!modalVisible)}
+                onPress={() => {
+                  setModalVisible(!modalVisible), executeSwitch();
+                }}
               >
                 <Text style={styles.textStyle}>Hide Modal</Text>
               </Pressable>
@@ -71,7 +84,11 @@ export default function Slot(props) {
         </Modal>
       </View>
 
-      <Pressable onPress={() => setModalVisible(true)}>
+      <Pressable
+        onPress={() => {
+          setModalVisible(true), prepareSwitch();
+        }}
+      >
         <View style={styles.slotContainer}>
           <View style={styles.slotContent} title="Slot">
             <Text style={styles.text} title="Activity" name={props.activity}>

@@ -10,25 +10,16 @@ import {
   TextInput,
 } from "react-native";
 import { useSelector, useDispatch } from "react-redux";
-import Day from "../components/Day";
 import PlannedDay from "../components/PlannedDay";
 import { updateTripperList } from "../reducers/tripper";
 
 export default function TripPlanScreen({ navigation }) {
-  const [plannedDay, setPlannedDay] = useState([]);
   const [modalVisible, setModalVisible] = useState(false);
   const [otherTripperz, setOtherTripperz] = useState("");
-  const cardActiv = useSelector((state) => state.activ.cardActiv);
-  const thisMorning = useSelector((state) => state.activ.morningActiv);
-  const thisAfternoon = useSelector((state) => state.activ.afternoonActiv);
 
-  const dispatch = useDispatch();
   const tripperz = useSelector((state) => state.tripper.value);
 
-  useEffect((i) => {
-    setPlannedDay(<PlannedDay key={i} thisMorning={thisMorning} thisAfternoon={thisAfternoon} />);
-
-  }, []);
+  const dispatch = useDispatch();
 
   const handleTextChange = (newText) => {
     setOtherTripperz("  @" + newText);
@@ -103,19 +94,19 @@ export default function TripPlanScreen({ navigation }) {
       </View>
       <ScrollView>
         <View title="Day Card" style={styles.dayContainer}>
-          {plannedDay}
+        <PlannedDay />
         </View>
         <View title="Day Card" style={styles.dayContainer}>
-          {plannedDay}
+        <PlannedDay />
         </View>
         <View title="Day Card" style={styles.dayContainer}>
-          {plannedDay}
+          <PlannedDay />
         </View>
         <View title="Day Card" style={styles.dayContainer}>
-          {plannedDay}
+          <PlannedDay />
         </View>
         <View title="Day Card" style={styles.dayContainer}>
-          {plannedDay}
+          <PlannedDay />
         </View>
       </ScrollView>
       <View style={styles.nextContainer}>
