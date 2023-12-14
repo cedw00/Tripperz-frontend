@@ -30,12 +30,19 @@ export default function TripPlanScreen({ navigation }) {
 
   useEffect(() => {
     const tempArray = [];
+    const date = moment(start, "DDMMYYYY").toDate();
+    const day = date.getDate();
+    const month = date.getMonth();
+    const year = date.getFullYear();
     for (let i = 0; i < duration + 1; i++) {
-      const date = moment(start, "DDMMYYYY").toDate();
+      const newDate = new Date();
+      newDate.setDate(day + i)
+      newDate.setMonth(newDate.getMonth(), day + i);
+      newDate.setFullYear(year, month, day + i);
       const obj = {
-        year: date.getFullYear(),
-        month: date.getMonth() + 1,
-        day: date.getDate() + i,
+        year: newDate.getFullYear(),
+        month: newDate.getMonth() + 1,
+        day: newDate.getDate(),
       } 
       tempArray.push(obj);
     }
