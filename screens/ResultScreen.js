@@ -14,7 +14,8 @@ import {
 import React, { useState, useEffect } from 'react';
 import {
   updateActivList,
-  getTripDuration
+  getTripDuration,
+  updateTempActiv
 } from "../reducers/activ";
 import { useDispatch, useSelector } from "react-redux";
 
@@ -431,11 +432,20 @@ export default function ResultScreen({ navigation }) {
       }
     };
     dispatch(updateActivList(Array.from(uniqueActivities)));
+    dispatch(updateTempActiv(Array.from(uniqueActivities)));
     dispatch(getTripDuration()); // RANDOM TRIP DURATION
   };
 
+  const checkItem = (element) => {
+ //console.log('key:', element.key);
+console.log(element.name,'picture:', element.image);
+console.log('name:', element.name);
+
+  };
+
+
   const Item = (item) => (
-    <Pressable onPress={() => handleSearch()}>
+    <Pressable onPress={() => {handleSearch(), checkItem(item)}}>
     <View style={styles.card} key={item.key}>
 
         <Image style={styles.tinyLogo} source={{ uri: item.image }} />

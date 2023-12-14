@@ -10,27 +10,13 @@ import {
 } from "react-native";
 import Day from "../components/Day";
 import {
-  updateMorningActiv,
-  updateAfternoonActiv,
   nullifyDuration
 } from "../reducers/activ";
 
 export default function TripPlanScreen({ navigation }) {
   const activities = useSelector((state) => state.activ.value);
-  const tempActivities = useSelector((state) => state.activ.tempActivities);
-  const sizeOfMorning = useSelector((state) => state.activ.morningValue);
-  const sizeOfAfternoon = useSelector((state) => state.activ.afternoonValue);
-  const tripLength = useSelector((state) => state.activ.tripDuration);
-
-  const dispatch = useDispatch();
   
-  const myMorning = tempActivities.slice(0, sizeOfMorning);
-  const myAfternoon = tempActivities.slice(4, sizeOfAfternoon);
-
-  const stockActivities = () => {
-    dispatch(updateMorningActiv(myMorning));
-    dispatch(updateAfternoonActiv(myAfternoon));
-  };
+  const dispatch = useDispatch();
 
   const durationToNull = () => {
     dispatch(nullifyDuration());
@@ -51,26 +37,24 @@ export default function TripPlanScreen({ navigation }) {
       </View>
       <ScrollView>
         <View title="Day Card" style={styles.dayContainer}>
-          <Day stockActivities={stockActivities}/>
+          <Day />
         </View>
         <View title="Day Card" style={styles.dayContainer}>
-          <Day stockActivities={stockActivities}/>
+          <Day />
         </View>
         <View title="Day Card" style={styles.dayContainer}>
-          <Day stockActivities={stockActivities}/>
+          <Day />
         </View>
         <View title="Day Card" style={styles.dayContainer}>
-          <Day stockActivities={stockActivities}/>
+          <Day />
         </View>
         <View title="Day Card" style={styles.dayContainer}>
-          <Day stockActivities={stockActivities}/>
+          <Day />
         </View>
       </ScrollView>
       <View style={styles.nextContainer}>
         <Pressable
-          onPress={() => {
-            stockActivities(), navigation.navigate("Planning");
-          }}
+          onPress={() => navigation.navigate("Planning")}
         >
           <View style={styles.confirm}>
             <Text style={{ color: "white" }}>CONFIRM</Text>
