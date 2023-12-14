@@ -435,7 +435,7 @@ export default function ResultScreen({ navigation }) {
   };
 
   const Item = (item) => (
-    <Pressable onPress={() => handleSearch()}
+    <Pressable onPress={() => handleSearch()}>
     <View style={styles.card} key={item.key}>
 
       <Image style={styles.tinyLogo} source={{ uri: item.image }} />
