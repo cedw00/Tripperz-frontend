@@ -73,7 +73,7 @@ export default function Day(props) {
   return (
     <View style={styles.container}>
       <View title="Day" style={styles.dayContainer}>
-        <Text style={styles.dayTitle}>Day 1 - 01/01/2024</Text>
+        <Text style={styles.dayTitle}>Day {props.day} - {props.date}</Text>
         <View title="halfDay" style={styles.morning}>
           <Text style={{ fontSize: 18, marginBottom: "2%" }}>Morning</Text>
           <View style={styles.daySlots}>

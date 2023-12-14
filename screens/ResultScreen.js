@@ -449,8 +449,8 @@ console.log('name:', element.name);
   console.log('RS => This might be your next destination:', tripCard);
 
   const Item = (item) => (
-    <Pressable onPress={() => {handleSearch(), checkItem(item)}}>
-    <View style={styles.card} key={item.key}>
+    <Pressable onPress={() => {handleSearch(), checkItem(item)}} key={item.key}>
+    <View style={styles.card}>
 
         <Image style={styles.tinyLogo} source={{ uri: item.image }} />
         <Text style={styles.itemtext}>{item.name}</Text>
