@@ -36,9 +36,19 @@ function CustomDrawerContent(props) {
   );
 }
 
-const DrawerNavigator = (props) => {
+const DrawerNavigator = () => {
   return (
-    <Drawer.Navigator drawerContent={props => <CustomDrawerContent {...props} />} screenOptions={{headerShown: false}}>
+    <Drawer.Navigator drawerContent={props => <CustomDrawerContent {...props} />}
+      screenOptions={({ route }) => ({
+        drawerActiveBackgroundColor: 'gold',
+        drawerInactiveBackgroundColor: '#FFFFFF',
+        drawerLabelStyle: {
+          color: '#000000',
+          fontWeight: 'bold',
+          fontSize: 20,
+        },
+        headerShown: false,
+      })}>
       <Drawer.Screen name="Home" component={HomeScreen} />
       <Drawer.Screen name="Profile" component={ProfileScreen} />
     </Drawer.Navigator>
