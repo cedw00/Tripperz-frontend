@@ -8,6 +8,7 @@ import {
   Image,
   Pressable,
 } from "react-native";
+import moment from 'moment';
 import Day from "../components/Day";
 import {
   updateMorningActiv,
@@ -23,6 +24,23 @@ export default function TripPlanScreen({ navigation }) {
   const tripLength = useSelector((state) => state.activ.tripDuration);
 
   const dispatch = useDispatch();
+
+  const { duration, start } = useSelector((state) => state.search.value);
+  const [dayDuration, setDayDuration] = useState([]);
+
+  useEffect(() => {
+    const tempArray = [];
+    for (let i = 0; i < duration + 1; i++) {
+      const date = moment(start, "DDMMYYYY").toDate();
+      const obj = {
+        year: date.getFullYear(),
+        month: date.getMonth() + 1,
+        day: date.getDate() + i,
+      }
+      tempArray.push(obj);
+    }
+    setDayDuration(tempArray)
+  }, [])
   
   const myMorning = tempActivities.slice(0, sizeOfMorning);
   const myAfternoon = tempActivities.slice(4, sizeOfAfternoon);
@@ -38,6 +56,15 @@ export default function TripPlanScreen({ navigation }) {
   
   console.log("TPS => day", activities);
 
+  const days = dayDuration.map((data, i) => {
+    const date = `${data.day}/${data.month}/${data.year}`;
+    return (
+      <View key={i} title="Day Card" style={styles.dayContainer}>
+        <Day stockActivities={stockActivities} day={i + 1} date={date}/>
+      </View>
+    )
+  })
+
   return (
     <View style={styles.planContainer}>
       <View style={styles.imageContainer}>
@@ -50,7 +77,7 @@ export default function TripPlanScreen({ navigation }) {
         <Text style={styles.title}>Plan your{"\n"}next Trip</Text>
       </View>
       <ScrollView>
-        <View title="Day Card" style={styles.dayContainer}>
+        {/* <View title="Day Card" style={styles.dayContainer}>
           <Day stockActivities={stockActivities}/>
         </View>
         <View title="Day Card" style={styles.dayContainer}>
@@ -64,7 +91,8 @@ export default function TripPlanScreen({ navigation }) {
         </View>
         <View title="Day Card" style={styles.dayContainer}>
           <Day stockActivities={stockActivities}/>
-        </View>
+        </View> */}
+        {days}
       </ScrollView>
       <View style={styles.nextContainer}>
         <Pressable

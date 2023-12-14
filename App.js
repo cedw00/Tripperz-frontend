@@ -32,7 +32,6 @@ function CustomDrawerContent(props) {
     <DrawerContentScrollView {...props}>
       <DrawerItemList {...props} />
       <DrawerItem label="Message"/>
-      <DrawerItem label="Logout"/>
     </DrawerContentScrollView>
   );
 }

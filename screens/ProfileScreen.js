@@ -47,7 +47,6 @@ export default function ProfileScreen({ navigation }) {
   const [selectedActivities, setSelectedActivities] = useState([]);
   const [selectedFood, setSelectedFood] = useState([]);
   const [date, setDate] = useState(new Date());
-  const [show, setShow] = useState(false);
   const [showModal, setShowModal] = useState(false);
   const [trigger, setTrigger] = useState(false);
 
@@ -60,7 +59,6 @@ export default function ProfileScreen({ navigation }) {
 
   const onChange = (event, selectedDate) => {
     const currentDate = selectedDate;
-    setShow(false);
     setDate(currentDate);
   };
 
@@ -121,8 +119,6 @@ export default function ProfileScreen({ navigation }) {
         </View>
         <View style={styles.form}>
             <View style={styles.show}>
-                <Text style={styles.date}>{date.getDate()}/{date.getMonth() + 1}/{date.getFullYear()}</Text>
-                {show && (
                 <DateTimePicker
                     testID="dateTimePicker"
                     value={date}
@@ -131,10 +127,6 @@ export default function ProfileScreen({ navigation }) {
                     is24Hour={true}
                     onChange={onChange}
                 />
-                )}
-                <TouchableOpacity activeOpacity={0.8} onPress={() => setShow(true)} style={styles.selector}>
-                    <Text style={styles.selectorText}>Select Date</Text>
-                </TouchableOpacity>
             </View>
             <View style={styles.inputContainer}>
                 <Dropdown
@@ -445,13 +437,12 @@ show: {
     flex: 1,
     width: '90%',
     flexDirection: 'row',
-    justifyContent: 'space-around',
+    justifyContent: 'flex-start',
     alignItems: 'center',
     borderStyle: 'solid',
     borderWidth: 1,
     borderColor: 'white',
     borderRadius: 5,
-    paddingLeft: 8,
 },
 date: {
     flex: 1,
