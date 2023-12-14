@@ -17,6 +17,9 @@ import {
   getTripDuration,
   updateTempActiv
 } from "../reducers/activ";
+import {
+  createTripCard
+} from "../reducers/trips";
 import { useDispatch, useSelector } from "react-redux";
 
 import { getRandomActivityByInput } from "../modules/slotMods";
@@ -350,7 +353,8 @@ export default function ResultScreen({ navigation }) {
   const { city } = useSelector((state) => state.search.value)
   const { cityList } = useSelector((state) => state.search.value)
   const { countryList } = useSelector((state) => state.search.value)
-  console.log
+  const tripCard = useSelector((state) => state.trips.cityCard)
+  
   const [itemsToDisplay, setItemsToDisplay] = useState([])
 
   console.log('country', country)
@@ -440,9 +444,9 @@ export default function ResultScreen({ navigation }) {
  //console.log('key:', element.key);
 console.log(element.name,'picture:', element.image);
 console.log('name:', element.name);
-
+    dispatch(createTripCard(element))
   };
-
+  console.log('RS => This might be your next destination:', tripCard);
 
   const Item = (item) => (
     <Pressable onPress={() => {handleSearch(), checkItem(item)}}>

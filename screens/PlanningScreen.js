@@ -12,12 +12,16 @@ import {
 import { useSelector, useDispatch } from "react-redux";
 import PlannedDay from "../components/PlannedDay";
 import { updateTripperList } from "../reducers/tripper";
-
+import {
+  updateNextTrips
+} from "../reducers/trips";
 export default function TripPlanScreen({ navigation }) {
   const [modalVisible, setModalVisible] = useState(false);
   const [otherTripperz, setOtherTripperz] = useState("");
 
   const tripperz = useSelector((state) => state.tripper.value);
+  const myTrips = useSelector((state) => state.trips.value);
+  const tripCard = useSelector((state) => state.trips.cityCard);
 
   const dispatch = useDispatch();
 
@@ -29,6 +33,13 @@ export default function TripPlanScreen({ navigation }) {
     dispatch(updateTripperList(otherTripperz));
     setOtherTripperz("");
   };
+
+  console.log('PS => This might be your next destination:', tripCard);
+  const confirmItem = () => {
+       dispatch(updateNextTrips())
+     };
+  console.log('PS => These are your next destination:', myTrips);
+
 
   return (
     <View style={styles.planContainer}>
@@ -110,7 +121,7 @@ export default function TripPlanScreen({ navigation }) {
         </View>
       </ScrollView>
       <View style={styles.nextContainer}>
-        <Pressable onPress={() => navigation.navigate("Planning")}>
+        <Pressable onPress={() => {navigation.navigate("DrawerNavigator", { screen: 'Trips' }), confirmItem()}}>
           <View style={styles.confirm}>
             <Text style={{ color: "white" }}>CONFIRM</Text>
           </View>
