@@ -33,6 +33,7 @@ const foodData = [
   { label: 'Vegan', value: '5' },
 ];
 
+
 const backend = Constants.expoConfig.hostUri.split(`:`)[0]
 
 export default function SetProfileScreen({ navigation }) {

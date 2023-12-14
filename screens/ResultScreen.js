@@ -7,16 +7,21 @@ import {
   FlatList,
   SafeAreaView,
   Item,
+  Image,
   Pressable,
 } from "react-native";
-import React, { useState, useEffect } from "react";
+
+import React, { useState, useEffect } from 'react';
 import {
   updateActivList,
   getTripDuration
 } from "../reducers/activ";
 import { useDispatch, useSelector } from "react-redux";
-import SelectedList from "../components/HomePage/Destinations/SelectedList";
+
 import { getRandomActivityByInput } from "../modules/slotMods";
+import HomeScreen from './HomeScreen';
+import Destinations from '../components/HomePage/Destinations/Destinations';
+
 
 export default function ResultScreen({ navigation }) {
   const activitiesList = [
@@ -332,19 +337,84 @@ export default function ResultScreen({ navigation }) {
   const allActivNames = "shopping restaurants culturePlaces landscapes sportActivities";
   const dispatch = useDispatch();
   
-  const API_URL = "https://api.unsplash.com/search/photos";
-  const API_KEY = "fvgvM9uXT8ssXYBvJizIKG51rXub6fRglrJYde76qXY";
+  const API_URL = 'https://api.unsplash.com/search/photos';
+  const API_KEY = 'fvgvM9uXT8ssXYBvJizIKG51rXub6fRglrJYde76qXY'
 
-  const countries = [
-    { id: 1, name: "france", photo: "IMG" },
-    { id: 2, name: "france", photo: "IMG" },
-    { id: 3, name: "france", photo: "IMG" },
-    { id: 4, name: "france", photo: "IMG" },
-    { id: 5, name: "france", photo: "IMG" },
-  ];
+  // const country = 'France';
+  // const city = ['paris', 'rome', 'tunis'];
 
-  const [country, setCountry] = useState(null);
-  const [city, setCity] = useState(null);
+  const [searchCountry, setSearchCountry] = useState('');
+
+  const { country } = useSelector((state) => state.search.value)
+  const { city } = useSelector((state) => state.search.value)
+  const { cityList } = useSelector((state) => state.search.value)
+  const { countryList } = useSelector((state) => state.search.value)
+  console.log
+  const [itemsToDisplay, setItemsToDisplay] = useState([])
+
+  console.log('country', country)
+  console.log('city list', cityList)
+  useEffect(() => {
+    const fetchData = async () => {
+      switch (country.length) {
+
+        case 0:
+
+          let newItemsToDisplay = [];
+
+          for (let i = 0; i < 5; i++) {
+
+            fetch(`https://api.unsplash.com/search/photos?query=${countryList[i].value}&page=1&per_page=1&client_id=${API_KEY}`)
+              .then(response => response.json())
+              .then(data => {
+
+
+                const item = { name: countryList[i].value, image: data.results[0].urls.raw, key: data.results[0].id };
+                newItemsToDisplay.push(item);
+              }).then(() => {
+                setItemsToDisplay(newItemsToDisplay);
+              })
+          }
+          break;
+
+
+        default:
+          newItemsToDisplay = [];
+          if (city === null) {
+
+            for (let i = 0; i < cityList[i].length; i++) {
+              console.log('city lis de i', cityList[i])
+
+              fetch(`https://api.unsplash.com/search/photos?query=${cityList[i]}&page=1&per_page=1&client_id=${API_KEY}`)
+                .then(response => response.json())
+                .then(data => {
+                  console.log('data', data.results[0].urls.raw);
+
+                  const item = { name: cityList[i], image: data.results[0].urls.raw, key: data.results[0].id };
+                  newItemsToDisplay.push(item);
+                }).then(() => {
+                  setItemsToDisplay(newItemsToDisplay);
+                })
+            }
+          } else {
+            fetch(`https://api.unsplash.com/search/photos?query=${city}&page=1&per_page=1&client_id=${API_KEY}`)
+              .then(response => response.json())
+              .then(data => {
+                console.log('data', data.results[0].urls.raw);
+
+                const item = { name: city, image: data.results[0].urls.raw, key: data.results[0].id };
+                newItemsToDisplay.push(item);
+              }).then(() => {
+                setItemsToDisplay(newItemsToDisplay);
+              })
+          }
+
+          break;
+      }
+    };
+
+    fetchData();
+  }, [country, city, countryList, cityList]);
 
   const handleSearch = () => {
     navigation.navigate('TripPlan');
@@ -365,141 +435,195 @@ export default function ResultScreen({ navigation }) {
   };
 
   const Item = (item) => (
-    <Pressable onPress={() => handleSearch()}>
-      <View style={styles.card}>
-        <Text>{item.name}</Text>
-      </View>
-    </Pressable>
-  );
+    <Pressable onPress={() => handleSearch()}
+    <View style={styles.card} key={item.key}>
 
-  // const onCountrySelect = (data) => {
-  //     console.log('country coming from select list',data)
-  // }
+      <Image style={styles.tinyLogo} source={{ uri: item.image }} />
+      <Text style={styles.itemtext}>{item.name}</Text>
+
+
+    </View>
+</Pressable>
+  )
+  //ON CLICK ACTIVITIES
+
+  const handleClickActivities = () => {
+    navigation.navigate('Home')
+  }
+
+  //ON CLICK Destinations
+
+  const handleClickDestination = () => {
+    navigation.navigate('Home')
+
+
+  };
 
   return (
+
     <SafeAreaView>
       <View style={styles.container}>
+
         <View style={styles.header}>
+
           <Text style={styles.title}>Trippers</Text>
 
           <View style={styles.buttons}>
-            <TouchableOpacity
-              onPress={() => handleClickActivities()}
-              style={styles.activities}
-              activeOpacity={0.8}
-            >
-              <Text style={styles.textButton}>Activités</Text>
+
+            <TouchableOpacity onPress={() => handleClickActivities()} style={styles.activities} activeOpacity={0.8}>
+              <Text style={styles.textButton}>Activities</Text>
             </TouchableOpacity>
 
-            <TouchableOpacity
-              onPress={() => handleClickDestination()}
-              style={styles.destination}
-              activeOpacity={0.8}
-            >
+            <TouchableOpacity onPress={() => handleClickDestination()} style={styles.destination} activeOpacity={0.8}>
               <Text style={styles.textButton}>Destinations</Text>
             </TouchableOpacity>
+
           </View>
+
         </View>
         <View style={styles.body}>
           <FlatList
             style={styles.flatlist}
-            data={countries}
-            renderItem={({ item }) => <Item name={item.name} />}
-            keyExtractor={(item) => item.id}
-            initialNumToRender={3}
+            data={itemsToDisplay}
+            renderItem={({ item }) => <Item name={item.name} image={item.image} id={item.key} />}
+            keyExtractor={item => item.id}
+
           />
+
         </View>
+
       </View>
     </SafeAreaView>
+
+
   );
-}
+};
+
 
 const styles = StyleSheet.create({
   container: {
-    position: "absolute",
-    backgroundColor:
-      "linear-gradient(180deg, #067188 0%, rgba(79, 141, 162, 0.744948) 99.99%, rgba(174, 179, 197, 0.41) 100%)",
-    filter: "blur(2px)",
-    width: Dimensions.get("screen").width,
-    height: Dimensions.get("screen").height,
-  },
+      position: 'absolute',
+      filter: 'blur(2px)',
+      width: Dimensions.get('screen').width,
+      height: Dimensions.get('screen').height,
+      backgroundColor: 'transparent',
+      overflow: 'hidden',
 
+
+  },
+  linearGradient: {
+      flex: 1,
+      borderRadius: 20,
+  },
   header: {
-    justifyContent: "center",
-    alignItems: "center",
-    alignSelf: "center",
-    height: "20%",
-    width: "100%",
-    backgroundColor:
-      "linear-gradient(180deg, rgba(244, 244, 244, 0.0975) 82.29%, rgba(25, 25, 25, 0.25) 100%)",
-  },
 
+      justifyContent: "center",
+      alignItems: 'center',
+      alignSelf: 'center',
+      height: '20%',
+      width: '100%',
+      backgroundColor: 'linear-gradient(180deg, rgba(244, 244, 244, 0.0975) 82.29%, rgba(25, 25, 25, 0.25) 100%)',
+
+
+  },
   title: {
-    fontWeight: "bold",
+    fontWeight: 'bold',
     fontSize: 48,
-    color: "blue",
-    paddingLeft: "15%",
-    paddingRight: "15%",
-    bottom: "-25%",
-  },
-  buttons: {
-    flexDirection: "row",
-    paddingTop: "15%",
-    top: 6,
-  },
+    color: 'blue',
+    paddingLeft: '15%',
+    paddingRight: '15%',
+    bottom: '-25%',
 
-  activities: {
-    boxSizing: "border-box",
+
+},
+buttons: {
+    flexDirection: 'row',
+    paddingTop: '15%',
+    top: 6
+
+},
+
+activities: {
+
+    boxSizing: 'border-box',
     width: 131,
     height: 27,
-    backgroundColor: "linear-gradient(180deg, #D9D9D9, 0%",
-    borderColor: "#D6DBDC",
+    backgroundColor: 'linear-gradient(180deg, #D9D9D9, 0%',
+    borderColor: '#D6DBDC',
     borderRadius: 20,
     borderWidth: 1,
-    marginRight: "5%",
-  },
-  textButton: {
-    fontStyle: "normal",
-    fontWeight: "400",
-    fontSize: 12,
-    lineHeight: 20,
-    display: "flex",
-    alignItems: "center",
-    textAlign: "center",
-    color: "#FFFFFF",
-    textShadowColor: "rgba(0, 0, 0, 0.25)",
-    textShadowOffset: { width: 0, height: 4 },
-    textShadowRadius: 4,
-  },
-  destination: {
-    boxSizing: "border-box",
-    width: 131,
-    height: 27,
-    borderColor: "#D6DBDC",
-    borderRadius: 20,
-    borderWidth: 1,
-    marginLeft: "5%",
-  },
+    marginRight: '5%',
+},
+textButton: {
 
-  body: {
-    justifyContent: "center",
-    alignItems: "center",
-    width: "100%",
-    height: "80%",
-    paddingBottom: "18%",
-  },
-  flatlist: {
-    borderWidth: 1,
-    width: "80%",
-    marginTop: "5%",
-  },
-  card: {
-    alignItems: "center",
-    justifyContent: "center",
-    backgroundColor: "#ffffff",
-    height: 206,
-    borderRadius: 5,
-    borderWidth: 1,
-    marginBottom: "3%",
-  },
-});
+  fontStyle: 'normal',
+  fontWeight: '400',
+  fontSize: 12,
+  lineHeight: 20,
+  display: 'flex',
+  alignItems: 'center',
+  textAlign: 'center',
+  color: '#FFFFFF',
+  textShadowColor: 'rgba(0, 0, 0, 0.25)',
+  textShadowOffset: { width: 0, height: 4 },
+  textShadowRadius: 4,
+
+},
+destination: {
+  boxSizing: 'border-box',
+  width: 131,
+  height: 27,
+  borderColor: '#D6DBDC',
+  borderRadius: 20,
+  borderWidth: 1,
+  marginLeft: '5%'
+},
+body: {
+
+  justifyContent: 'center',
+  alignItems: 'center',
+  width: '100%',
+  height: '80%',
+  paddingBottom: '18%',
+
+
+},
+flatlist: {
+
+  width: '80%',
+  marginTop: '10%',
+
+},
+card: {
+  alignItems: 'center',
+  backgroundColor: '#ffffff',
+  height: 195,
+  borderTopLeftRadius: 10,
+  borderTopRightRadius: 10,
+  overflow: 'hidden',
+  marginBottom: '5%',
+
+},
+tinyLogo: {
+  borderWidth: 1,
+  borderColor: 'transparent',
+  borderRadius: 5,
+  resizeMode: 'center',
+  height: '80%',
+  width: '100%',
+
+
+
+
+},
+itemtext: {
+  width: '100%',
+  height: '20%',
+  textAlignVertical: 'center',
+  paddingLeft: '10%',
+  fontWeight: 'bold',
+  fontSize: 20,
+
+}
+
+})
