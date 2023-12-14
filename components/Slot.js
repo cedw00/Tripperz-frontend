@@ -13,17 +13,17 @@ import { updateActivToSwitch, switchingActivity } from "../reducers/activ";
 import ModalSlot from "./ModalSlot";
 
 export default function Slot(props) {
-  const activities = useSelector((state) => state.activ.value);
+  //const activities = useSelector((state) => state.activ.value);
   const activToChange = useSelector((state) => state.activ.activToSwitch);
   const tempActivSwitch = useSelector((state) => state.activ.tempActivString);
-
+  const modalList = useSelector((state) => state.activ.tempActivities);
   const [modalVisible, setModalVisible] = useState(false);
   const [slotActivity, setSlotActivity] = useState(props.activity);
 
   const dispatch = useDispatch();
 
   // MAPPING MODALACTIVITY
-  const modalActivities = activities.map((data, index) => {
+  const modalActivities = modalList.map((data, index) => {
     return (
       <Pressable key={index}>
         <ModalSlot key={index} modalActivity={data} />
@@ -48,7 +48,12 @@ export default function Slot(props) {
       tempActivSwitch
     );
     dispatch(switchingActivity());
-    setSlotActivity(tempActivSwitch);
+    if (tempActivSwitch !== '') {
+      setSlotActivity(tempActivSwitch);
+    } else {
+      setSlotActivity(props.activity)
+    }
+    
   };
 
   return (

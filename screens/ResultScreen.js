@@ -14,8 +14,12 @@ import {
 import React, { useState, useEffect } from 'react';
 import {
   updateActivList,
-  getTripDuration
+  getTripDuration,
+  updateTempActiv
 } from "../reducers/activ";
+import {
+  createTripCard
+} from "../reducers/trips";
 import { useDispatch, useSelector } from "react-redux";
 
 import { getRandomActivityByInput } from "../modules/slotMods";
@@ -349,7 +353,8 @@ export default function ResultScreen({ navigation }) {
   const { city } = useSelector((state) => state.search.value)
   const { cityList } = useSelector((state) => state.search.value)
   const { countryList } = useSelector((state) => state.search.value)
-  console.log
+  const tripCard = useSelector((state) => state.trips.cityCard)
+  
   const [itemsToDisplay, setItemsToDisplay] = useState([])
 
   console.log('country', country)
@@ -431,12 +436,21 @@ export default function ResultScreen({ navigation }) {
       }
     };
     dispatch(updateActivList(Array.from(uniqueActivities)));
+    dispatch(updateTempActiv(Array.from(uniqueActivities)));
     dispatch(getTripDuration()); // RANDOM TRIP DURATION
   };
 
+  const checkItem = (element) => {
+ //console.log('key:', element.key);
+console.log(element.name,'picture:', element.image);
+console.log('name:', element.name);
+    dispatch(createTripCard(element))
+  };
+  console.log('RS => This might be your next destination:', tripCard);
+
   const Item = (item) => (
-    <Pressable onPress={() => handleSearch()}>
-      <View style={styles.card} key={item.key}>
+    <Pressable onPress={() => {handleSearch(), checkItem(item)}}>
+    <View style={styles.card} key={item.key}>
 
         <Image style={styles.tinyLogo} source={{ uri: item.image }} />
         <Text style={styles.itemtext}>{item.name}</Text>

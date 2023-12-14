@@ -14,9 +14,9 @@ export default function Day(props) {
   const activities = useSelector((state) => state.activ.value);
   const dispatch = useDispatch();
 
-  const loadActivities = () => {
-    props.stockActivities();
-  };
+  // const loadActivities = () => {
+  //   props.stockActivities();
+  // };
 
   const newMorning = activities.slice(0, morningSize);
   const morningActivities = newMorning.map((data, index) => {
@@ -33,7 +33,7 @@ export default function Day(props) {
 
     dispatch(updateAfternoonValue(afternoonSize));
 
-    loadActivities(); // CALLED FUNC TO RELOAD
+    //loadActivities(); // CALLED FUNC TO RELOAD
 
   }, [morningSize, afternoonSize]);
 

@@ -12,6 +12,7 @@ import ResultScreen from "./screens/ResultScreen";
 import TripPlanScreen from "./screens/TripPlanScreen";
 import PlanningScreen from "./screens/PlanningScreen";
 import ProfileScreen from "./screens/ProfileScreen";
+import TripsScreen from "./screens/TripsScreen";
 
 import { Provider } from "react-redux";
 import { configureStore } from "@reduxjs/toolkit";
@@ -19,9 +20,10 @@ import user from "./reducers/user";
 import activ from "./reducers/activ";
 import tripper from "./reducers/tripper";
 import search from './reducers/search';
+import trips from './reducers/trips';
 
 const store = configureStore({
-  reducer: { user, activ, tripper, search },
+  reducer: { user, activ, tripper, search, trips },
 });
 
 const Stack = createNativeStackNavigator();
@@ -42,6 +44,7 @@ const DrawerNavigator = (props) => {
     <Drawer.Navigator drawerContent={props => <CustomDrawerContent {...props} />} screenOptions={{headerShown: false}}>
       <Drawer.Screen name="Home" component={HomeScreen} />
       <Drawer.Screen name="Profile" component={ProfileScreen} />
+      <Stack.Screen name="Trips" component={TripsScreen} />
     </Drawer.Navigator>
   );
 };
@@ -58,8 +61,8 @@ export default function App() {
           <Stack.Screen name="Result" component={ResultScreen} />
           <Stack.Screen name="TripPlan" component={TripPlanScreen} />
           <Stack.Screen name="Planning" component={PlanningScreen} />
+          
           <Stack.Screen name="DrawerNavigator" component={DrawerNavigator} />
-
         </Stack.Navigator>
       </NavigationContainer>
     </Provider>
