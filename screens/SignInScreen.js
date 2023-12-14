@@ -2,7 +2,7 @@ import { StyleSheet, Text, View, Image, ImageBackground, TextInput,
     SafeAreaView, Dimensions, TouchableOpacity, KeyboardAvoidingView } from 'react-native';
 import { useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { updateUser, updateProfile, getToken } from '../reducers/user';
+import { updateUser, updateProfile } from '../reducers/user';
 import Constants from 'expo-constants';
 
 const backend = Constants.expoConfig.hostUri.split(`:`)[0]
@@ -28,7 +28,8 @@ export default function SignInScreen({ navigation }) {
     });
     const data = await response.json();
     if (data.result) {
-      dispatch(getToken(data.token));
+      dispatch(updateUser(data.user))
+      dispatch(updateProfile(data.user))
       return true
     } else {
       setErrorMsg(data.error);
@@ -47,17 +48,7 @@ export default function SignInScreen({ navigation }) {
       setErrorMsg('Invalid email or password');
       setShowError(true)
     } else {
-      fetch(`http://${backend}:3000/users/access/${token}`)
-      .then(response => response.json()).then(data => {
-        if (data.result) {
-          setShowError(false);
-          setEmail('');
-          setPassword('');
-          dispatch(updateUser(data.user))
-          dispatch(updateProfile(data.user))
-          navigation.navigate('DrawerNavigator')
-        }
-      })
+      navigation.navigate('DrawerNavigator')
     }
   }
 
