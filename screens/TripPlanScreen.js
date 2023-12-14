@@ -36,7 +36,7 @@ export default function TripPlanScreen({ navigation }) {
         year: date.getFullYear(),
         month: date.getMonth() + 1,
         day: date.getDate() + i,
-      }
+      } 
       tempArray.push(obj);
     }
     setDayDuration(tempArray)
