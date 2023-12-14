@@ -43,13 +43,13 @@ export default function TripPlanScreen({ navigation }) {
     setDayDuration(tempArray)
   }, [])
   
-  const myMorning = tempActivities.slice(0, sizeOfMorning);
-  const myAfternoon = tempActivities.slice(4, sizeOfAfternoon);
+  // const myMorning = tempActivities.slice(0, sizeOfMorning);
+  // const myAfternoon = tempActivities.slice(4, sizeOfAfternoon);
 
-  const stockActivities = () => {
-    dispatch(updateMorningActiv(myMorning));
-    dispatch(updateAfternoonActiv(myAfternoon));
-  };
+  // const stockActivities = () => {
+  //   dispatch(updateMorningActiv(myMorning));
+  //   dispatch(updateAfternoonActiv(myAfternoon));
+  // };
 
   const durationToNull = () => {
     dispatch(nullifyDuration());
@@ -61,7 +61,7 @@ export default function TripPlanScreen({ navigation }) {
     const date = `${data.day}/${data.month}/${data.year}`;
     return (
       <View key={i} title="Day Card" style={styles.dayContainer}>
-        <Day stockActivities={stockActivities} day={i + 1} date={date}/>
+        <Day day={i + 1} date={date}/>
       </View>
     )
   })
