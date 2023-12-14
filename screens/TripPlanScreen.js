@@ -11,18 +11,12 @@ import {
 import moment from 'moment';
 import Day from "../components/Day";
 import {
-  updateMorningActiv,
-  updateAfternoonActiv,
   nullifyDuration
 } from "../reducers/activ";
 
 export default function TripPlanScreen({ navigation }) {
   const activities = useSelector((state) => state.activ.value);
-  const tempActivities = useSelector((state) => state.activ.tempActivities);
-  const sizeOfMorning = useSelector((state) => state.activ.morningValue);
-  const sizeOfAfternoon = useSelector((state) => state.activ.afternoonValue);
-  const tripLength = useSelector((state) => state.activ.tripDuration);
-
+  
   const dispatch = useDispatch();
 
   const { duration, start } = useSelector((state) => state.search.value);
@@ -88,13 +82,13 @@ export default function TripPlanScreen({ navigation }) {
           <Day stockActivities={stockActivities}/>
         </View>
         <View title="Day Card" style={styles.dayContainer}>
-          <Day stockActivities={stockActivities}/>
+          <Day />
         </View>
         <View title="Day Card" style={styles.dayContainer}>
-          <Day stockActivities={stockActivities}/>
+          <Day />
         </View>
         <View title="Day Card" style={styles.dayContainer}>
-          <Day stockActivities={stockActivities}/>
+          <Day />
         </View>
         <View title="Day Card" style={styles.dayContainer}>
           <Day stockActivities={stockActivities}/>
@@ -103,9 +97,7 @@ export default function TripPlanScreen({ navigation }) {
       </ScrollView>
       <View style={styles.nextContainer}>
         <Pressable
-          onPress={() => {
-            stockActivities(), navigation.navigate("Planning");
-          }}
+          onPress={() => navigation.navigate("Planning")}
         >
           <View style={styles.confirm}>
             <Text style={{ color: "white" }}>CONFIRM</Text>
