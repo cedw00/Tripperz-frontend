@@ -78,21 +78,6 @@ export default function TripPlanScreen({ navigation }) {
         <Text style={styles.title}>Plan your{"\n"}next Trip</Text>
       </View>
       <ScrollView>
-        {/* <View title="Day Card" style={styles.dayContainer}>
-          <Day stockActivities={stockActivities}/>
-        </View>
-        <View title="Day Card" style={styles.dayContainer}>
-          <Day />
-        </View>
-        <View title="Day Card" style={styles.dayContainer}>
-          <Day />
-        </View>
-        <View title="Day Card" style={styles.dayContainer}>
-          <Day />
-        </View>
-        <View title="Day Card" style={styles.dayContainer}>
-          <Day stockActivities={stockActivities}/>
-        </View> */}
         {days}
       </ScrollView>
       <View style={styles.nextContainer}>
