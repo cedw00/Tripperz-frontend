@@ -9,62 +9,47 @@ import {
   ScrollView,
 } from "react-native";
 import { useSelector, useDispatch } from "react-redux";
-import {
-  switchMorningActivity,
-  switchAfternoonActivity,
-  updateActivString
-} from "../reducers/activ";
+import { updateActivToSwitch, switchingActivity } from "../reducers/activ";
 import ModalSlot from "./ModalSlot";
 
 export default function Slot(props) {
-  const dispatch = useDispatch();
   const activities = useSelector((state) => state.activ.value);
-  const thisMorning = useSelector((state) => state.activ.morningActiv);
-  const thisAfternoon = useSelector((state) => state.activ.afternoonActiv);
-  const activString = useSelector((state) => state.activ.tempActivString);
+  const activToChange = useSelector((state) => state.activ.activToSwitch);
+  const tempActivSwitch = useSelector((state) => state.activ.tempActivString);
+
   const [modalVisible, setModalVisible] = useState(false);
   const [slotActivity, setSlotActivity] = useState(props.activity);
-  const [updatedMorning, setUpdatedMorning] = useState([]);
-  const [updateAfternoon, setUpdatedAfternoon] = useState([]);
 
-  // INVERSE DATA FLOW MODALACTIVITY SWITCH
-
-  const switchActivity = (act) => {
-    console.log(`SWITCH : Switching ${slotActivity} with =>`, act);
-
-    setSlotActivity(act);
-    //dispatch(updateActivString(props.activity));
-    dispatch(updateActivString(act));
-    console.log("SLOT => String in switch activity", activString);
-  };
-
-  const saveSwitch = () => {
-    const foundInMorning = thisMorning.find((e) => e === props.activity);
-    const foundInAfternoon = thisAfternoon.find((e) => e === props.activity);
-    if (foundInMorning) {
-      console.log("SLOT => String in foundmorning", activString);
-      dispatch(switchMorningActivity(slotActivity));
-      console.log("SLOT => This Morning", thisMorning);
-    } else if (foundInAfternoon) {
-      console.log("SLOT => String in foundafternoon", activString);
-      dispatch(switchAfternoonActivity(slotActivity));
-      console.log("SLOT => This Afternoon", thisAfternoon);
-    }
-  }
+  const dispatch = useDispatch();
 
   // MAPPING MODALACTIVITY
   const modalActivities = activities.map((data, index) => {
     return (
       <Pressable key={index}>
-        <ModalSlot
-          key={index}
-          modalActivity={data}
-          switchActivity={switchActivity}
-          saveSwitch={saveSwitch}
-        />
+        <ModalSlot key={index} modalActivity={data} />
       </Pressable>
     );
   });
+
+  // FUNCTION SAVING THE VALUE OF PROPS.ACTIVITY IN REDUX (ACTIVTOSWITCH)
+  const prepareSwitch = () => {
+    console.log("This activity might change", props.activity);
+    dispatch(updateActivToSwitch(props.activity));
+    if (slotActivity !== props.activity) {
+      setSlotActivity(props.activity);
+    }
+  };
+
+  const executeSwitch = () => {
+    console.log(
+      "This activity",
+      activToChange,
+      "switched with",
+      tempActivSwitch
+    );
+    dispatch(switchingActivity());
+    setSlotActivity(tempActivSwitch);
+  };
 
   return (
     <View style={styles.cont}>
@@ -88,7 +73,9 @@ export default function Slot(props) {
               </ScrollView>
               <Pressable
                 style={[styles.button, styles.buttonClose]}
-                onPress={() => setModalVisible(!modalVisible)}
+                onPress={() => {
+                  setModalVisible(!modalVisible), executeSwitch();
+                }}
               >
                 <Text style={styles.textStyle}>Hide Modal</Text>
               </Pressable>
@@ -97,7 +84,11 @@ export default function Slot(props) {
         </Modal>
       </View>
 
-      <Pressable onPress={() => setModalVisible(true)}>
+      <Pressable
+        onPress={() => {
+          setModalVisible(true), prepareSwitch();
+        }}
+      >
         <View style={styles.slotContainer}>
           <View style={styles.slotContent} title="Slot">
             <Text style={styles.text} title="Activity" name={props.activity}>
