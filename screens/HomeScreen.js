@@ -4,13 +4,10 @@ import Destination from '../components/HomePage/Destinations/Destinations'
 import { useState } from 'react';
 import Footer from '../components/Footer';
 import { LinearGradient } from 'expo-linear-gradient';
+import { useSelector } from "react-redux";
 
 
 export default function HomeScreen({ navigation }) {
-
-  const handleNext = () => {
-    navigation.navigate('TripPlan')
-  }
 
   const [dest, setDest] = useState(null);
   const [activ, setActiv] = useState((<Activities activity={'Activités'} date={'date'} />));
@@ -19,9 +16,21 @@ export default function HomeScreen({ navigation }) {
     activities: { borderColor: '#D9D9D9', backgroundColor: 'transparent' },
     destination: { borderColor: '#FFFFFF', backgroundColor: '#FFFFFF' },
   });
+  const [errMsg, setErrMsg] = useState('')
+
+  const { country } = useSelector((state) => state.search.value)
+  const { city } = useSelector((state) => state.search.value)
+
 
   const handleSearch = () => {
-    navigation.navigate('Result')
+    console.log(country);
+
+    if (isClickedActiv===false && country === '') {
+      setErrMsg('Oops! It looks like you forgot to choose a country !')
+    }
+      else {
+      navigation.navigate('Result')
+    }
   }
 
 
@@ -49,12 +58,6 @@ export default function HomeScreen({ navigation }) {
 
 
   };
-
-
-
-  // COUNTRY AND CITY TO SEARCH
-
-
 
   return (
 
@@ -92,7 +95,7 @@ export default function HomeScreen({ navigation }) {
 
 
         <View style={styles.bottom}>
-
+          <Text style={{color:'white'}}>{errMsg}</Text>
           <TouchableOpacity style={styles.search} activeOpacity={0.8} onPress={() => handleSearch()}>
             <Text style={styles.searchText}>Search</Text>
           </TouchableOpacity>
@@ -183,7 +186,7 @@ const styles = StyleSheet.create({
 
     justifyContent: 'center',
     width: '100%',
-    height: '75%',
+    height: '80%',
     paddingBottom: '18%',
 
 
