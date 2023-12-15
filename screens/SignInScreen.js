@@ -1,7 +1,7 @@
 import { StyleSheet, Text, View, Image, ImageBackground, TextInput,
     SafeAreaView, Dimensions, TouchableOpacity, KeyboardAvoidingView } from 'react-native';
 import { useState } from 'react';
-import { useDispatch, useSelector } from 'react-redux';
+import { useDispatch } from 'react-redux';
 import { updateUser, updateProfile } from '../reducers/user';
 import Constants from 'expo-constants';
 
@@ -9,10 +9,8 @@ const backend = Constants.expoConfig.hostUri.split(`:`)[0]
 
 export default function SignInScreen({ navigation }) {
   const dispatch = useDispatch();
-  const { token } = useSelector((state) => state.user.value);
   const [showError, setShowError] = useState(false);
   const [errorMsg, setErrorMsg] = useState('');
-  const [isOkay, setIsOkay] = useState(false);
 
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
@@ -31,11 +29,10 @@ export default function SignInScreen({ navigation }) {
     if (data.result) {
       dispatch(updateUser(data.user))
       dispatch(updateProfile(data.user))
-      setIsOkay(true)
+      return true
     } else {
       setErrorMsg(data.error);
-      setShowError(true)
-      setIsOkay(false)
+      return false
     }
   }
 
@@ -44,10 +41,9 @@ export default function SignInScreen({ navigation }) {
     navigation.navigate('Login')
   }
 
-  const handleRegister = () => {
-    checkForm();
-    if (!isOkay) {
-      setErrorMsg('Invalid email or password');
+  const handleRegister = async () => {
+    const canConnect = await checkForm();
+    if (!canConnect) {
       setShowError(true)
     } else {
       navigation.navigate('DrawerNavigator')
@@ -71,6 +67,9 @@ export default function SignInScreen({ navigation }) {
                     <TextInput placeholder="Password" placeholderTextColor={'#FFFFFF'}
                     secureTextEntry={true} onChangeText={(value) => setPassword(value)} value={password} style={styles.input}/>
                 </View>
+                { showError && <View style={styles.error}>
+                  <Text style={styles.errorText}>{errorMsg}</Text>
+                </View> }
                 <View style={styles.forgot}>
                   <Text style={styles.forgotText}>Forgotten password</Text>
                 </View>
@@ -80,9 +79,6 @@ export default function SignInScreen({ navigation }) {
             <TouchableOpacity activeOpacity={0.8} onPress={() => handleRegister()} style={styles.button}>
                 <Text style={styles.textBtn}>Connect</Text>
             </TouchableOpacity>
-            { showError && <View style={styles.error}>
-              <Text style={styles.errorText}>{errorMsg}</Text>
-            </View> }
             <TouchableOpacity activeOpacity={0.8} onPress={() => handleReturn()} style={styles.button}>
                 <Text style={styles.textBtn}>Go back</Text>
             </TouchableOpacity>
