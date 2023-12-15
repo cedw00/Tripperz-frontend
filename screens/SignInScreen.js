@@ -12,6 +12,7 @@ export default function SignInScreen({ navigation }) {
   const { token } = useSelector((state) => state.user.value);
   const [showError, setShowError] = useState(false);
   const [errorMsg, setErrorMsg] = useState('');
+  const [isOkay, setIsOkay] = useState(false);
 
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
@@ -30,11 +31,11 @@ export default function SignInScreen({ navigation }) {
     if (data.result) {
       dispatch(updateUser(data.user))
       dispatch(updateProfile(data.user))
-      return true
+      setIsOkay(true)
     } else {
       setErrorMsg(data.error);
       setShowError(true)
-      return false
+      setIsOkay(false)
     }
   }
 
@@ -44,7 +45,8 @@ export default function SignInScreen({ navigation }) {
   }
 
   const handleRegister = () => {
-    if (!checkForm()) {
+    checkForm();
+    if (!isOkay) {
       setErrorMsg('Invalid email or password');
       setShowError(true)
     } else {
@@ -62,12 +64,12 @@ export default function SignInScreen({ navigation }) {
           <View style={styles.form}>
             <View style={styles.textArea}>
                 <View style={styles.inputContainer}>
-                    <TextInput placeholder="Email" placeholderTextColor={'#FFFFFF'} onChangeText={(value) => setEmail(value)} value={email}
-                    style={styles.input}/>
+                    <TextInput placeholder="Email" placeholderTextColor={'#FFFFFF'}
+                    onChangeText={(value) => setEmail(value)} value={email} style={styles.input}/>
                 </View>
                 <View style={styles.inputContainer}>
-                    <TextInput placeholder="Password" placeholderTextColor={'#FFFFFF'} secureTextEntry={true} onChangeText={(value) => setPassword(value)}
-                    value={password} style={styles.input}/>
+                    <TextInput placeholder="Password" placeholderTextColor={'#FFFFFF'}
+                    secureTextEntry={true} onChangeText={(value) => setPassword(value)} value={password} style={styles.input}/>
                 </View>
                 <View style={styles.forgot}>
                   <Text style={styles.forgotText}>Forgotten password</Text>
@@ -78,8 +80,8 @@ export default function SignInScreen({ navigation }) {
             <TouchableOpacity activeOpacity={0.8} onPress={() => handleRegister()} style={styles.button}>
                 <Text style={styles.textBtn}>Connect</Text>
             </TouchableOpacity>
-            { showError && <View>
-              <Text>{errorMsg}</Text>
+            { showError && <View style={styles.error}>
+              <Text style={styles.errorText}>{errorMsg}</Text>
             </View> }
             <TouchableOpacity activeOpacity={0.8} onPress={() => handleReturn()} style={styles.button}>
                 <Text style={styles.textBtn}>Go back</Text>
@@ -136,6 +138,7 @@ const styles = StyleSheet.create({
   },
   inputContainer: {
     width: '80%',
+    height: '10%',
     borderStyle: 'solid',
     borderWidth: 1,
     borderColor: 'white',
@@ -143,17 +146,17 @@ const styles = StyleSheet.create({
     marginTop: 10,
     marginBottom: 10,
     paddingLeft: 8,
+    paddingTop: 4,
   },
   input: {
     color: '#FFFFFF',
   },
   forgot: {
-    marginTop: 20,
-    marginBottom: 15,
+    marginTop: 15,
   },
   forgotText: {
-    color: '#FFFFFF',
-    fontSize: 16
+    color: '#000000',
+    fontSize: 18
   },
   bottom: {
     flex: 1,
@@ -172,5 +175,17 @@ const styles = StyleSheet.create({
   },
   textBtn: {
     color: 'white',
+  },
+  error: {
+    width: '80%',
+    alignItems: 'center',
+    marginBottom: 10,
+    paddingTop: 8,
+    paddingBottom: 8,
+    borderRadius: 8,
+    backgroundColor: 'red',
+  },
+  errorText: {
+    color: '#FFFFFF'
   }
 });
