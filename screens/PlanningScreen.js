@@ -12,9 +12,7 @@ import {
 import { useSelector, useDispatch } from "react-redux";
 import PlannedDay from "../components/PlannedDay";
 import { updateTripperList } from "../reducers/tripper";
-import {
-  updateNextTrips
-} from "../reducers/trips";
+import { updateNextTrips } from "../reducers/trips";
 export default function TripPlanScreen({ navigation }) {
   const [modalVisible, setModalVisible] = useState(false);
   const [otherTripperz, setOtherTripperz] = useState("");
@@ -22,6 +20,12 @@ export default function TripPlanScreen({ navigation }) {
   const tripperz = useSelector((state) => state.tripper.value);
   const myTrips = useSelector((state) => state.trips.value);
   const tripCard = useSelector((state) => state.trips.cityCard);
+  const dayDuration = useSelector((state) => state.activ.plannedValue);
+  const daysPlan = useSelector((state) => state.activ.activitiesSet);
+  const allSizes = useSelector((state) => state.activ.sizesArray);
+
+  console.log('PS => AllSizes', allSizes)
+
 
   const dispatch = useDispatch();
 
@@ -34,12 +38,21 @@ export default function TripPlanScreen({ navigation }) {
     setOtherTripperz("");
   };
 
-  console.log('PS => This might be your next destination:', tripCard);
+  console.log("PS => This might be your next destination:", tripCard);
   const confirmItem = () => {
-       dispatch(updateNextTrips())
-     };
-  console.log('PS => These are your next destination:', myTrips);
+    dispatch(updateNextTrips());
+  };
+  console.log("PS => These are your next destination:", myTrips);
 
+  const days = dayDuration.map((data, i) => {
+    console.log(data);
+    const date = `${data.day}/${data.month}/${data.year}`;
+    return (
+      <View key={i} title="Day Card" style={styles.dayContainer}>
+        <PlannedDay day={i + 1} date={date} dayPlan={daysPlan[i]} morningSize={allSizes[i][0]} afternoonSize={allSizes[i][1]} />
+      </View>
+    );
+  });
 
   return (
     <View style={styles.planContainer}>
@@ -103,25 +116,14 @@ export default function TripPlanScreen({ navigation }) {
           </Text>
         </View>
       </View>
-      <ScrollView>
-        <View title="Day Card" style={styles.dayContainer}>
-        <PlannedDay />
-        </View>
-        <View title="Day Card" style={styles.dayContainer}>
-        <PlannedDay />
-        </View>
-        <View title="Day Card" style={styles.dayContainer}>
-          <PlannedDay />
-        </View>
-        <View title="Day Card" style={styles.dayContainer}>
-          <PlannedDay />
-        </View>
-        <View title="Day Card" style={styles.dayContainer}>
-          <PlannedDay />
-        </View>
-      </ScrollView>
+      <ScrollView>{days}</ScrollView>
       <View style={styles.nextContainer}>
-        <Pressable onPress={() => {navigation.navigate("DrawerNavigator", { screen: 'Trips' }), confirmItem()}}>
+        <Pressable
+          onPress={() => {
+            navigation.navigate("DrawerNavigator", { screen: "Trips" }),
+              confirmItem();
+          }}
+        >
           <View style={styles.confirm}>
             <Text style={{ color: "white" }}>CONFIRM</Text>
           </View>

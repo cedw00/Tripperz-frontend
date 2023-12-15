@@ -6,69 +6,76 @@ import { useDispatch, useSelector } from "react-redux";
 import {
   updateMorningValue,
   updateAfternoonValue,
+  updateAfternoonSize,
+  updateMorningSize,
+  saveSizes,
+  pushSizes
 } from "../reducers/activ";
 
 export default function Day(props) {
-  const [morningSize, setMorningSize] = useState(4);
-  const [afternoonSize, setAfternoonSize] = useState(8);
+  const [morningSize, setMorningSize] = useState(props.morningSize);
+  const [afternoonSize, setAfternoonSize] = useState(props.afternoonSize);
+  const dayDuration = useSelector((state) => state.activ.plannedValue);
   const activities = useSelector((state) => state.activ.value);
+  const morningValue = useSelector((state) => state.activ.morningValue);
+  const afternoonValue = useSelector((state) => state.activ.afternoonValue);
+  const sizes = useSelector((state) => state.activ.sizes);
+
   const dispatch = useDispatch();
+  console.log('D => props.morningSize is', morningSize, 'in DAY', props.day);
+  console.log('D => props.afternoonSize is', afternoonSize, 'in DAY', props.day);
 
-  // const loadActivities = () => {
-  //   props.stockActivities();
-  // };
-
-  const newMorning = activities.slice(0, morningSize);
-  const morningActivities = newMorning.map((data, index) => {
+  const morningPlan = props.dayPlan.slice(0, morningSize);
+  const morningActivities = morningPlan.map((data, index) => {
     return <Slot activity={data} key={index} />;
   });
 
-  const newAfternoon = activities.slice(4, afternoonSize);
-  const afternoonActivities = newAfternoon.map((data, index) => {
+  const afternoonPlan = props.dayPlan.slice(2, afternoonSize);
+  const afternoonActivities = afternoonPlan.map((data, index) => {
     return <Slot activity={data} key={index} />;
   });
+
+ 
 
   useEffect(() => {
-    dispatch(updateMorningValue(morningSize));
-
-    dispatch(updateAfternoonValue(afternoonSize));
-
-    //loadActivities(); // CALLED FUNC TO RELOAD
-
+    dispatch(saveSizes(morningSize, afternoonSize));
   }, [morningSize, afternoonSize]);
+
+  useEffect(() => {
+    return () => {
+      console.log(sizes);
+      props.savingSizes(sizes); // Appel de la fonction savingSizes au moment du démontage du composant 'Day'
+    };
+  }, []); // Le tableau de dépendances vide [] garantit l'exécution du code de nettoyage au démontage uniquement
+  
 
   const moreMorningActivity = () => {
     setMorningSize(morningSize + 1);
-    dispatch(updateMorningValue(morningSize));
-
-    setAfternoonSize(afternoonSize + 1);
-    dispatch(updateAfternoonValue(afternoonSize));
   };
 
   const moreAfternoonActivity = () => {
     setAfternoonSize(afternoonSize + 1);
-    dispatch(updateAfternoonValue(afternoonSize));
   };
 
   const lessMorningActivity = () => {
     if (morningSize > 0) {
       setMorningSize(morningSize - 1);
-      dispatch(updateMorningValue(morningSize));
     } else {
       setMorningSize(1);
-      dispatch(updateMorningValue(morningSize));
     }
   };
 
   const lessAfternoonActivity = () => {
     if (afternoonSize > 0) {
       setAfternoonSize(afternoonSize - 1);
-      dispatch(updateAfternoonValue(afternoonSize));
     } else {
       setAfternoonSize(1);
-      dispatch(updateAfternoonValue(afternoonSize));
     }
   };
+
+  // const activateSaveSizes = () => {
+  //   props.savingSizes(sizes);
+  // }
 
   return (
     <View style={styles.container}>

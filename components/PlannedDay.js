@@ -5,16 +5,18 @@ import { useSelector } from "react-redux";
 
 export default function PlannedDay(props) {
   const activities = useSelector((state) => state.activ.value);
-  const morningSize = useSelector((state) => state.activ.morningValue);
-  const afternoonSize = useSelector((state) => state.activ.afternoonValue);
+  const morningSize = props.morningSize;
+  const afternoonSize = props.afternoonSize;
 
+  console.log('PD => morningSize', morningSize);
+  console.log('PD => afternoonSize', afternoonSize);
    // TEST STARTING
-   const newMorning = activities.slice(0, morningSize);
+   const newMorning = props.dayPlan.slice(0, morningSize);
    const morningActivities = newMorning.map((data, index) => {
     return <PlannedSlot activity={data} key={index} />;
   });
 
-  const newAfternoon = activities.slice(4, afternoonSize);
+  const newAfternoon = props.dayPlan.slice(2, afternoonSize);
   const afternoonActivities = newAfternoon.map((data, index) => {
     return <PlannedSlot activity={data} key={index} />;
   });
@@ -22,7 +24,7 @@ export default function PlannedDay(props) {
   return (
     <View style={styles.container}>
       <View title="Day" style={styles.dayContainer}>
-        <Text style={styles.dayTitle}>Day 1 - 01/01/2024</Text>
+        <Text style={styles.dayTitle}>Day {props.day} - {props.date}</Text>
         <View title="halfDay" style={styles.morning}>
           <Text style={{ fontSize: 18, marginBottom: "2%" }}>Morning</Text>
           <View style={styles.daySlots}>
