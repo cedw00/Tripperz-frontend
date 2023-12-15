@@ -162,12 +162,16 @@ const styles = StyleSheet.create({
         width: '100%',
         borderWidth: 1,
         shadowColor: '#000',
-        shadowOffset: { width: +6, height: 6 },
+        shadowOffset: { width: 6, height: 6 },
         shadowOpacity: 0.7,
         shadowRadius: 2,
         borderRadius: 10,
-        borderColor: '#D6DBDC'
-
+        borderColor: '#D6DBDC',
+        elevation: 6,
+        contentWrapper: {
+            borderRadius: 10,
+            overflow: 'hidden', // Clip child elements that go beyond the wrapper
+          },
 
 
     },
@@ -176,13 +180,14 @@ const styles = StyleSheet.create({
         margin: 15,
         color: '#D6DBDC'
     },
-    dateText:{
-        
+    dateText: {
+        margin: 15
     },
     date: {
 
         borderWidth: 1,
-        marginTop: '13%',
+        paddingBottom: 10,
+        marginTop: '10%',
         shadowColor: '#000',
         shadowOffset: { width: +6, height: 6 },
         shadowOpacity: 0.7,
@@ -190,13 +195,13 @@ const styles = StyleSheet.create({
         borderRadius: 10,
         borderColor: '#D6DBDC'
     },
-   
+
     addTripperz: {
+        padding: '5%',
         borderWidth: 1,
         borderColor: 'green',
         borderWidth: 1,
-        marginTop: '18%',
-        paddingTop: '10%',
+        marginTop: '10%',
         alignItems: 'center',
         justifyContent: 'center',
         shadowColor: '#000',
@@ -216,6 +221,7 @@ const styles = StyleSheet.create({
     counter: {
         paddingRight: '20%',
         paddingLeft: '20%',
+
 
     }
 });

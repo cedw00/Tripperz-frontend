@@ -33,6 +33,7 @@ const styles = StyleSheet.create({
         flexDirection: 'row',
         alignItems: 'flex-end',
         marginTop: 15,
+        backgroundColor:'rgba(6, 113, 136, 1)'
     },
     footerSection: {
         flex: 1,

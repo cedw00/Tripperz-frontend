@@ -17,10 +17,14 @@ import {
   getTripDuration
 } from "../reducers/activ";
 import { useDispatch, useSelector } from "react-redux";
-
 import { getRandomActivityByInput } from "../modules/slotMods";
-import HomeScreen from './HomeScreen';
-import Destinations from '../components/HomePage/Destinations/Destinations';
+import Constants from 'expo-constants';
+
+
+
+
+
+const backend = Constants.expoConfig.hostUri.split(`:`)[0]
 
 
 export default function ResultScreen({ navigation }) {
@@ -336,12 +340,8 @@ export default function ResultScreen({ navigation }) {
   ];
   const allActivNames = "shopping restaurants culturePlaces landscapes sportActivities";
   const dispatch = useDispatch();
-  
-  const API_URL = 'https://api.unsplash.com/search/photos';
-  const API_KEY = 'fvgvM9uXT8ssXYBvJizIKG51rXub6fRglrJYde76qXY'
+ 
 
-  // const country = 'France';
-  // const city = ['paris', 'rome', 'tunis'];
 
   const [searchCountry, setSearchCountry] = useState('');
 
@@ -349,72 +349,76 @@ export default function ResultScreen({ navigation }) {
   const { city } = useSelector((state) => state.search.value)
   const { cityList } = useSelector((state) => state.search.value)
   const { countryList } = useSelector((state) => state.search.value)
-  console.log
+
   const [itemsToDisplay, setItemsToDisplay] = useState([])
 
-  console.log('country', country)
-  console.log('city list', cityList)
+
+
   useEffect(() => {
     const fetchData = async () => {
-      switch (country.length) {
 
-        case 0:
+      // const delay = (ms) => new Promise(resolve => setTimeout(resolve, ms));
+      // fetch(`http://192.168.10.155:3000/countries/Allcountries`)
+      //   .then(response => response.json())
+      //   .then(data => {
+      //      delay(500);
 
-          let newItemsToDisplay = [];
-
-          for (let i = 0; i < 5; i++) {
-
-            fetch(`https://api.unsplash.com/search/photos?query=${countryList[i].value}&page=1&per_page=1&client_id=${API_KEY}`)
-              .then(response => response.json())
-              .then(data => {
-
-
-                const item = { name: countryList[i].value, image: data.results[0].urls.raw, key: data.results[0].id };
-                newItemsToDisplay.push(item);
-              }).then(() => {
-                setItemsToDisplay(newItemsToDisplay);
-              })
-          }
-          break;
+      //     //const item = { name: data.countries.name, image: data.countries.img, key: data.results[0].id };
+      //     newItemsToDisplay=data.countries;
+      //     console.log('new items to display',newItemsToDisplay)
+      //   }).then(() => {
+      //     setItemsToDisplay(newItemsToDisplay);
+      //   })
 
 
-        default:
-          newItemsToDisplay = [];
-          if (city === null) {
+      let newItemsToDisplay = [];
+      if (city === null) {
 
-            for (let i = 0; i < cityList[i].length; i++) {
-              console.log('city lis de i', cityList[i])
+        const data = {
+          country
+        }
+        const delay = (ms) => new Promise(resolve => setTimeout(resolve, ms));
+        fetch(`http://${backend}:3000/countries/cities`, {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify(data)
+        })
+          .then(response => response.json())
+          .then(data => {
+            delay(1000);
+            setItemsToDisplay(data.cities)
+         r
+           
+          })
 
-              fetch(`https://api.unsplash.com/search/photos?query=${cityList[i]}&page=1&per_page=1&client_id=${API_KEY}`)
-                .then(response => response.json())
-                .then(data => {
-                  console.log('data', data.results[0].urls.raw);
-
-                  const item = { name: cityList[i], image: data.results[0].urls.raw, key: data.results[0].id };
-                  newItemsToDisplay.push(item);
-                }).then(() => {
-                  setItemsToDisplay(newItemsToDisplay);
-                })
-            }
-          } else {
-            fetch(`https://api.unsplash.com/search/photos?query=${city}&page=1&per_page=1&client_id=${API_KEY}`)
-              .then(response => response.json())
-              .then(data => {
-                console.log('data', data.results[0].urls.raw);
-
-                const item = { name: city, image: data.results[0].urls.raw, key: data.results[0].id };
-                newItemsToDisplay.push(item);
-              }).then(() => {
-                setItemsToDisplay(newItemsToDisplay);
-              })
-          }
-
-          break;
+      } else  if (city.length > 0){
+      
+        const data = {
+          country,
+          city
+        }
+        fetch(`http://${backend}:3000/countries/city`, {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify(data)
+        })
+          .then(response => response.json())
+          .then(data => {
+            newItemsToDisplay.push(data.city)
+            setItemsToDisplay(newItemsToDisplay);
+         
+          })
       }
+
     };
 
+    
     fetchData();
-  }, [country, city, countryList, cityList]);
+
+
+  }, [ country, city, countryList, cityList,navigation]);
+
+
 
   const handleSearch = () => {
     navigation.navigate('TripPlan');
@@ -436,14 +440,14 @@ export default function ResultScreen({ navigation }) {
 
   const Item = (item) => (
     <Pressable onPress={() => handleSearch()}>
-    <View style={styles.card} key={item.key}>
+      <View style={styles.card} key={item.id}>
 
-      <Image style={styles.tinyLogo} source={{ uri: item.image }} />
-      <Text style={styles.itemtext}>{item.name}</Text>
+        <Image style={styles.tinyLogo} source={{ uri: item.image }} />
+        <Text style={styles.itemtext}>{item.name}</Text>
 
 
-    </View>
-</Pressable>
+      </View>
+    </Pressable>
   )
   //ON CLICK ACTIVITIES
 
@@ -459,6 +463,7 @@ export default function ResultScreen({ navigation }) {
 
   };
 
+
   return (
 
     <SafeAreaView>
@@ -466,7 +471,7 @@ export default function ResultScreen({ navigation }) {
 
         <View style={styles.header}>
 
-          <Text style={styles.title}>Trippers</Text>
+          <Image style={styles.logo} source={require('../assets/logo.png')} />
 
           <View style={styles.buttons}>
 
@@ -485,9 +490,9 @@ export default function ResultScreen({ navigation }) {
           <FlatList
             style={styles.flatlist}
             data={itemsToDisplay}
-            renderItem={({ item }) => <Item name={item.name} image={item.image} id={item.key} />}
-            keyExtractor={item => item.id}
-
+            renderItem={({ item }) => {
+              return (
+            <Item name={item.name} image={item.cityImg} key={item._id} />)}}
           />
 
         </View>
@@ -502,48 +507,43 @@ export default function ResultScreen({ navigation }) {
 
 const styles = StyleSheet.create({
   container: {
-      position: 'absolute',
-      filter: 'blur(2px)',
-      width: Dimensions.get('screen').width,
-      height: Dimensions.get('screen').height,
-      backgroundColor: 'transparent',
-      overflow: 'hidden',
-
-
+    position: 'absolute',
+    filter: 'blur(2px)',
+    width: Dimensions.get('screen').width,
+    height: Dimensions.get('screen').height,
+    justifyContent: "center",
+    alignItems: "center",
   },
-  linearGradient: {
-      flex: 1,
-      borderRadius: 20,
-  },
+
   header: {
 
-      justifyContent: "center",
-      alignItems: 'center',
-      alignSelf: 'center',
-      height: '20%',
-      width: '100%',
-      backgroundColor: 'linear-gradient(180deg, rgba(244, 244, 244, 0.0975) 82.29%, rgba(25, 25, 25, 0.25) 100%)',
+    justifyContent: "center",
+    alignItems: 'center',
+    alignSelf: 'center',
+    height: '23%',
+    width: '100%',
 
+    backgroundColor: 'rgba(6, 113, 136, 1)',
+    shadowColor: '#000',
+    shadowOffset: { width: 0, height: 4 },
+    shadowOpacity: 0.3,
+    shadowRadius: 4,
 
   },
-  title: {
-    fontWeight: 'bold',
-    fontSize: 48,
-    color: 'blue',
+  logo: {
     paddingLeft: '15%',
     paddingRight: '15%',
-    bottom: '-25%',
-
-
-},
-buttons: {
+    bottom: '-20%',
+    width: '60%',
+  },
+  buttons: {
     flexDirection: 'row',
     paddingTop: '15%',
     top: 6
 
-},
+  },
 
-activities: {
+  activities: {
 
     boxSizing: 'border-box',
     width: 131,
@@ -553,77 +553,77 @@ activities: {
     borderRadius: 20,
     borderWidth: 1,
     marginRight: '5%',
-},
-textButton: {
+  },
+  textButton: {
 
-  fontStyle: 'normal',
-  fontWeight: '400',
-  fontSize: 12,
-  lineHeight: 20,
-  display: 'flex',
-  alignItems: 'center',
-  textAlign: 'center',
-  color: '#FFFFFF',
-  textShadowColor: 'rgba(0, 0, 0, 0.25)',
-  textShadowOffset: { width: 0, height: 4 },
-  textShadowRadius: 4,
+    fontStyle: 'normal',
+    fontWeight: '400',
+    fontSize: 12,
+    lineHeight: 20,
+    display: 'flex',
+    alignItems: 'center',
+    textAlign: 'center',
+    color: '#FFFFFF',
+    textShadowColor: 'rgba(0, 0, 0, 0.25)',
+    textShadowOffset: { width: 0, height: 4 },
+    textShadowRadius: 4,
 
-},
-destination: {
-  boxSizing: 'border-box',
-  width: 131,
-  height: 27,
-  borderColor: '#D6DBDC',
-  borderRadius: 20,
-  borderWidth: 1,
-  marginLeft: '5%'
-},
-body: {
+  },
+  destination: {
+    boxSizing: 'border-box',
+    width: 131,
+    height: 27,
+    borderColor: '#D6DBDC',
+    borderRadius: 20,
+    borderWidth: 1,
+    marginLeft: '5%'
+  },
+  body: {
 
-  justifyContent: 'center',
-  alignItems: 'center',
-  width: '100%',
-  height: '80%',
-  paddingBottom: '18%',
-
-
-},
-flatlist: {
-
-  width: '80%',
-  marginTop: '10%',
-
-},
-card: {
-  alignItems: 'center',
-  backgroundColor: '#ffffff',
-  height: 195,
-  borderTopLeftRadius: 10,
-  borderTopRightRadius: 10,
-  overflow: 'hidden',
-  marginBottom: '5%',
-
-},
-tinyLogo: {
-  borderWidth: 1,
-  borderColor: 'transparent',
-  borderRadius: 5,
-  resizeMode: 'center',
-  height: '80%',
-  width: '100%',
+    justifyContent: 'center',
+    alignItems: 'center',
+    width: '100%',
+    height: '80%',
+    paddingBottom: '18%',
 
 
+  },
+  flatlist: {
+
+    width: '90%',
+    marginTop: '10%',
+
+  },
+  card: {
+    alignItems: 'center',
+    backgroundColor: '#ffffff',
+    height: 195,
+    borderTopLeftRadius: 10,
+    borderTopRightRadius: 10,
+    overflow: 'hidden',
+    marginBottom: '5%',
+
+  },
+  tinyLogo: {
+    borderWidth: 1,
+    borderColor: 'transparent',
+    borderRadius: 5,
+    resizeMode: 'center',
+    height: '80%',
+    width: '100%',
 
 
-},
-itemtext: {
-  width: '100%',
-  height: '20%',
-  textAlignVertical: 'center',
-  paddingLeft: '10%',
-  fontWeight: 'bold',
-  fontSize: 20,
 
-}
+
+  },
+  itemtext: {
+    width: '100%',
+    height: '20%',
+    textAlignVertical: 'center',
+    paddingLeft: '10%',
+    fontWeight: 'bold',
+    fontSize: 20,
+
+  }
 
 })
