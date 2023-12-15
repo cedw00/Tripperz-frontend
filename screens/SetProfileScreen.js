@@ -122,11 +122,11 @@ export default function SetProfileScreen({ navigation }) {
                 />
               </View>
               <View style={styles.inputContainer}>
-                <TextInput placeholder="Home country" onChangeText={(value) => setCountry(value)} placeholderTextColor={'#FFFFFF'}
+                <TextInput placeholder="Home country" onChangeText={(value) => setCountry(value)} placeholderTextColor={'#000000'}
                 value={country} style={styles.input}/>  
               </View>
               <View style={styles.inputContainer}>
-                <TextInput placeholder="Favorite Destinations" onChangeText={(value) => setFavoriteDestinations(value)} placeholderTextColor={'#FFFFFF'}
+                <TextInput placeholder="Favorite Destinations" onChangeText={(value) => setFavoriteDestinations(value)} placeholderTextColor={'#000000'}
                 value={favoriteDestinations} style={styles.input}/>  
               </View>
               <View style={styles.inputContainer}>
@@ -148,8 +148,8 @@ export default function SetProfileScreen({ navigation }) {
               <TouchableOpacity activeOpacity={0.8} onPress={() => handleSubmit()} style={styles.button}>
                   <Text style={styles.textBtn}>Plan your trip</Text>
               </TouchableOpacity>
-              <TouchableOpacity activeOpacity={0.8} onPress={() => handleReturn()}>
-                <Text>Return</Text>
+              <TouchableOpacity activeOpacity={0.8} onPress={() => handleReturn()} style={styles.button}>
+                <Text style={styles.textBtn}>Go back</Text>
               </TouchableOpacity>
             </View>
           </View>
@@ -201,20 +201,12 @@ const styles = StyleSheet.create({
     borderWidth: 1,
     borderColor: 'white',
     borderRadius: 5,
+    backgroundColor: '#BBE5EB',
   },
   date: {
     flex: 1,
     flexDirection: 'row',
     color: 'white',
-  },
-  selector: {
-    flex: 1,
-    flexDirection: 'row',
-    justifyContent: 'flex-end',
-    paddingRight: 5,
-  },
-  selectorText: {
-    color: '#FFFFFF'
   },
   messageContainer: {
     flex: 1,
@@ -223,13 +215,14 @@ const styles = StyleSheet.create({
   },
   message: {
     fontSize: 20,
-    color: '#FFFFFF'
+    color: '#000000'
   },
   main: {
-    flex: 1,
+    flex: 2,
     width: '100%',
     alignItems: 'center',
-    justifyContent: 'space-around'
+    justifyContent: 'space-around',
+    marginTop: 10,
   },
   dropdown: {
     width: '100%',
@@ -244,9 +237,10 @@ const styles = StyleSheet.create({
     borderRadius: 5,
     marginTop: 5,
     paddingLeft: 8,
+    backgroundColor: '#BBE5EB'
   },
   input: {
-    color: '#BFC0C5',
+    color: '#000000',
   },
   bottom: {
     flex: 1,
