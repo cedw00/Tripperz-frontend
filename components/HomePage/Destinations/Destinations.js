@@ -19,6 +19,7 @@ import { getDuration } from '../../../reducers/search';
 
 
 
+
 export default function Destinations(searchCountry, city) {
     const dispatch = useDispatch();
 
@@ -34,8 +35,8 @@ export default function Destinations(searchCountry, city) {
 
     // };
 
-  
-   
+
+
 
     // //countryToSearch(selectedCountry);
 
@@ -46,7 +47,7 @@ export default function Destinations(searchCountry, city) {
     // console.log('selected city',selectedCity)
     // const handleSelectCity = (city) => {
     //     setSelectedCity(city);
-      
+
     // }
 
 
@@ -100,7 +101,6 @@ export default function Destinations(searchCountry, city) {
             <View style={styles.card}>
 
                 <View style={styles.destination}>
-
                     <Text style={styles.destText}>Destination</Text>
 
                     <View style={styles.countrylist}>
@@ -108,9 +108,8 @@ export default function Destinations(searchCountry, city) {
 
                     </View>
 
+
                 </View>
-
-
                 <View style={styles.date}>
                     <Text style={styles.dateText} >Date</Text>
                     <Text>
@@ -165,12 +164,13 @@ const styles = StyleSheet.create({
     destination: {
         width: '100%',
         borderWidth: 1,
+        backgroundColor: 'rgba(6, 113, 136, 1)',
         shadowColor: '#000',
-        shadowOffset: { width: +6, height: 6 },
-        shadowOpacity: 0.7,
+        shadowOffset: { width: 6, height: 6 },
+        shadowOpacity: 0.3,
         shadowRadius: 2,
         borderRadius: 10,
-        borderColor: '#D6DBDC'
+        borderColor: '#D6DBDC',
 
 
 
@@ -181,31 +181,34 @@ const styles = StyleSheet.create({
         color: '#D6DBDC'
     },
     dateText: {
-
+        margin: 15
     },
     date: {
 
         borderWidth: 1,
-        marginTop: '13%',
+        paddingBottom: 10,
+        backgroundColor: 'rgba(28, 121, 144, 0.8659)',
+        marginTop: '10%',
         shadowColor: '#000',
-        shadowOffset: { width: +6, height: 6 },
-        shadowOpacity: 0.7,
+        shadowOffset: { width: 6, height: 6 },
+        shadowOpacity: 0.3,
         shadowRadius: 2,
         borderRadius: 10,
         borderColor: '#D6DBDC'
     },
 
+
     addTripperz: {
+        padding: '5%',
         borderWidth: 1,
-        borderColor: 'green',
+        backgroundColor: 'rgba(28, 121, 144, 0.8659)',
         borderWidth: 1,
-        marginTop: '18%',
-        paddingTop: '10%',
+        marginTop: '10%',
         alignItems: 'center',
         justifyContent: 'center',
         shadowColor: '#000',
         shadowOffset: { width: +6, height: 6 },
-        shadowOpacity: 0.7,
+        shadowOpacity: 0.3,
         shadowRadius: 2,
         borderRadius: 10,
         borderColor: '#D6DBDC'
@@ -216,10 +219,12 @@ const styles = StyleSheet.create({
         flexDirection: 'row',
 
 
+
     },
     counter: {
         paddingRight: '20%',
         paddingLeft: '20%',
+
 
     }
 });

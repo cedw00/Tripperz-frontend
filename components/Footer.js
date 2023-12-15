@@ -31,8 +31,9 @@ const styles = StyleSheet.create({
         width: '100%',
         flex: 1,
         flexDirection: 'row',
-        alignItems: 'center',
-        backgroundColor: '#067188',
+        alignItems: 'flex-end',
+        marginTop: 15,
+        backgroundColor:'rgba(6, 113, 136, 1)'
     },
     footerSection: {
         flex: 1,
