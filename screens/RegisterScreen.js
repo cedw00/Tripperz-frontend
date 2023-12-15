@@ -183,7 +183,7 @@ const styles = StyleSheet.create({
     marginTop: 10,
     marginBottom: 10,
     paddingLeft: 8,
-    paddingTop: 15,
+    paddingTop: 8,
   },
   input: {
     color: '#000000',
