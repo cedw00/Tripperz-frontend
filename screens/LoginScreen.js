@@ -37,7 +37,7 @@ export default function LoginScreen({ navigation }) {
           </View>
         </View>
         <View style={styles.bottom}>
-            <TouchableOpacity activeOpacity={0.8} onPress={() => handleSubmit()}>
+            <TouchableOpacity activeOpacity={0.8} onPress={() => handleSubmit()} style={styles.registerBtn}>
               <Text style={styles.register}>Not registered yet ?</Text>
             </TouchableOpacity>
           </View>
@@ -93,12 +93,20 @@ const styles = StyleSheet.create({
   },
   bottom: {
     flex: 1,
+    width: '100%',
     justifyContent: 'flex-start',
     alignItems: 'center',
   },
+  registerBtn: {
+    width: '50%',
+    backgroundColor: 'black',
+    padding: 8,
+    margin: 5,
+    borderRadius: 8,
+  },
   register: {
-    color: '#818181',
-    fontWeight: 'bold',
-    fontSize: 16
+    color: '#FFFFFF',
+    fontSize: 16,
+    textAlign: 'center',
   },
 });

@@ -9,11 +9,11 @@ import DateTimePicker from '@react-native-community/datetimepicker';
 import dayjs from 'dayjs';
 import moment from 'moment';
 import 'moment/locale/fr';
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import SelectedList from './SelectedList';
 import AntDesign from 'react-native-vector-icons/AntDesign'
-
-
+import { useDispatch } from 'react-redux';
+import { getDuration } from '../../../reducers/search';
 
 
 
@@ -21,6 +21,7 @@ import AntDesign from 'react-native-vector-icons/AntDesign'
 
 
 export default function Destinations(searchCountry, city) {
+    const dispatch = useDispatch();
 
 
     //COUNTRY  DROPDOWN
@@ -64,8 +65,20 @@ export default function Destinations(searchCountry, city) {
     const onArrChange = (event, selectedDate) => {
         const currentDate = selectedDate || date
         setArrDate(currentDate)
-
     }
+
+    useEffect(() => {
+        const timeDifference = (arrDate - depDate);
+        const start = moment(depDate).format('L');
+        const end = moment(arrDate).format('L')
+        const daysDifference = Math.floor(timeDifference / 86400000);
+        const payload = {
+            start: start,
+            end: end,
+            duration: daysDifference
+        }
+        dispatch(getDuration(payload));
+    }, [depDate, arrDate])
 
 
 

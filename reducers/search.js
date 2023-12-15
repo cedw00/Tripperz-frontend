@@ -9,6 +9,8 @@ const initialState = {
     countryList:[],
     cityList: [],
  
+    start: null,
+    end: null,
     duration: null,
   },
 };
@@ -31,11 +33,15 @@ export const searchSlice = createSlice({
       state.value.cityList=action.payload
     
     },
-  
+    getDuration: (state, action) => {
+      state.value.start = action.payload.start;
+      state.value.end = action.payload.end;
+      state.value.duration = action.payload.duration;
+    }
 
   },
 
 });
 
-export const { addCountry, addCity,addCityList, addCountryList } = searchSlice.actions;
+export const { addCountry, addCity,addCityList, addCountryList, getDuration } = searchSlice.actions;
 export default searchSlice.reducer;

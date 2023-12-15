@@ -45,11 +45,9 @@ export default function SetProfileScreen({ navigation }) {
   const [selectedActivities, setSelectedActivities] = useState([]);
   const [selectedFood, setSelectedFood] = useState([]);
   const [date, setDate] = useState(new Date());
-  const [show, setShow] = useState(false);
 
   const onChange = (event, selectedDate) => {
     const currentDate = selectedDate;
-    setShow(false);
     setDate(currentDate);
   };
 
@@ -77,6 +75,7 @@ export default function SetProfileScreen({ navigation }) {
         body: JSON.stringify(profile),
       });
       const data = await response.json();
+      console.log(data);
       if (data.result) {
         dispatch(updateProfile(data.user))
         navigation.navigate('DrawerNavigator')
@@ -107,8 +106,6 @@ export default function SetProfileScreen({ navigation }) {
             </View>
             <View style={styles.main}>
               <View style={styles.show}>
-                <Text style={styles.date}>{date.getDate()}/{date.getMonth() + 1}/{date.getFullYear()}</Text>
-                {show && (
                 <DateTimePicker
                   testID="dateTimePicker"
                   value={date}
@@ -117,10 +114,6 @@ export default function SetProfileScreen({ navigation }) {
                   is24Hour={true}
                   onChange={onChange}
                 />
-              )}
-                <TouchableOpacity activeOpacity={0.8} onPress={() => setShow(true)} style={styles.selector}>
-                    <Text style={styles.selectorText}>Select Date</Text>
-                </TouchableOpacity>
               </View>
               <View style={styles.inputContainer}>
                 <Dropdown
@@ -129,11 +122,11 @@ export default function SetProfileScreen({ navigation }) {
                 />
               </View>
               <View style={styles.inputContainer}>
-                <TextInput placeholder="Home country" onChangeText={(value) => setCountry(value)} placeholderTextColor={'#FFFFFF'}
+                <TextInput placeholder="Home country" onChangeText={(value) => setCountry(value)} placeholderTextColor={'#000000'}
                 value={country} style={styles.input}/>  
               </View>
               <View style={styles.inputContainer}>
-                <TextInput placeholder="Favorite Destinations" onChangeText={(value) => setFavoriteDestinations(value)} placeholderTextColor={'#FFFFFF'}
+                <TextInput placeholder="Favorite Destinations" onChangeText={(value) => setFavoriteDestinations(value)} placeholderTextColor={'#000000'}
                 value={favoriteDestinations} style={styles.input}/>  
               </View>
               <View style={styles.inputContainer}>
@@ -155,8 +148,8 @@ export default function SetProfileScreen({ navigation }) {
               <TouchableOpacity activeOpacity={0.8} onPress={() => handleSubmit()} style={styles.button}>
                   <Text style={styles.textBtn}>Plan your trip</Text>
               </TouchableOpacity>
-              <TouchableOpacity activeOpacity={0.8} onPress={() => handleReturn()}>
-                <Text>Return</Text>
+              <TouchableOpacity activeOpacity={0.8} onPress={() => handleReturn()} style={styles.button}>
+                <Text style={styles.textBtn}>Go back</Text>
               </TouchableOpacity>
             </View>
           </View>
@@ -202,27 +195,18 @@ const styles = StyleSheet.create({
     flex: 1,
     width: '90%',
     flexDirection: 'row',
-    justifyContent: 'space-around',
+    justifyContent: 'flex-start',
     alignItems: 'center',
     borderStyle: 'solid',
     borderWidth: 1,
     borderColor: 'white',
     borderRadius: 5,
-    paddingLeft: 8,
+    backgroundColor: '#BBE5EB',
   },
   date: {
     flex: 1,
     flexDirection: 'row',
     color: 'white',
-  },
-  selector: {
-    flex: 1,
-    flexDirection: 'row',
-    justifyContent: 'flex-end',
-    paddingRight: 5,
-  },
-  selectorText: {
-    color: '#FFFFFF'
   },
   messageContainer: {
     flex: 1,
@@ -231,13 +215,14 @@ const styles = StyleSheet.create({
   },
   message: {
     fontSize: 20,
-    color: '#FFFFFF'
+    color: '#000000'
   },
   main: {
-    flex: 1,
+    flex: 2,
     width: '100%',
     alignItems: 'center',
-    justifyContent: 'space-around'
+    justifyContent: 'space-around',
+    marginTop: 10,
   },
   dropdown: {
     width: '100%',
@@ -252,9 +237,10 @@ const styles = StyleSheet.create({
     borderRadius: 5,
     marginTop: 5,
     paddingLeft: 8,
+    backgroundColor: '#BBE5EB'
   },
   input: {
-    color: '#BFC0C5',
+    color: '#000000',
   },
   bottom: {
     flex: 1,

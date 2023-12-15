@@ -3,7 +3,7 @@ import { StyleSheet, Text, View, Image, ImageBackground, TextInput,
 import CheckBox from 'expo-checkbox';
 import { useState } from 'react';
 import { useDispatch } from 'react-redux'
-import { getToken } from '../reducers/user';
+import { updateUser } from '../reducers/user';
 import Constants from 'expo-constants';
 
 const backend = Constants.expoConfig.hostUri.split(`:`)[0]
@@ -61,7 +61,7 @@ export default function RegisterScreen({ navigation }) {
             setPseudo('');
             setPhoneNb('');
             setPassword('');
-            dispatch(getToken(data.token));
+            dispatch(updateUser(data.user));
             navigation.navigate('SetProfile')
           } else {
             setErrorMsg(data.error);
@@ -88,19 +88,19 @@ export default function RegisterScreen({ navigation }) {
             </View>
             <View style={styles.textArea}>
                 <View style={styles.inputContainer}>
-                    <TextInput placeholder="Pseudo" placeholderTextColor={'#FFFFFF'} onChangeText={(value) => setPseudo(value)} value={pseudo}
+                    <TextInput placeholder="Pseudo" placeholderTextColor={'#000000'} onChangeText={(value) => setPseudo(value)} value={pseudo}
                     style={styles.input}/>
                 </View>
                 <View style={styles.inputContainer}>
-                    <TextInput placeholder="Email" placeholderTextColor={'#FFFFFF'} onChangeText={(value) => setEmail(value)} value={email}
+                    <TextInput placeholder="Email" placeholderTextColor={'#000000'} onChangeText={(value) => setEmail(value)} value={email}
                     style={styles.input}/>
                 </View>
                 <View style={styles.inputContainer}>
-                    <TextInput placeholder="Phone number" placeholderTextColor={'#FFFFFF'} onChangeText={(value) => setPhoneNb(value)} value={phoneNb}
+                    <TextInput placeholder="Phone number" placeholderTextColor={'#000000'} onChangeText={(value) => setPhoneNb(value)} value={phoneNb}
                     style={styles.input}/>  
                 </View>
                 <View style={styles.inputContainer}>
-                    <TextInput placeholder="Password" placeholderTextColor={'#FFFFFF'} secureTextEntry={true} onChangeText={(value) => setPassword(value)}
+                    <TextInput placeholder="Password" placeholderTextColor={'#000000'} secureTextEntry={true} onChangeText={(value) => setPassword(value)}
                     value={password} style={styles.input}/>
                 </View>
             </View>
@@ -114,7 +114,7 @@ export default function RegisterScreen({ navigation }) {
                 <Text style={styles.textBtn}>Register</Text>
             </TouchableOpacity>
             { showError && <View>
-              <Text>{errorMsg}</Text>
+              <Text style={{color: '#FFFFFF'}}>{errorMsg}</Text>
             </View> }
             <TouchableOpacity activeOpacity={0.8} onPress={() => handleReturn()} style={styles.button}>
                 <Text style={styles.textBtn}>Go back</Text>
@@ -152,10 +152,11 @@ const styles = StyleSheet.create({
     color: '#1AB4E7'
   },
   form: {
-    flex: 1,
+    flex: 2,
     width: '80%',
     alignItems: 'center',
     borderRadius: 10,
+    marginBottom: 15,
   },
   top: {
     flex: 1,
@@ -182,21 +183,22 @@ const styles = StyleSheet.create({
     marginTop: 10,
     marginBottom: 10,
     paddingLeft: 8,
-    paddingTop: 5,
+    paddingTop: 15,
   },
   input: {
-    color: '#BFC0C5',
+    color: '#000000',
+    textAlignVertical: 'center',
   },
   terms: {
     width: '70%',
     flex: 1,
     flexDirection: 'row',
     justifyContent: 'space-around',
-    alignItems: 'center',
+    alignItems: 'flex-start',
   },
   conditions: {
     marginLeft: 5,
-    color: '#FFFFFF'
+    color: '#000000'
   },
   bottom: {
     flex: 1,
