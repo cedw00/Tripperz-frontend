@@ -30,7 +30,7 @@ export default function PlannedDay(props) {
           <Text style={{ fontSize: 18, marginBottom: "2%" }}>Morning</Text>
           <View style={styles.daySlots}>
             <ScrollView contentContainerStyle={styles.scrollView}>
-              <View>{morningActivities}</View>
+              <View style={{marginBottom: '5%'}}>{morningActivities.length > 0 ? morningActivities : <Text style={{padding: '26%'}}>No activities planned</Text>}</View>
             </ScrollView>
           </View>
         </View>
@@ -38,7 +38,7 @@ export default function PlannedDay(props) {
           <Text style={{ fontSize: 18, marginVertical: "2%" }}>Afternoon</Text>
           <View style={styles.daySlots}>
             <ScrollView contentContainerStyle={styles.scrollView}>
-              <View>{afternoonActivities}</View>
+              <View style={{marginBottom: '5%'}}>{afternoonActivities.length > 0 ? afternoonActivities : <Text style={{padding: '26%'}}>No activities planned</Text>}</View>
             </ScrollView>
           </View>
         </View>

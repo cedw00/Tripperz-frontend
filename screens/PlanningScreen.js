@@ -13,6 +13,7 @@ import { useSelector, useDispatch } from "react-redux";
 import PlannedDay from "../components/PlannedDay";
 import { updateTripperList } from "../reducers/tripper";
 import { updateNextTrips } from "../reducers/trips";
+import { emptySizes } from "../reducers/activ";
 export default function TripPlanScreen({ navigation }) {
   const [modalVisible, setModalVisible] = useState(false);
   const [otherTripperz, setOtherTripperz] = useState("");
@@ -24,8 +25,7 @@ export default function TripPlanScreen({ navigation }) {
   const daysPlan = useSelector((state) => state.activ.activitiesSet);
   const allSizes = useSelector((state) => state.activ.sizesArray);
 
-  console.log('PS => AllSizes', allSizes)
-
+  console.log("PS => AllSizes", allSizes);
 
   const dispatch = useDispatch();
 
@@ -53,6 +53,10 @@ export default function TripPlanScreen({ navigation }) {
       </View>
     );
   });
+
+  const emptySizesArray = () => {
+    dispatch(emptySizes())
+  };
 
   return (
     <View style={styles.planContainer}>
@@ -121,14 +125,14 @@ export default function TripPlanScreen({ navigation }) {
         <Pressable
           onPress={() => {
             navigation.navigate("DrawerNavigator", { screen: "Trips" }),
-              confirmItem();
+              confirmItem(), emptySizesArray()
           }}
         >
           <View style={styles.confirm}>
             <Text style={{ color: "white" }}>CONFIRM</Text>
           </View>
         </Pressable>
-        <Pressable onPress={() => navigation.navigate("TripPlan")}>
+        <Pressable onPress={() => {navigation.navigate("TripPlan")}}>
           <View style={styles.cancel}>
             <Text style={{ color: "black" }}>CANCEL</Text>
           </View>

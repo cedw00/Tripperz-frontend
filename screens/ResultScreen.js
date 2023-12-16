@@ -340,6 +340,7 @@ export default function ResultScreen({ navigation }) {
   const allActivNames =
     "shopping restaurants culturePlaces landscapes sportActivities";
   let size = [2, 4];
+  const allSizes = useSelector((state) => state.activ.sizesArray);
   const dispatch = useDispatch();
 
   const API_URL = "https://api.unsplash.com/search/photos";
@@ -470,11 +471,12 @@ export default function ResultScreen({ navigation }) {
     }
 
     //dispatch(getTripDuration()); // RANDOM TRIP DURATION
-
+//if (allSizes.length > 0) {
     for (let i = 0; i < duration+1; i++) {
       // size = {DAY: i+1, morningSize: 2, afternoonSize: 4 }
       dispatch(pushSizes(size));
     }
+  //}
   };
 
   console.log("RS => duration:", duration + 1);
