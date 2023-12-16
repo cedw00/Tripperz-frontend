@@ -5,8 +5,8 @@ import { useSelector } from "react-redux";
 
 export default function PlannedDay(props) {
   const activities = useSelector((state) => state.activ.value);
-  const morningSize = props.morningSize;
-  const afternoonSize = props.afternoonSize;
+  const morningSize = props.sizes.morningSize;
+  const afternoonSize = props.sizes.afternoonSize;
 
   console.log('PD => morningSize', morningSize);
   console.log('PD => afternoonSize', afternoonSize);

@@ -9,8 +9,8 @@ const initialState = {
   cardActiv: [],
   morningActiv: [],
   afternoonActiv: [],
-  morningValue: null,
-  afternoonValue: null,
+  morningValue: 2,
+  afternoonValue: 4,
   tripDuration: null,
   activitiesSet: [],
   sizes: {},
@@ -38,6 +38,10 @@ export const activSlice = createSlice({
     },
     updateAfternoonValue: (state, action) => {
       state.afternoonValue = action.payload;
+    },
+    updateSizes: (state, action) => {          
+      const { dayPayload, morningPayload, afternoonPayload } = action;                 // UPDATE THIS PART //
+      state.sizesArray[dayPayload] = {DAY: dayPayload+1, morningSize: morningPayload, afternoonSize: afternoonPayload}
     },
     switchMorningActivity: (state, action) => {
       console.log("before", state.morningActiv);
@@ -71,8 +75,8 @@ export const activSlice = createSlice({
     addDayPlan: (state, action) => { 
       state.activitiesSet.push(action.payload);
     },
-    saveSizes: (state, action) => {
-      state.sizes = action.payload
+    emptySizes: (state, action) => {
+      state.sizesArray = []
     },
     pushSizes: (state, action) => {
       state.sizesArray.push(action.payload);
@@ -95,9 +99,10 @@ export const {
   addDayPlan,
   getTripDuration,
   nullifyDuration,
-  saveSizes,
+  emptySizes,
   updateMorningSize,
   updateAfternoonSize,
-  pushSizes
+  pushSizes,
+  updateSizes
 } = activSlice.actions;
 export default activSlice.reducer;

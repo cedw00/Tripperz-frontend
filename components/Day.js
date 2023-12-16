@@ -6,60 +6,79 @@ import { useDispatch, useSelector } from "react-redux";
 import {
   updateMorningValue,
   updateAfternoonValue,
-  updateAfternoonSize,
-  updateMorningSize,
   saveSizes,
-  pushSizes
+  updateSizes
 } from "../reducers/activ";
 
 export default function Day(props) {
-  const [morningSize, setMorningSize] = useState(props.morningSize);
-  const [afternoonSize, setAfternoonSize] = useState(props.afternoonSize);
+  const [morningSize, setMorningSize] = useState(2);
+  const [afternoonSize, setAfternoonSize] = useState(4);
   const dayDuration = useSelector((state) => state.activ.plannedValue);
   const activities = useSelector((state) => state.activ.value);
   const morningValue = useSelector((state) => state.activ.morningValue);
   const afternoonValue = useSelector((state) => state.activ.afternoonValue);
+  const allSizes = useSelector((state) => state.activ.sizesArray);
+ 
+
   //const allSizes = useSelector((state) => state.activ.sizes);
 
   const dispatch = useDispatch();
-  console.log('D => morningSize is', props.sizes.morningSize, 'in DAY', props.day);
-  console.log('D => afternoonSize is', props.sizes.afternoonSize, 'in DAY', props.day);
+  // console.log('D => morningSize is', props.morning, 'in DAY', props.day);
+  // console.log('D => afternoonSize is', props.afternoon, 'in DAY', props.day);
+  
 
-  const morningPlan = props.dayPlan.slice(0, morningSize);
+  const morningPlan = props.dayPlan.slice(0, morningValue);
   const morningActivities = morningPlan.map((data, index) => {
     return <Slot activity={data} key={index} />;
   });
 
-  const afternoonPlan = props.dayPlan.slice(2, afternoonSize);
+  const afternoonPlan = props.dayPlan.slice(2, afternoonValue);
   const afternoonActivities = afternoonPlan.map((data, index) => {
     return <Slot activity={data} key={index} />;
   });
 
   useEffect(() => {
-    dispatch(saveSizes(morningSize, afternoonSize));
-  }, [morningSize, afternoonSize]);
+    // dispatch(updateMorningValue(morningSize));
+    // dispatch(updateAfternoonValue(afternoonSize));
+    dispatch(updateSizes(props.i))
+    // console.log('D => allSizes are', allSizes);
+  }, [morningValue, afternoonValue]);
+
+  console.log('D => allSizes are', allSizes);
 
   const moreMorningActivity = () => {
     setMorningSize(morningSize + 1);
+    //dispatch(updateMorningValue(morningValue+1));
+    dispatch(updateSizes(props.i, morningSize, afternoonSize))
   };
 
   const moreAfternoonActivity = () => {
     setAfternoonSize(afternoonSize + 1);
+   // dispatch(updateAfternoonValue(afternoonValue+1));
+    dispatch(updateSizes(props.i, morningSize, afternoonSize))
   };
 
   const lessMorningActivity = () => {
-    if (morningSize > 0) {
+    if (morningValue > 0) {
       setMorningSize(morningSize - 1);
+      //dispatch(updateMorningValue(morningValue-1));
+      dispatch(updateSizes(props.i, morningSize, afternoonSize))
     } else {
       setMorningSize(1);
+      //dispatch(updateMorningValue(1));
+      dispatch(updateSizes(props.i, morningSize, afternoonSize))
     }
   };
 
   const lessAfternoonActivity = () => {
-    if (afternoonSize > 0) {
+    if (afternoonValue > 0) {
       setAfternoonSize(afternoonSize - 1);
+      //dispatch(updateAfternoonValue(afternoonValue-1));
+      dispatch(updateSizes(props.i, morningSize, afternoonSize))
     } else {
       setAfternoonSize(1);
+      //dispatch(updateAfternoonValue(1));
+      dispatch(updateSizes(props.i, morningSize, afternoonSize))
     }
   };
 

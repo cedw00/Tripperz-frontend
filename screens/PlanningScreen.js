@@ -49,7 +49,7 @@ export default function TripPlanScreen({ navigation }) {
     const date = `${data.day}/${data.month}/${data.year}`;
     return (
       <View key={i} title="Day Card" style={styles.dayContainer}>
-        <PlannedDay day={i + 1} date={date} dayPlan={daysPlan[i]} morningSize={allSizes[i][0]} afternoonSize={allSizes[i][1]} />
+        <PlannedDay day={i + 1} date={date} dayPlan={daysPlan[i]} sizes={allSizes[i]} />
       </View>
     );
   });

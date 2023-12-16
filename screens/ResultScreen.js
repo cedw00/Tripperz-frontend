@@ -17,6 +17,7 @@ import {
   getTripDuration,
   updateTempActiv,
   addDayPlan,
+  pushSizes,
 } from "../reducers/activ";
 import { createTripCard } from "../reducers/trips";
 import { useDispatch, useSelector } from "react-redux";
@@ -338,6 +339,7 @@ export default function ResultScreen({ navigation }) {
   ];
   const allActivNames =
     "shopping restaurants culturePlaces landscapes sportActivities";
+  let size = {DAY: 1, morningSize: 2, afternoonSize: 4 };
   const dispatch = useDispatch();
 
   const API_URL = "https://api.unsplash.com/search/photos";
@@ -468,7 +470,14 @@ export default function ResultScreen({ navigation }) {
     }
 
     //dispatch(getTripDuration()); // RANDOM TRIP DURATION
+
+    for (let i = 0; i < duration+1; i++) {
+      size = {DAY: i+1, morningSize: 2, afternoonSize: 4 }
+      dispatch(pushSizes(size));
+    }
   };
+
+  console.log("RS => duration:", duration + 1);
 
   const checkItem = (element) => {
     //console.log('key:', element.key);

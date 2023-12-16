@@ -13,7 +13,8 @@ import Day from "../components/Day";
 import {
   nullifyDuration,
   updatePlannedActivList,
-  pushSizes
+  pushSizes,
+  emptySizes,
 } from "../reducers/activ";
 
 export default function TripPlanScreen({ navigation }) {
@@ -26,6 +27,7 @@ export default function TripPlanScreen({ navigation }) {
   const morningValue = useSelector((state) => state.activ.morningValue);
   const afternoonValue = useSelector((state) => state.activ.afternoonValue);
   const plannedValue = useSelector((state) => state.activ.plannedValue);
+
   
   const dispatch = useDispatch();
 
@@ -52,37 +54,40 @@ export default function TripPlanScreen({ navigation }) {
     }
     setDayDuration(tempArray);
     dispatch(updatePlannedActivList(tempArray));
+
+    // for (let i = 0; i < dayDuration.length; i++) {
+    //   dispatch(pushSizes(size));
+    // }
   }, []);
 
-  console.log('TPS => PlannedValue :', plannedValue)
-
-  const durationToNull = () => {
-    dispatch(nullifyDuration());
-  };
   
-  console.log("TPS => activities", activities);
-  console.log("TPS => dayPlans", daysPlan);
+
+  //console.log('TPS => PlannedValue :', plannedValue)
+  
+  //console.log("TPS => activities", activities);
+  //console.log("TPS => dayPlans", daysPlan);
+    //console.log("TPS => sizesArray", sizesArray);
 
   
   // LOOPING TO BUILD DEFAULT REDUCER ARRAY FOR SIZES
-  for (let i = 0; i < dayDuration.length; i++) {
-    let size = {morningSize: 2, afternoonSize: 4};
-    dispatch(pushSizes(size));
-  }
+  // for (let i = 0; i < dayDuration.length; i++) {
+  //   let size = {morningSize: 2, afternoonSize: 4};
+  //   dispatch(pushSizes(size));
+  // };
 
   const days = dayDuration.map((data, i) => {
     const date = `${data.day}/${data.month}/${data.year}`;
-    
+    // const size = {morningSize: morningValue, afternoonSize: afternoonValue};
+    // dispatch(pushSizes(size));
     return (
       <View key={i} title="Day Card" style={styles.dayContainer}>
-        <Day day={i + 1} date={date} dayPlan={daysPlan[i]} sizes={allSizes[i]} /> 
+        <Day day={i + 1} date={date} dayPlan={daysPlan[i]} i={i} /> 
       </View>
     )
-
   });
 
-  const savingSizes = (sizes) => {
-    // dispatch(pushSizes(sizes));
+  const emptySizesArray = () => {
+    dispatch(emptySizes())
   };
 
   return (
@@ -101,13 +106,13 @@ export default function TripPlanScreen({ navigation }) {
       </ScrollView>
       <View style={styles.nextContainer}>
         <Pressable
-          onPress={() => {savingSizes(), navigation.navigate("Planning")}}
+          onPress={() => navigation.navigate("Planning")}
         >
           <View style={styles.confirm}>
             <Text style={{ color: "white" }}>CONFIRM</Text>
           </View>
         </Pressable>
-        <Pressable onPress={() => {durationToNull(), navigation.navigate("Result")}}>
+        <Pressable onPress={() => {emptySizesArray(), navigation.navigate("Result")}}>
           <View style={styles.cancel}>
             <Text style={{ color: "black" }}>CANCEL</Text>
           </View>
