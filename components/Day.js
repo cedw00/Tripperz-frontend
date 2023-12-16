@@ -19,11 +19,11 @@ export default function Day(props) {
   const activities = useSelector((state) => state.activ.value);
   const morningValue = useSelector((state) => state.activ.morningValue);
   const afternoonValue = useSelector((state) => state.activ.afternoonValue);
-  const sizes = useSelector((state) => state.activ.sizes);
+  //const allSizes = useSelector((state) => state.activ.sizes);
 
   const dispatch = useDispatch();
-  console.log('D => props.morningSize is', morningSize, 'in DAY', props.day);
-  console.log('D => props.afternoonSize is', afternoonSize, 'in DAY', props.day);
+  console.log('D => morningSize is', props.sizes.morningSize, 'in DAY', props.day);
+  console.log('D => afternoonSize is', props.sizes.afternoonSize, 'in DAY', props.day);
 
   const morningPlan = props.dayPlan.slice(0, morningSize);
   const morningActivities = morningPlan.map((data, index) => {
@@ -35,19 +35,9 @@ export default function Day(props) {
     return <Slot activity={data} key={index} />;
   });
 
- 
-
   useEffect(() => {
     dispatch(saveSizes(morningSize, afternoonSize));
   }, [morningSize, afternoonSize]);
-
-  useEffect(() => {
-    return () => {
-      console.log(sizes);
-      props.savingSizes(sizes); // Appel de la fonction savingSizes au moment du démontage du composant 'Day'
-    };
-  }, []); // Le tableau de dépendances vide [] garantit l'exécution du code de nettoyage au démontage uniquement
-  
 
   const moreMorningActivity = () => {
     setMorningSize(morningSize + 1);
@@ -72,10 +62,6 @@ export default function Day(props) {
       setAfternoonSize(1);
     }
   };
-
-  // const activateSaveSizes = () => {
-  //   props.savingSizes(sizes);
-  // }
 
   return (
     <View style={styles.container}>

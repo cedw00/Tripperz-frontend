@@ -21,7 +21,7 @@ export default function TripPlanScreen({ navigation }) {
   // const [afternoonSize, setAfternoonSize] = useState(4);
   const[daySize, setDaySize] = useState([]);
   const activities = useSelector((state) => state.activ.value);
-  const allSizes = useSelector((state) => state.activ.sizes);
+  const allSizes = useSelector((state) => state.activ.sizesArray);
   const daysPlan = useSelector((state) => state.activ.activitiesSet);
   const morningValue = useSelector((state) => state.activ.morningValue);
   const afternoonValue = useSelector((state) => state.activ.afternoonValue);
@@ -75,7 +75,7 @@ export default function TripPlanScreen({ navigation }) {
     
     return (
       <View key={i} title="Day Card" style={styles.dayContainer}>
-        <Day day={i + 1} date={date} dayPlan={daysPlan[i]} sizes={savingSizes} /> 
+        <Day day={i + 1} date={date} dayPlan={daysPlan[i]} sizes={allSizes[i]} /> 
       </View>
     )
 
