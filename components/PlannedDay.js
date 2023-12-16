@@ -5,18 +5,19 @@ import { useSelector } from "react-redux";
 
 export default function PlannedDay(props) {
   const activities = useSelector((state) => state.activ.value);
-  const morningSize = props.sizes.morningSize;
-  const afternoonSize = props.sizes.afternoonSize;
 
-  console.log('PD => morningSize', morningSize);
-  console.log('PD => afternoonSize', afternoonSize);
+
+  const allSizes = useSelector((state) => state.activ.sizesArray)
+
+
+
    // TEST STARTING
-   const newMorning = props.dayPlan.slice(0, morningSize);
+   const newMorning = props.dayPlan.slice(0, allSizes[props.i][0]);
    const morningActivities = newMorning.map((data, index) => {
     return <PlannedSlot activity={data} key={index} />;
   });
 
-  const newAfternoon = props.dayPlan.slice(2, afternoonSize);
+  const newAfternoon = props.dayPlan.slice(2, allSizes[props.i][1]);
   const afternoonActivities = newAfternoon.map((data, index) => {
     return <PlannedSlot activity={data} key={index} />;
   });

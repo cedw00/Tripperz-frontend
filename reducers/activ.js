@@ -40,8 +40,31 @@ export const activSlice = createSlice({
       state.afternoonValue = action.payload;
     },
     updateSizes: (state, action) => {          
-      const { dayPayload, morningPayload, afternoonPayload } = action;                 // UPDATE THIS PART //
-      state.sizesArray[dayPayload] = {DAY: dayPayload+1, morningSize: morningPayload, afternoonSize: afternoonPayload}
+      const { dayPayload, morningPayload, afternoonPayload } = action;   
+      let setMorning = state.sizesArray[dayPayload][0];
+      let setAfternoon = state.sizesArray[dayPayload][1];
+      state.sizesArray[dayPayload].splice(setMorning, 1, morningPayload);
+      state.sizesArray[dayPayload].splice(setAfternoon, 1, afternoonPayload);
+    },
+    increaseMorning: (state, action) => {
+      state.sizesArray[action.payload][0] += 1
+    },
+    increaseAfternoon: (state, action) => {
+      state.sizesArray[action.payload][1] += 1
+    },
+    decreaseMorning: (state, action) => {
+      if (state.sizesArray[action.payload][0] > 0) {
+        state.sizesArray[action.payload][0] -= 1
+      } else {
+        state.sizesArray[action.payload][0] = 1
+      }
+    },
+    decreaseAfternoon: (state, action) => {
+      if (state.sizesArray[action.payload][1] > 0) {
+        state.sizesArray[action.payload][1] -= 1
+      } else {
+        state.sizesArray[action.payload][1] = 1
+      }
     },
     switchMorningActivity: (state, action) => {
       console.log("before", state.morningActiv);
@@ -103,6 +126,10 @@ export const {
   updateMorningSize,
   updateAfternoonSize,
   pushSizes,
-  updateSizes
+  updateSizes,
+  increaseMorning,
+  increaseAfternoon,
+  decreaseMorning,
+  decreaseAfternoon
 } = activSlice.actions;
 export default activSlice.reducer;

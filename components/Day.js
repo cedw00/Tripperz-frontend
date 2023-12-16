@@ -7,7 +7,11 @@ import {
   updateMorningValue,
   updateAfternoonValue,
   saveSizes,
-  updateSizes
+  updateSizes,
+  increaseMorning,
+  increaseAfternoon,
+  decreaseMorning,
+  decreaseAfternoon
 } from "../reducers/activ";
 
 export default function Day(props) {
@@ -27,12 +31,12 @@ export default function Day(props) {
   // console.log('D => afternoonSize is', props.afternoon, 'in DAY', props.day);
   
 
-  const morningPlan = props.dayPlan.slice(0, morningValue);
+  const morningPlan = props.dayPlan.slice(0, allSizes[props.i][0]);
   const morningActivities = morningPlan.map((data, index) => {
     return <Slot activity={data} key={index} />;
   });
 
-  const afternoonPlan = props.dayPlan.slice(2, afternoonValue);
+  const afternoonPlan = props.dayPlan.slice(2, allSizes[props.i][1]);
   const afternoonActivities = afternoonPlan.map((data, index) => {
     return <Slot activity={data} key={index} />;
   });
@@ -40,45 +44,45 @@ export default function Day(props) {
   useEffect(() => {
     // dispatch(updateMorningValue(morningSize));
     // dispatch(updateAfternoonValue(afternoonSize));
-    dispatch(updateSizes(props.i))
-    // console.log('D => allSizes are', allSizes);
-  }, [morningValue, afternoonValue]);
+    // setMorningSize(morningSize);
+    // setAfternoonSize(afternoonSize);
+    // dispatch(updateSizes(props.i, morningSize, afternoonSize));
 
-  console.log('D => allSizes are', allSizes);
+  }, [allSizes[props.i][0], allSizes[props.i][1]]);
+
+  console.log('DAY => allSizes', allSizes)
 
   const moreMorningActivity = () => {
-    setMorningSize(morningSize + 1);
-    //dispatch(updateMorningValue(morningValue+1));
-    dispatch(updateSizes(props.i, morningSize, afternoonSize))
+    // setMorningSize(morningSize + 1);
+    // dispatch(updateSizes(props.i, morningSize, afternoonSize));
+    dispatch(increaseMorning(props.i))
   };
 
   const moreAfternoonActivity = () => {
-    setAfternoonSize(afternoonSize + 1);
-   // dispatch(updateAfternoonValue(afternoonValue+1));
-    dispatch(updateSizes(props.i, morningSize, afternoonSize))
+    // setAfternoonSize(afternoonSize + 1);
+    // dispatch(updateSizes(props.i, morningSize, afternoonSize));
+    dispatch(increaseAfternoon(props.i))
   };
 
   const lessMorningActivity = () => {
-    if (morningValue > 0) {
-      setMorningSize(morningSize - 1);
-      //dispatch(updateMorningValue(morningValue-1));
-      dispatch(updateSizes(props.i, morningSize, afternoonSize))
-    } else {
-      setMorningSize(1);
-      //dispatch(updateMorningValue(1));
-      dispatch(updateSizes(props.i, morningSize, afternoonSize))
+    if (morningSize > 0) {
+      // setMorningSize(morningSize - 1);
+      // dispatch(updateSizes(props.i, morningSize, afternoonSize));
+      dispatch(decreaseMorning(props.i))
+    // } else {
+    //   setMorningSize(1);
+    //   dispatch(updateSizes(props.i, morningSize, afternoonSize));
     }
   };
 
   const lessAfternoonActivity = () => {
-    if (afternoonValue > 0) {
-      setAfternoonSize(afternoonSize - 1);
-      //dispatch(updateAfternoonValue(afternoonValue-1));
-      dispatch(updateSizes(props.i, morningSize, afternoonSize))
-    } else {
-      setAfternoonSize(1);
-      //dispatch(updateAfternoonValue(1));
-      dispatch(updateSizes(props.i, morningSize, afternoonSize))
+    if (afternoonSize > 0) {
+      // setAfternoonSize(afternoonSize - 1);
+      // dispatch(updateSizes(props.i, morningSize, afternoonSize));
+      dispatch(decreaseAfternoon(props.i))
+    // } else {
+    //   setAfternoonSize(1);
+    //   dispatch(updateSizes(props.i, morningSize, afternoonSize));
     }
   };
 
