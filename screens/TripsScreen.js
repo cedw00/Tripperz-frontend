@@ -13,6 +13,7 @@ import FontAwesome from 'react-native-vector-icons/FontAwesome';
 import React, { useState, useEffect, useCallback } from "react";
 import { useIsFocused } from '@react-navigation/native';
 import { createTripCard } from "../reducers/trips";
+import { updateRefresh } from "../reducers/user";
 import { useDispatch, useSelector } from "react-redux";
 import Footer from '../components/Footer';
 import Constants from 'expo-constants';
@@ -25,7 +26,7 @@ export default function TripsScreen({ navigation }) {
   const dispatch = useDispatch();
   const isFocused = useIsFocused();
 
-  const { token } = useSelector((state) => state.user.value);
+  const { token, refresh } = useSelector((state) => state.user.value);
   const tripCard = useSelector((state) => state.trips.cityCard);
   const myTrips = useSelector((state) => state.trips.value);
   const allSizes = useSelector((state) => state.activ.sizesArray);
@@ -119,15 +120,18 @@ export default function TripsScreen({ navigation }) {
       <View/>
     )
   } else {
-    (async() => {
-      const response = await fetch(`http://${backend}:3000/trips/${token}`);
-      const data = await response.json();
-      if (data.trips.length > 0) {
-        setAllTrips(data.trips);
-      } else {
-        setAllTrips([]);
-      }
-    })();
+    if (refresh === 0) {
+      (async() => {
+        const response = await fetch(`http://${backend}:3000/trips/${token}`);
+        const data = await response.json();
+        if (data.trips.length > 0) {
+          setAllTrips(data.trips);
+        } else {
+          setAllTrips([]);
+        }
+      })();
+      dispatch(updateRefresh(1));
+    }
   }
 
   return (

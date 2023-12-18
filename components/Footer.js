@@ -2,9 +2,13 @@ import Entypo from 'react-native-vector-icons/Entypo';
 import Feather from 'react-native-vector-icons/Feather';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 import { View, Text, StyleSheet, TouchableOpacity } from 'react-native';
+import { updateRefresh } from '../reducers/user';
+import { useDispatch } from 'react-redux';
 
 export default function Footer({ navigation }) {
+    const dispatch = useDispatch();
     const redirect = (path) => {
+        dispatch(updateRefresh(0))
         navigation.navigate(`${path}`)
     }
 
