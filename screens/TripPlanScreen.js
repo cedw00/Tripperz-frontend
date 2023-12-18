@@ -54,7 +54,7 @@ export default function TripPlanScreen({ navigation }) {
     }
     setDayDuration(tempArray);
     dispatch(updatePlannedActivList(tempArray));
-
+    //console.log('daysPlan', daysPlan)
     // for (let i = 0; i < dayDuration.length; i++) {
     //   dispatch(pushSizes(size));
     // }
@@ -65,7 +65,7 @@ export default function TripPlanScreen({ navigation }) {
   //console.log('TPS => PlannedValue :', plannedValue)
   
   //console.log("TPS => activities", activities);
-  //console.log("TPS => dayPlans", daysPlan);
+  console.log("TPS => dayPlans", daysPlan);
     //console.log("TPS => sizesArray", sizesArray);
 
   

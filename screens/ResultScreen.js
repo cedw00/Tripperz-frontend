@@ -14,7 +14,9 @@ import React, { useState, useEffect } from 'react';
 import {
   updateActivList,
   getTripDuration,
-  updateTempActiv
+  updateTempActiv,
+  addDayPlan,
+  pushSizes
 } from "../reducers/activ";
 import {
   createTripCard
@@ -342,7 +344,10 @@ export default function ResultScreen({ navigation }) {
   const { city } = useSelector((state) => state.search.value)
   const { cityList } = useSelector((state) => state.search.value)
   const { countryList } = useSelector((state) => state.search.value)
+  const { duration } = useSelector((state) => state.search.value)
   const tripCard = useSelector((state) => state.trips.cityCard)
+
+  let size = [2, 4];
   
   const [itemsToDisplay, setItemsToDisplay] = useState([])
   useEffect(() => {
@@ -416,9 +421,15 @@ export default function ResultScreen({ navigation }) {
         break;
       }
     };
-    dispatch(updateActivList(Array.from(uniqueActivities)));
+    console.log('activArray', Array.from(uniqueActivities))
+    let dayPlan = Array.from(uniqueActivities);
+    dispatch(addDayPlan(dayPlan))
+    // dispatch(updateActivList(Array.from(uniqueActivities)));
     dispatch(updateTempActiv(Array.from(uniqueActivities)));
-    dispatch(getTripDuration()); // RANDOM TRIP DURATION
+    // dispatch(getTripDuration()); // RANDOM TRIP DURATION
+    for (let i = 0; i < duration + 1; i++) {
+      dispatch(pushSizes(size))
+    }
   };
   const checkItem = (element) => {
  //console.log('key:', element.key);
