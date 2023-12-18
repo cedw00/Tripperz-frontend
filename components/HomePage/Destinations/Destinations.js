@@ -74,12 +74,10 @@ export default function Destinations(searchCountry, city) {
         const payload = {
             start: start,
             end: end,
-            duration: daysDifference
+            duration: daysDifference + 1
         }
         dispatch(getDuration(payload));
     }, [depDate, arrDate])
-
-console.log()
 
     //ADD TRIPPERZ NUMBER
 

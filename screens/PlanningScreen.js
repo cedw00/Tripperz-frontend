@@ -68,10 +68,10 @@ export default function TripPlanScreen({ navigation }) {
       activities.push({
         name: activity,
         type: 'Test',
-        country: country,
-        city: tripCard.cityName
+        address: `${tripCard.cityName} at ${country}`
       });
     }
+    console.log(activities);
     const trip = {
       token: token,
       start: start,
@@ -111,7 +111,7 @@ export default function TripPlanScreen({ navigation }) {
           <View style={styles.centeredView}>
             <View style={styles.modalView}>
               <Text style={styles.text} title="Switch title">
-                SWITCH DEFAULT ACTIVITY
+                Invite your friends
               </Text>
               <View style={styles.inputContainer}>
                 <TextInput

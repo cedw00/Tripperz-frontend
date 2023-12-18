@@ -5,9 +5,13 @@ import {
   Image,
   Pressable,
   ScrollView,
+  SafeAreaView,
+  RefreshControl,
+  Dimensions
 } from "react-native";
 import FontAwesome from 'react-native-vector-icons/FontAwesome';
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useCallback } from "react";
+import { useIsFocused } from '@react-navigation/native';
 import { createTripCard } from "../reducers/trips";
 import { useDispatch, useSelector } from "react-redux";
 import Footer from '../components/Footer';
@@ -19,6 +23,7 @@ const backend = Constants.expoConfig.hostUri.split(`:`)[0]
 
 export default function TripsScreen({ navigation }) {
   const dispatch = useDispatch();
+  const isFocused = useIsFocused();
 
   const { token } = useSelector((state) => state.user.value);
   const tripCard = useSelector((state) => state.trips.cityCard);
@@ -27,6 +32,15 @@ export default function TripsScreen({ navigation }) {
   
   const [allTrips, setAllTrips] = useState([]);
   const [trigger, setTrigger] = useState(false);
+
+  const [refreshing, setRefreshing] = useState(false);
+
+  const onRefresh = useCallback(() => {
+    setRefreshing(true);
+    setTimeout(() => {
+      setRefreshing(false);
+    }, 2000);
+  }, []);
 
   const emptySizesArray = () => {
     dispatch(emptySizes());
@@ -39,6 +53,8 @@ export default function TripsScreen({ navigation }) {
       const data = await response.json();
       if (data.trips.length > 0) {
         setAllTrips(data.trips);
+      } else {
+        setAllTrips([]);
       }
     })();
   }, [trigger]);
@@ -59,7 +75,7 @@ export default function TripsScreen({ navigation }) {
   const tripsData = allTrips.map((data, i) => {
 
     return (
-      <View key={i}>
+      <SafeAreaView key={i}>
         <Pressable>
           <View style={styles.card}>
           <Image style={styles.tinyLogo} source={{ uri: data.tripImage }} />
@@ -70,7 +86,7 @@ export default function TripsScreen({ navigation }) {
           <Pressable><FontAwesome name={'pencil'} size={20} color={'#000000'}/></Pressable>
           <Pressable><FontAwesome name={'trash-o'} size={20} color={'#000000'} onPress={() => handleDelete(data._id)}/></Pressable>
         </View>
-      </View>
+      </SafeAreaView>
     )
   })
 
@@ -91,37 +107,56 @@ export default function TripsScreen({ navigation }) {
     );
   });
 
-  console.log("TS => These are your trips:", myTrips);
-  console.log("TS => These are your trips:", nextTrips);
+  // console.log("TS => These are your trips:", myTrips);
+  // console.log("TS => These are your trips:", nextTrips);
 
   const handleUpdateTrip = () => {
     navigation.navigate("TripPlanScreen");
   };
 
+  if (!isFocused) {
+    return (
+      <View/>
+    )
+  } else {
+    (async() => {
+      const response = await fetch(`http://${backend}:3000/trips/${token}`);
+      const data = await response.json();
+      if (data.trips.length > 0) {
+        setAllTrips(data.trips);
+      } else {
+        setAllTrips([]);
+      }
+    })();
+  }
+
   return (
-    <View style={styles.container}>
-      <View style={styles.imageContainer}>
-        <Image
-          source={require("../assets/images/tripperz-logo/trippng.png")} // Replace with the path to your image
-          style={styles.image}
-        />
-      </View>
-      <View style={styles.titleBlock}>
-        <Text style={styles.title}>Your{"\n"}Trips</Text>
-      </View>
-      <View style={styles.body}>
-        <ScrollView>{tripsData.length > 0 ? tripsData : <Text>No trips planned yet</Text>}</ScrollView>
-      </View>
-      <View style={styles.bottom}>
-      <Footer navigation={navigation}/>
-      </View>
-    </View>
+      <ScrollView contentContainerStyle={styles.container}
+      refreshControl={<RefreshControl refreshing={refreshing} onRefresh={onRefresh} />}>
+        <View style={styles.imageContainer}>
+          <Image
+            source={require("../assets/images/tripperz-logo/trippng.png")} // Replace with the path to your image
+            style={styles.image}
+          />
+        </View>
+        <View style={styles.titleBlock}>
+          <Text style={styles.title}>Your Trips</Text>
+        </View>
+        <View style={styles.body}>
+          <ScrollView>{tripsData.length > 0 ? tripsData : <Text>No trips planned yet</Text>}</ScrollView>
+        </View>
+        <View style={styles.bottom}>
+          <Footer navigation={navigation}/>
+        </View>
+      </ScrollView>
   );
 }
 
 const styles = StyleSheet.create({
   container: {
     flex: 11,
+    width: Dimensions.get('screen').width,
+    height: Dimensions.get('screen').height,
     backgroundColor: "white",
   },
   imageContainer: {

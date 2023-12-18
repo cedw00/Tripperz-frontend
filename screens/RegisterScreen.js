@@ -1,6 +1,7 @@
 import { StyleSheet, Text, View, Image, ImageBackground, TextInput,
     SafeAreaView, Dimensions, TouchableOpacity, KeyboardAvoidingView, Platform } from 'react-native';
 import CheckBox from 'expo-checkbox';
+import Ionicons from 'react-native-vector-icons/Ionicons';
 import { useState } from 'react';
 import { useDispatch } from 'react-redux'
 import { updateUser } from '../reducers/user';
@@ -88,19 +89,19 @@ export default function RegisterScreen({ navigation }) {
             </View>
             <View style={styles.textArea}>
                 <View style={styles.inputContainer}>
-                    <TextInput placeholder="Pseudo" placeholderTextColor={'#000000'} onChangeText={(value) => setPseudo(value)} value={pseudo}
+                    <TextInput placeholder="Pseudo" placeholderTextColor={'#FFFFFF'} onChangeText={(value) => setPseudo(value)} value={pseudo}
                     style={styles.input}/>
                 </View>
                 <View style={styles.inputContainer}>
-                    <TextInput placeholder="Email" placeholderTextColor={'#000000'} onChangeText={(value) => setEmail(value)} value={email}
+                    <TextInput placeholder="Email" placeholderTextColor={'#FFFFFF'} onChangeText={(value) => setEmail(value)} value={email}
                     style={styles.input}/>
                 </View>
                 <View style={styles.inputContainer}>
-                    <TextInput placeholder="Phone number" placeholderTextColor={'#000000'} onChangeText={(value) => setPhoneNb(value)} value={phoneNb}
+                    <TextInput placeholder="Phone number" placeholderTextColor={'#FFFFFF'} onChangeText={(value) => setPhoneNb(value)} value={phoneNb}
                     style={styles.input}/>  
                 </View>
                 <View style={styles.inputContainer}>
-                    <TextInput placeholder="Password" placeholderTextColor={'#000000'} secureTextEntry={true} onChangeText={(value) => setPassword(value)}
+                    <TextInput placeholder="Password" placeholderTextColor={'#FFFFFF'} secureTextEntry={true} onChangeText={(value) => setPassword(value)}
                     value={password} style={styles.input}/>
                 </View>
             </View>
@@ -113,9 +114,10 @@ export default function RegisterScreen({ navigation }) {
             <TouchableOpacity activeOpacity={0.8} onPress={() => handleRegister()} style={styles.button}>
                 <Text style={styles.textBtn}>Register</Text>
             </TouchableOpacity>
-            { showError && <View>
-              <Text style={{color: '#FFFFFF'}}>{errorMsg}</Text>
-            </View> }
+            { showError && <View style={styles.error}>
+                  <Ionicons name={'warning'} size={25} color={'#FFFFFF'} />
+                  <Text style={styles.errorText}>{errorMsg}</Text>
+              </View> }
             <TouchableOpacity activeOpacity={0.8} onPress={() => handleReturn()} style={styles.button}>
                 <Text style={styles.textBtn}>Go back</Text>
             </TouchableOpacity>
@@ -186,7 +188,7 @@ const styles = StyleSheet.create({
     paddingTop: 8,
   },
   input: {
-    color: '#000000',
+    color: '#FFFFFF',
     textAlignVertical: 'center',
   },
   terms: {
@@ -198,7 +200,7 @@ const styles = StyleSheet.create({
   },
   conditions: {
     marginLeft: 5,
-    color: '#000000'
+    color: '#FFFFFF'
   },
   bottom: {
     flex: 1,
@@ -217,5 +219,19 @@ const styles = StyleSheet.create({
   },
   textBtn: {
     color: 'white',
+  },
+  error: {
+    width: '80%',
+    flexDirection: 'row',
+    justifyContent: 'center',
+    alignItems: 'center',
+    marginBottom: 10,
+    paddingTop: 8,
+    paddingBottom: 8,
+    borderRadius: 8,
+    backgroundColor: 'red',
+  },
+  errorText: {
+    color: '#FFFFFF'
   }
 });

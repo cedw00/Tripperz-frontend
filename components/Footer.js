@@ -18,9 +18,9 @@ export default function Footer({ navigation }) {
                 <Entypo name={'home'} size={25} color={'#000000'}/>
                 <Text style={styles.text}>Home</Text>
             </TouchableOpacity>
-            <TouchableOpacity style={styles.footerSection} onPress={() => redirect('Notifications')}>
-                <Ionicons name={'notifications-outline'} size={25} color={'#000000'}/>
-                <Text style={styles.text}>Notifications</Text>
+            <TouchableOpacity style={styles.footerSection} onPress={() => redirect('Trips')}>
+                <Ionicons name={'airplane'} size={25} color={'#000000'}/>
+                <Text style={styles.text}>My Trips</Text>
             </TouchableOpacity>
         </View>
     )
