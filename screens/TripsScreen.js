@@ -64,6 +64,7 @@ export default function TripsScreen({ navigation }) {
           <View style={styles.card}>
           <Image style={styles.tinyLogo} source={{ uri: data.tripImage }} />
             <Text style={styles.itemtext}>{data.cityDest}</Text>
+            <Text></Text>
           </View>
         </Pressable>
         <View style={styles.iconContainer}>
@@ -139,7 +140,7 @@ const styles = StyleSheet.create({
     resizeMode: "contain", // Choose the resize mode for the image
   },
   titleBlock: {
-    flex: 1,
+    maxHeight: '20%',
     flexDirection: 'row',
     backgroundColor: "white",
     maxWidth: "100%",
