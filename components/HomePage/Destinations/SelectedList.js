@@ -15,7 +15,7 @@ import { addCountryList } from '../../../reducers/search';
 function SelectedList() {
 
   const [countries, setCountries] = useState([]);
-  const [selectedCountry, setSelectedCountry] = useState(null);
+  const [selectedCountry, setSelectedCountry] = useState('');
   const [selectedCity, setSelectedCity] = useState(null);
 
 
@@ -56,7 +56,7 @@ function SelectedList() {
 
 
 
-  if (selectedCountry !== null) {
+  if (selectedCountry !== '') {
 
     const selectedCities = countries.find(item => item.country === countrylist[selectedCountry].value);
 
@@ -97,7 +97,6 @@ function SelectedList() {
           margin: 15,
         }}
 
-
       />
 
       <SelectList
@@ -112,6 +111,8 @@ function SelectedList() {
           borderColor: '#D6DBDC',
           margin: 15,
         }}
+        dropdownShown={false}
+        
       />
     </View>
 
