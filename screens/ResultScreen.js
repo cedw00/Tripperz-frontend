@@ -467,7 +467,7 @@ console.log('name:', element.name);
 
   const handleClickActivities = () => {
    
-    navigation.navigate('Home',{activityComponent:true})
+    navigation.navigate('Home')
   }
 
   //ON CLICK Destinations
