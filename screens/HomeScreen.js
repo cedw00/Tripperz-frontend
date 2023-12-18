@@ -4,7 +4,9 @@ import Destination from '../components/HomePage/Destinations/Destinations'
 import { useState, useEffect } from 'react';
 import Footer from '../components/Footer';
 import { LinearGradient } from 'expo-linear-gradient';
-import { useSelector } from "react-redux";
+import { useSelector, useDispatch } from "react-redux";
+import { addCountry } from '../reducers/search';
+import { addCity } from '../reducers/search';
 
 
 export default function HomeScreen({ navigation }) {
@@ -12,19 +14,27 @@ export default function HomeScreen({ navigation }) {
   const [dest, setDest] = useState(null);
   const [activ, setActiv] = useState((<Activities activity={'Activités'} date={'date'} />));
   const [isClickedActiv, setIsClickedActiv] = useState(true);
-  const [buttonColors, setButtonColors] = useState({
-    activities: { borderColor: '#D9D9D9', backgroundColor: 'transparent' },
-    destination: { borderColor: '#FFFFFF', backgroundColor: '#FFFFFF' },
-  });
   const [errMsg, setErrMsg] = useState('')
 
   const { country } = useSelector((state) => state.search.value)
   const { city } = useSelector((state) => state.search.value)
 
+  const dispatch = useDispatch();
 
-  
+
+  console.log('country', country)
+
+
+  useEffect(() => {
+    if (country !== '') {
+      setErrMsg('');
+    }
+  }, [country]);
+
+
+
+
   const handleSearch = () => {
-    console.log(country);
 
     if (isClickedActiv === false && country === '') {
       setErrMsg('Oops! It looks like you forgot to choose a country !')
@@ -34,113 +44,112 @@ export default function HomeScreen({ navigation }) {
     }
   }
 
-
   const handleClickActivities = () => {
     const content = (<Activities />)
     setActiv(content)
     setIsClickedActiv(true)
-    
-    
+
+
   }
 
   const handleClickDestination = () => {
-    const content = (< Destination />)
+    const content = (< Destination errMessage={setErrMsg} />)
     setDest(content)
     setIsClickedActiv(false);
   };
 
-let activitiesStyle = {
-  width: 131,
-  height: 27,
-  borderColor: '#D6DBDC',
-  borderRadius: 20,
-  borderWidth: 1,
-  marginRight: '5%',
-}
-
-let destinationStyle={
-  width: 131,
-  height: 27,
-  borderColor: '#D6DBDC',
-  borderRadius: 20,
-  borderWidth: 1,
-  marginRight: '5%',
-}
-
-let activTextButton ={
-
-  fontStyle: 'normal',
-  fontWeight: '400',
-  fontSize: 12,
-  lineHeight: 20,
-  display: 'flex',
-  alignItems: 'center',
-  textAlign: 'center',
-  color: '#FFFFFF',
-
-}
-
-let destTextButton={
-  fontStyle: 'normal',
-  fontWeight: '400',
-  fontSize: 12,
-  lineHeight: 20,
-  display: 'flex',
-  alignItems: 'center',
-  textAlign: 'center',
-  color: '#FFFFFF',
-}
-
-if (isClickedActiv === true){
-  activitiesStyle= {
+  let activitiesStyle = {
     width: 131,
     height: 27,
-    borderWidth:1,
-    backgroundColor:'#D6DBDC',
+    borderColor: '#D6DBDC',
     borderRadius: 20,
     borderWidth: 1,
     marginRight: '5%',
-  },
-  activTextButton ={
+  }
+
+  let destinationStyle = {
+    width: 131,
+    height: 27,
+    borderColor: '#D6DBDC',
+    borderRadius: 20,
+    borderWidth: 1,
+    marginRight: '5%',
+  }
+
+  let activTextButton = {
 
     fontStyle: 'normal',
-    fontWeight: '700',
+    fontWeight: '400',
     fontSize: 12,
     lineHeight: 20,
     display: 'flex',
     alignItems: 'center',
     textAlign: 'center',
-    color: '#000000',
+    color: '#FFFFFF',
 
-  
   }
-  
-}else{
-  destinationStyle={
-    width: 131,
-    height: 27,
-    backgroundColor:'#D6DBDC',
-    borderRadius: 20,
-    borderWidth: 1,
-    marginRight: '5%',
-  },
-  destTextButton ={
 
+  let destTextButton = {
     fontStyle: 'normal',
-    fontWeight: '700',
+    fontWeight: '400',
     fontSize: 12,
     lineHeight: 20,
     display: 'flex',
     alignItems: 'center',
     textAlign: 'center',
-    color: '#000000',
-  
-  }
+    color: '#FFFFFF',
   }
 
+  if (isClickedActiv === true) {
+    activitiesStyle = {
+      width: 131,
+      height: 27,
+      borderWidth: 1,
+      backgroundColor: '#D6DBDC',
+      borderRadius: 20,
+      borderWidth: 1,
+      marginRight: '5%',
+    },
+      activTextButton = {
+
+        fontStyle: 'normal',
+        fontWeight: '700',
+        fontSize: 12,
+        lineHeight: 20,
+        display: 'flex',
+        alignItems: 'center',
+        textAlign: 'center',
+        color: '#000000',
 
 
- 
+      }
+
+  } else {
+    destinationStyle = {
+      width: 131,
+      height: 27,
+      backgroundColor: '#D6DBDC',
+      borderRadius: 20,
+      borderWidth: 1,
+      marginRight: '5%',
+    },
+      destTextButton = {
+
+        fontStyle: 'normal',
+        fontWeight: '700',
+        fontSize: 12,
+        lineHeight: 20,
+        display: 'flex',
+        alignItems: 'center',
+        textAlign: 'center',
+        color: '#000000',
+
+      }
+  }
+
+
+
+
   return (
 
     <LinearGradient
@@ -243,7 +252,7 @@ const styles = StyleSheet.create({
 
 
   },
- 
+
   body: {
 
     justifyContent: 'center',

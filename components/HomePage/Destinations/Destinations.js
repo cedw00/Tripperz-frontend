@@ -19,7 +19,8 @@ import { getDuration } from '../../../reducers/search';
 
 
 
-export default function Destinations(searchCountry, city) {
+
+export default function Destinations(searchCountry, city,errMessage) {
     const dispatch = useDispatch();
 
 
@@ -48,6 +49,11 @@ export default function Destinations(searchCountry, city) {
     //     setSelectedCity(city);
 
     // }
+
+
+
+    //ERR MESSAGE
+
 
 
     //DATE INPUT
@@ -103,7 +109,7 @@ console.log()
                     <Text style={styles.destText}>Destination</Text>
 
                     <View style={styles.countrylist}>
-                        <SelectedList />
+                        <SelectedList/>
 
                     </View>
 
