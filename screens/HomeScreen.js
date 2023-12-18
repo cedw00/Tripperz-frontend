@@ -1,7 +1,7 @@
 import { StyleSheet, Text, View, Image, SafeAreaView, Dimensions, TouchableOpacity } from 'react-native';
 import Activities from '../components/HomePage/Activities/Activities'
 import Destination from '../components/HomePage/Destinations/Destinations'
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import Footer from '../components/Footer';
 import { LinearGradient } from 'expo-linear-gradient';
 import { useSelector } from "react-redux";
@@ -22,13 +22,14 @@ export default function HomeScreen({ navigation }) {
   const { city } = useSelector((state) => state.search.value)
 
 
+  
   const handleSearch = () => {
     console.log(country);
 
-    if (isClickedActiv===false && country === '') {
+    if (isClickedActiv === false && country === '') {
       setErrMsg('Oops! It looks like you forgot to choose a country !')
     }
-      else {
+    else {
       navigation.navigate('Result')
     }
   }
@@ -38,27 +39,108 @@ export default function HomeScreen({ navigation }) {
     const content = (<Activities />)
     setActiv(content)
     setIsClickedActiv(true)
-    setButtonColors({
-      activities: { borderColor: '#FFFFFF', backgroundColor: '#FFFFFF' },
-      destination: { borderColor: '#D9D9D9', backgroundColor: 'transparent' },
-    });
-
-
-
+    
+    
   }
 
   const handleClickDestination = () => {
     const content = (< Destination />)
     setDest(content)
     setIsClickedActiv(false);
-    setButtonColors({
-      activities: { borderColor: '#D9D9D9', backgroundColor: 'transparent' },
-      destination: { borderColor: '#FFFFFF', backgroundColor: '#FFFFFF' },
-    });
-
-
   };
 
+let activitiesStyle = {
+  width: 131,
+  height: 27,
+  borderColor: '#D6DBDC',
+  borderRadius: 20,
+  borderWidth: 1,
+  marginRight: '5%',
+}
+
+let destinationStyle={
+  width: 131,
+  height: 27,
+  borderColor: '#D6DBDC',
+  borderRadius: 20,
+  borderWidth: 1,
+  marginRight: '5%',
+}
+
+let activTextButton ={
+
+  fontStyle: 'normal',
+  fontWeight: '400',
+  fontSize: 12,
+  lineHeight: 20,
+  display: 'flex',
+  alignItems: 'center',
+  textAlign: 'center',
+  color: '#FFFFFF',
+
+}
+
+let destTextButton={
+  fontStyle: 'normal',
+  fontWeight: '400',
+  fontSize: 12,
+  lineHeight: 20,
+  display: 'flex',
+  alignItems: 'center',
+  textAlign: 'center',
+  color: '#FFFFFF',
+}
+
+if (isClickedActiv === true){
+  activitiesStyle= {
+    width: 131,
+    height: 27,
+    borderWidth:1,
+    backgroundColor:'#D6DBDC',
+    borderRadius: 20,
+    borderWidth: 1,
+    marginRight: '5%',
+  },
+  activTextButton ={
+
+    fontStyle: 'normal',
+    fontWeight: '700',
+    fontSize: 12,
+    lineHeight: 20,
+    display: 'flex',
+    alignItems: 'center',
+    textAlign: 'center',
+    color: '#000000',
+
+  
+  }
+  
+}else{
+  destinationStyle={
+    width: 131,
+    height: 27,
+    backgroundColor:'#D6DBDC',
+    borderRadius: 20,
+    borderWidth: 1,
+    marginRight: '5%',
+  },
+  destTextButton ={
+
+    fontStyle: 'normal',
+    fontWeight: '700',
+    fontSize: 12,
+    lineHeight: 20,
+    display: 'flex',
+    alignItems: 'center',
+    textAlign: 'center',
+    color: '#000000',
+  
+  }
+  }
+
+
+
+ 
   return (
 
     <LinearGradient
@@ -74,12 +156,12 @@ export default function HomeScreen({ navigation }) {
 
         <View style={styles.buttons}>
 
-          <TouchableOpacity onPress={() => handleClickActivities()} style={[styles.activities, { buttonColors }]} activeOpacity={0.8}>
-            <Text style={styles.textButton}>Activités</Text>
+          <TouchableOpacity onPress={() => handleClickActivities()} style={activitiesStyle} activeOpacity={0.8}>
+            <Text style={activTextButton}>Activities</Text>
           </TouchableOpacity>
 
-          <TouchableOpacity onPress={() => handleClickDestination()} style={[styles.activities, { buttonColors, }]} activeOpacity={0.8}>
-            <Text style={styles.textButton}>Destinations</Text>
+          <TouchableOpacity onPress={() => handleClickDestination()} style={destinationStyle} activeOpacity={0.8}>
+            <Text style={destTextButton}>Destinations</Text>
           </TouchableOpacity>
 
         </View>
@@ -95,11 +177,10 @@ export default function HomeScreen({ navigation }) {
 
 
         <View style={styles.bottom}>
-          <Text style={{color:'white'}}>{errMsg}</Text>
+          <Text style={{ color: 'white' }}>{errMsg}</Text>
           <TouchableOpacity style={styles.search} activeOpacity={0.8} onPress={() => handleSearch()}>
             <Text style={styles.searchText}>Search</Text>
           </TouchableOpacity>
-
           <Footer style={styles.footer} navigation={navigation} />
         </View>
       </View>
@@ -149,15 +230,6 @@ const styles = StyleSheet.create({
     top: 6
   },
 
-  activities: {
-
-    width: 131,
-    height: 27,
-    borderColor: '#D6DBDC',
-    borderRadius: 20,
-    borderWidth: 1,
-    marginRight: '5%',
-  },
   textButton: {
 
     fontStyle: 'normal',
@@ -171,30 +243,20 @@ const styles = StyleSheet.create({
 
 
   },
-  destination: {
-    boxSizing: 'border-box',
-    width: 131,
-    height: 27,
-    borderColor: '#D6DBDC',
-    borderRadius: 20,
-    borderWidth: 1,
-    marginLeft: '5%'
-
-  },
-
+ 
   body: {
 
     justifyContent: 'center',
     width: '100%',
     height: '80%',
-    paddingBottom: '18%',
+    paddingBottom: '5%',
 
 
   },
   top: {
     width: '100%',
     height: '70%',
-    marginTop: '25%',
+    marginTop: '15%',
     justifyContent: 'center',
     alignItems: 'center',
 
@@ -203,22 +265,19 @@ const styles = StyleSheet.create({
   bottom: {
     height: '35%',
     alignItems: 'center',
-    marginTop: '10%',
   },
 
 
   search: {
-    height: '25%',
-    width: '50%',
-    marginTop: 20,
+    height: '18%',
+    width: '60%',
+    marginTop: 5,
     borderWidth: 6,
     alignItems: 'center',
     justifyContent: 'center',
     backgroundColor: '#000000',
     borderRadius: 8,
     marginBottom: '10%'
-
-
 
   },
   searchText: {

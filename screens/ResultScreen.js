@@ -421,7 +421,7 @@ export default function ResultScreen({ navigation }) {
     fetchData();
 
 
-  }, [ country, city, countryList, cityList,navigation]);
+  }, [ navigation]);
 
 
 
@@ -466,7 +466,8 @@ console.log('name:', element.name);
   //ON CLICK ACTIVITIES
 
   const handleClickActivities = () => {
-    navigation.navigate('Home')
+   
+    navigation.navigate('Home',{activityComponent:true})
   }
 
   //ON CLICK Destinations

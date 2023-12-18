@@ -24,6 +24,8 @@ function SelectedList() {
 
 
   useEffect(() => {
+    dispatch(addCountry(''));
+    dispatch(addCity(null));
     const fetchCountries = async () => {
       try {
         const response = await axios.get('https://countriesnow.space/api/v0.1/countries');
@@ -96,6 +98,7 @@ function SelectedList() {
           color: '#D6DBDC',
           margin: 15,
         }}
+     
 
       />
 
