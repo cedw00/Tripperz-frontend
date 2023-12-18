@@ -33,7 +33,9 @@ function CustomDrawerContent(props) {
   return (
     <DrawerContentScrollView {...props}>
       <DrawerItemList {...props} />
-      <DrawerItem label="Message"/>
+      <DrawerItem label="Parameters"/>
+      <DrawerItem label="Help"/>
+      <DrawerItem label="Contact us"/>
     </DrawerContentScrollView>
   );
 }
@@ -42,7 +44,7 @@ const DrawerNavigator = () => {
   return (
     <Drawer.Navigator drawerContent={props => <CustomDrawerContent {...props} />}
       screenOptions={({ route }) => ({
-        drawerActiveBackgroundColor: 'gold',
+        drawerActiveBackgroundColor: 'skyblue',
         drawerInactiveBackgroundColor: '#FFFFFF',
         drawerLabelStyle: {
           color: '#000000',

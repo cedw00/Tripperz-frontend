@@ -15,9 +15,16 @@ import { updateTripperList } from "../reducers/tripper";
 import {
   updateNextTrips
 } from "../reducers/trips";
+import Constants from 'expo-constants';
+
+const backend = Constants.expoConfig.hostUri.split(`:`)[0]
 export default function TripPlanScreen({ navigation }) {
   const [modalVisible, setModalVisible] = useState(false);
   const [otherTripperz, setOtherTripperz] = useState("");
+
+  const { token } = useSelector((state) => state.user.value);
+  const { start, end, country } = useSelector((state) => state.search.value);
+  const { value } = useSelector((state) => state.activ);
 
   const tripperz = useSelector((state) => state.tripper.value);
   const myTrips = useSelector((state) => state.trips.value);
@@ -39,6 +46,39 @@ export default function TripPlanScreen({ navigation }) {
        dispatch(updateNextTrips())
      };
   console.log('PS => These are your next destination:', myTrips);
+
+  const handleConfirm = async () => {
+    const activities = [];
+    for (const activity of value) {
+      activities.push({
+        name: activity,
+        type: 'Test',
+        country: country,
+        city: tripCard.cityName
+      });
+    }
+    const trip = {
+      token: token,
+      start: start,
+      end: end,
+      countryDest: country,
+      cityDest: tripCard.cityName,
+      img: tripCard.cityImage,
+      activitiesList: activities
+    };
+    const response = await fetch(`http://${backend}:3000/trips/`, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(trip),
+    });
+    const data = await response.json();
+    if (data.result) {
+      confirmItem();
+      navigation.navigate("DrawerNavigator", { screen: 'Trips' })
+    } else {
+      console.log(data.error);
+    }
+  }
 
 
   return (
@@ -121,7 +161,7 @@ export default function TripPlanScreen({ navigation }) {
         </View>
       </ScrollView>
       <View style={styles.nextContainer}>
-        <Pressable onPress={() => {navigation.navigate("DrawerNavigator", { screen: 'Trips' }), confirmItem()}}>
+        <Pressable onPress={() => handleConfirm()}>
           <View style={styles.confirm}>
             <Text style={{ color: "white" }}>CONFIRM</Text>
           </View>

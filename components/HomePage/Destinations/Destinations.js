@@ -121,6 +121,7 @@ export default function Destinations(searchCountry, city) {
                             display="default"
                             onChange={onDepChange}
                             value={depDate}
+                            minimumDate={new Date()}
                         />
                         <DateTimePicker
                             style={styles.datePicker}
