@@ -13,6 +13,7 @@ import { useDispatch, useSelector } from "react-redux";
 import Footer from '../components/Footer';
 import Constants from 'expo-constants';
 import { all } from "axios";
+import { emptySizes } from "../reducers/activ";
 
 const backend = Constants.expoConfig.hostUri.split(`:`)[0]
 
@@ -22,11 +23,17 @@ export default function TripsScreen({ navigation }) {
   const { token } = useSelector((state) => state.user.value);
   const tripCard = useSelector((state) => state.trips.cityCard);
   const myTrips = useSelector((state) => state.trips.value);
+  const allSizes = useSelector((state) => state.activ.sizesArray);
   
   const [allTrips, setAllTrips] = useState([]);
   const [trigger, setTrigger] = useState(false);
 
+  const emptySizesArray = () => {
+    dispatch(emptySizes());
+  };
+
   useEffect(() => {
+    emptySizesArray();
     (async() => {
       const response = await fetch(`http://${backend}:3000/trips/${token}`);
       const data = await response.json();

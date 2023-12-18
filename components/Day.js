@@ -33,12 +33,12 @@ export default function Day(props) {
 
   const morningPlan = props.dayPlan.slice(0, allSizes[props.i][0]);
   const morningActivities = morningPlan.map((data, index) => {
-    return <Slot activity={data} key={index} />;
+    return <Slot activity={data} key={index} dayPlan={props.dayPlan} i={props.i}/>;
   });
 
   const afternoonPlan = props.dayPlan.slice(2, allSizes[props.i][1]);
   const afternoonActivities = afternoonPlan.map((data, index) => {
-    return <Slot activity={data} key={index} />;
+    return <Slot activity={data} key={index} dayPlan={props.dayPlan} i={props.i}/>;
   });
 
   useEffect(() => {

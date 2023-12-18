@@ -32,7 +32,6 @@ const styles = StyleSheet.create({
         flex: 1,
         flexDirection: 'row',
         alignItems: 'center',
-        paddingBottom: 20,
         backgroundColor:'rgba(6, 113, 136, 1)'
     },
     footerSection: {
