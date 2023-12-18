@@ -85,7 +85,7 @@ export default function Destinations(searchCountry, city,errMessage) {
         dispatch(getDuration(payload));
     }, [depDate, arrDate])
 
-
+console.log()
 
     //ADD TRIPPERZ NUMBER
 
@@ -126,6 +126,7 @@ export default function Destinations(searchCountry, city,errMessage) {
                             display="default"
                             onChange={onDepChange}
                             value={depDate}
+                            minimumDate={new Date()}
                         />
                         <DateTimePicker
                             style={styles.datePicker}

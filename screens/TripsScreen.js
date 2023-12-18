@@ -11,18 +11,74 @@ import React, { useState, useEffect } from "react";
 import { createTripCard } from "../reducers/trips";
 import { useDispatch, useSelector } from "react-redux";
 import Footer from '../components/Footer';
+import Constants from 'expo-constants';
+import { all } from "axios";
+import { emptySizes } from "../reducers/activ";
+
+const backend = Constants.expoConfig.hostUri.split(`:`)[0]
 
 export default function TripsScreen({ navigation }) {
   const dispatch = useDispatch();
 
+  const { token } = useSelector((state) => state.user.value);
   const tripCard = useSelector((state) => state.trips.cityCard);
   const myTrips = useSelector((state) => state.trips.value);
+  const allSizes = useSelector((state) => state.activ.sizesArray);
+  
+  const [allTrips, setAllTrips] = useState([]);
+  const [trigger, setTrigger] = useState(false);
+
+  const emptySizesArray = () => {
+    dispatch(emptySizes());
+  };
+
+  useEffect(() => {
+    emptySizesArray();
+    (async() => {
+      const response = await fetch(`http://${backend}:3000/trips/${token}`);
+      const data = await response.json();
+      if (data.trips.length > 0) {
+        setAllTrips(data.trips);
+      }
+    })();
+  }, [trigger]);
+
+  const handleDelete = async (id) => {
+    const response = await fetch(`http://${backend}:3000/trips/${id}/${token}`, {
+      method: 'DELETE',
+      headers: { 'Content-Type': 'application/json' },
+    });
+    const data = await response.json();
+    if (data.result) {
+      setTrigger(!trigger)
+    } else {
+      console.log(data.error);
+    }
+  }
+
+  const tripsData = allTrips.map((data, i) => {
+
+    return (
+      <View key={i}>
+        <Pressable>
+          <View style={styles.card}>
+          <Image style={styles.tinyLogo} source={{ uri: data.tripImage }} />
+            <Text style={styles.itemtext}>{data.cityDest}</Text>
+          </View>
+        </Pressable>
+        <View style={styles.iconContainer}>
+          <Pressable><FontAwesome name={'pencil'} size={20} color={'#000000'}/></Pressable>
+          <Pressable><FontAwesome name={'trash-o'} size={20} color={'#000000'} onPress={() => handleDelete(data._id)}/></Pressable>
+        </View>
+      </View>
+    )
+  })
 
   const nextTrips = myTrips.map((trip, i) => {
     return (
-      <View>
+      <View key={i}>
         <Pressable>
-          <View style={styles.card} key={i}>
+          <View style={styles.card}>
             <Image style={styles.tinyLogo} source={{ uri: trip.cityImage }} />
             <Text style={styles.itemtext}>{trip.cityName}</Text>
           </View>
@@ -54,7 +110,7 @@ export default function TripsScreen({ navigation }) {
         <Text style={styles.title}>Your{"\n"}Trips</Text>
       </View>
       <View style={styles.body}>
-        <ScrollView>{nextTrips ? nextTrips : 'No trips planned yet'}</ScrollView>
+        <ScrollView>{tripsData.length > 0 ? tripsData : <Text>No trips planned yet</Text>}</ScrollView>
       </View>
       <View style={styles.bottom}>
       <Footer navigation={navigation}/>
@@ -84,10 +140,10 @@ const styles = StyleSheet.create({
   },
   titleBlock: {
     flex: 1,
-    fontSize: 50,
+    flexDirection: 'row',
     backgroundColor: "white",
     maxWidth: "100%",
-    flex: "flex-wrap",
+    flexWrap: 'wrap',
     marginBottom: "2%",
   },
   title: {
@@ -95,7 +151,6 @@ const styles = StyleSheet.create({
     fontSize: 50,
     backgroundColor: "white",
     maxWidth: "100%",
-    flex: "flex-wrap",
     marginHorizontal: "5%",
     marginBottom: "2%",
     marginTop: "1%",
@@ -103,7 +158,7 @@ const styles = StyleSheet.create({
   body: {
     justifyContent: "center",
     alignItems: "center",
-    flex: 1,
+    flex: 2,
     backgroundColor: "white",
   },
   iconContainer: {
