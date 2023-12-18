@@ -409,28 +409,46 @@ export default function ResultScreen({ navigation }) {
 
 
   const handleSearch = () => {
-    navigation.navigate('TripPlan');
-    const uniqueActivities = new Set();
-    for (let i = uniqueActivities.size; i < 20; i++) {
-      const randomActivity = getRandomActivityByInput(
-        activitiesList,
-        allActivNames
-      );
-      uniqueActivities.add(randomActivity);
-      if (uniqueActivities.size >= 20) {
-        break;
-      }
-    };
-    console.log('activArray', Array.from(uniqueActivities))
-    let dayPlan = Array.from(uniqueActivities);
-    dispatch(addDayPlan(dayPlan))
-    // dispatch(updateActivList(Array.from(uniqueActivities)));
-    dispatch(updateTempActiv(Array.from(uniqueActivities)));
-    // dispatch(getTripDuration()); // RANDOM TRIP DURATION
+    navigation.navigate("TripPlan");
     for (let i = 0; i < duration + 1; i++) {
-      dispatch(pushSizes(size))
+      const uniqueActivities = new Set();
+      for (let j = uniqueActivities.size; j < 20; j++) {
+        const randomActivity = getRandomActivityByInput(
+          activitiesList,
+          allActivNames
+        );
+        uniqueActivities.add(randomActivity);
+        if (uniqueActivities.size >= 20) {
+          break;
+        }
+      }
+      let dayPlan = Array.from(uniqueActivities);
+      dispatch(addDayPlan(dayPlan));
+
+      const modalSet = new Set();
+      for (let j = modalSet.size; j < 40; j++) {
+        const randomActivity = getRandomActivityByInput(
+          activitiesList,
+          allActivNames
+        );
+        modalSet.add(randomActivity);
+        if (modalSet.size >= 40) {
+          break;
+        }
+      }
+      let modalPlan = Array.from(uniqueActivities);
+      dispatch(updateTempActiv(Array.from(modalPlan)));
     }
+
+    //dispatch(getTripDuration()); // RANDOM TRIP DURATION
+//if (allSizes.length > 0) {
+    for (let i = 0; i < duration+1; i++) {
+      // size = {DAY: i+1, morningSize: 2, afternoonSize: 4 }
+      dispatch(pushSizes(size));
+    }
+  //}
   };
+
   const checkItem = (element) => {
  //console.log('key:', element.key);
 console.log(element.name,'picture:', element.image);
