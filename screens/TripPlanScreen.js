@@ -11,11 +11,23 @@ import {
 import moment from 'moment';
 import Day from "../components/Day";
 import {
-  nullifyDuration
+  nullifyDuration,
+  updatePlannedActivList,
+  pushSizes,
+  emptySizes,
 } from "../reducers/activ";
 
 export default function TripPlanScreen({ navigation }) {
+  // const [morningSize, setMorningSize] = useState(2);
+  // const [afternoonSize, setAfternoonSize] = useState(4);
+  const[daySize, setDaySize] = useState([]);
   const activities = useSelector((state) => state.activ.value);
+  const allSizes = useSelector((state) => state.activ.sizesArray);
+  const daysPlan = useSelector((state) => state.activ.activitiesSet);
+  const morningValue = useSelector((state) => state.activ.morningValue);
+  const afternoonValue = useSelector((state) => state.activ.afternoonValue);
+  const plannedValue = useSelector((state) => state.activ.plannedValue);
+
   
   const dispatch = useDispatch();
 
@@ -40,31 +52,43 @@ export default function TripPlanScreen({ navigation }) {
       } 
       tempArray.push(obj);
     }
-    setDayDuration(tempArray)
-  }, [])
-  
-  // const myMorning = tempActivities.slice(0, sizeOfMorning);
-  // const myAfternoon = tempActivities.slice(4, sizeOfAfternoon);
+    setDayDuration(tempArray);
+    dispatch(updatePlannedActivList(tempArray));
 
-  // const stockActivities = () => {
-  //   dispatch(updateMorningActiv(myMorning));
-  //   dispatch(updateAfternoonActiv(myAfternoon));
+    // for (let i = 0; i < dayDuration.length; i++) {
+    //   dispatch(pushSizes(size));
+    // }
+  }, []);
+
+  
+
+  //console.log('TPS => PlannedValue :', plannedValue)
+  
+  //console.log("TPS => activities", activities);
+  //console.log("TPS => dayPlans", daysPlan);
+    //console.log("TPS => sizesArray", sizesArray);
+
+  
+  // LOOPING TO BUILD DEFAULT REDUCER ARRAY FOR SIZES
+  // for (let i = 0; i < dayDuration.length; i++) {
+  //   let size = {morningSize: 2, afternoonSize: 4};
+  //   dispatch(pushSizes(size));
   // };
-
-  const durationToNull = () => {
-    dispatch(nullifyDuration());
-  };
-  
-  console.log("TPS => day", activities);
 
   const days = dayDuration.map((data, i) => {
     const date = `${data.day}/${data.month}/${data.year}`;
+    // const size = {morningSize: morningValue, afternoonSize: afternoonValue};
+    // dispatch(pushSizes(size));
     return (
       <View key={i} title="Day Card" style={styles.dayContainer}>
-        <Day day={i + 1} date={date}/>
+        <Day day={i + 1} date={date} dayPlan={daysPlan[i]} i={i} /> 
       </View>
     )
-  })
+  });
+
+  const emptySizesArray = () => {
+    dispatch(emptySizes())
+  };
 
   return (
     <View style={styles.planContainer}>
@@ -88,7 +112,7 @@ export default function TripPlanScreen({ navigation }) {
             <Text style={{ color: "white" }}>CONFIRM</Text>
           </View>
         </Pressable>
-        <Pressable onPress={() => {durationToNull(), navigation.navigate("Result")}}>
+        <Pressable onPress={() => {emptySizesArray(), navigation.navigate("Result")}}>
           <View style={styles.cancel}>
             <Text style={{ color: "black" }}>CANCEL</Text>
           </View>

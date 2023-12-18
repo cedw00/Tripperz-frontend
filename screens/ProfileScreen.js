@@ -6,6 +6,7 @@ import { updateProfile, logout } from '../reducers/user';
 import FontAwesome from 'react-native-vector-icons/FontAwesome';
 import { Dropdown, MultiSelect } from 'react-native-element-dropdown';
 import DateTimePicker from '@react-native-community/datetimepicker';
+import { LinearGradient } from 'expo-linear-gradient';
 import Footer from '../components/Footer';
 import Constants from 'expo-constants';
 
@@ -113,127 +114,133 @@ export default function ProfileScreen({ navigation }) {
 
   const form = (
     <Modal animationType='fade' transparent={false} visible={showModal}>
-      <KeyboardAvoidingView behavior={Platform.OS === 'ios' ? 'padding' : 'height'} style={styles.view}>
-        <View style={styles.titleContainer}>
-          <Text>Edit your profile</Text>
-        </View>
-        <View style={styles.form}>
-            <View style={styles.show}>
-                <DateTimePicker
-                    testID="dateTimePicker"
-                    value={date}
-                    mode={'date'}
-                    maximumDate={new Date()}
-                    is24Hour={true}
-                    onChange={onChange}
-                />
-            </View>
-            <View style={styles.inputContainer}>
-                <Dropdown
-                    style={styles.list} data={genderData} labelField='label' valueField='value' placeholder={gender} placeholderStyle={styles.input}
-                    value={newGender} onChange={(item) => {setNewGender(item.value)}} renderItem={editDisplay} maxHeight={100}
-                />
-            </View>
-            <View style={styles.inputContainer}>
-                <TextInput placeholder={country} onChangeText={(value) => setNewCountry(value)} placeholderTextColor={'#FFFFFF'}
-                value={newCountry} style={styles.input}/>  
-            </View>
-            <View style={styles.inputContainer}>
-                <TextInput placeholder="Favorite Destinations" onChangeText={(value) => setNewFavoriteDestinations(value)} placeholderTextColor={'#FFFFFF'}
-                value={newFavoriteDestinations} style={styles.input}/>  
-            </View>
-            <View style={styles.inputContainer}>
-                <MultiSelect
-                    style={styles.list} data={foodData} labelField='label' valueField='value' placeholder='Favorite food types'
-                    placeholderStyle={styles.input} value={selectedFood} onChange={(item) => {setSelectedFood(item)}} renderItem={editDisplay} maxHeight={100}
-                    visibleSelectedItem={false} activeColor='lightblue'
-                />
-            </View>
-            <View style={styles.inputContainer}>
-                <MultiSelect
-                    style={styles.list} data={mockData} labelField='label' valueField='value' placeholder='Favorites activities'
-                    placeholderStyle={styles.input} value={selectedActivities} onChange={(item) => {setSelectedActivities(item)}} renderItem={editDisplay}
-                    maxHeight={100} visibleSelectedItem={false} activeColor='lightblue'
-                />
-            </View>
-        </View>
-        <View style={styles.foot}>
-          <View style={styles.submitSection}>
-            <TouchableOpacity activeOpacity={0.8} onPress={() => handleSubmit()} style={styles.confirmBtn}>
-                <Text style={styles.confirm}>Confirm</Text>
-            </TouchableOpacity>
+      <LinearGradient colors={['rgba(6, 113, 136, 1)', 'rgba(43, 127, 149, 0.8698)', 'rgba(77, 141, 162, 0.7502)']}
+          start={{ x: 1, y: 0.5 }} end={{ x: 1, y: 1 }} style={styles.gradient}>
+        <KeyboardAvoidingView behavior={Platform.OS === 'ios' ? 'padding' : 'height'} style={styles.view}>
+          <View style={styles.titleContainer}>
+            <Text style={styles.title}>Edit your profile</Text>
           </View>
-          <View style={styles.submitSection}>
-            <TouchableOpacity activeOpacity={0.8} onPress={() => setShowModal(!showModal)} style={styles.confirmBtn}>
-                <Text style={styles.confirm}>Cancel</Text>
-            </TouchableOpacity>
+          <View style={styles.form}>
+              <View style={styles.show}>
+                  <DateTimePicker
+                      testID="dateTimePicker"
+                      value={date}
+                      mode={'date'}
+                      maximumDate={new Date()}
+                      is24Hour={true}
+                      onChange={onChange}
+                  />
+              </View>
+              <View style={styles.inputContainer}>
+                  <Dropdown
+                      style={styles.list} data={genderData} labelField='label' valueField='value' placeholder={gender} placeholderStyle={'#FFFFFF'}
+                      value={newGender} onChange={(item) => {setNewGender(item.value)}} renderItem={editDisplay} maxHeight={100}
+                  />
+              </View>
+              <View style={styles.inputContainer}>
+                  <TextInput placeholder={country} onChangeText={(value) => setNewCountry(value)} placeholderTextColor={'#FFFFFF'}
+                  value={newCountry} style={styles.input}/>  
+              </View>
+              <View style={styles.inputContainer}>
+                  <TextInput placeholder="Favorite Destinations" onChangeText={(value) => setNewFavoriteDestinations(value)} placeholderTextColor={'#FFFFFF'}
+                  value={newFavoriteDestinations} style={styles.input}/>  
+              </View>
+              <View style={styles.inputContainer}>
+                  <MultiSelect
+                      style={styles.list} data={foodData} labelField='label' valueField='value' placeholder='Favorite food types'
+                      placeholderStyle={styles.input} value={selectedFood} onChange={(item) => {setSelectedFood(item)}} renderItem={editDisplay} maxHeight={100}
+                      visibleSelectedItem={false} activeColor='lightblue'
+                  />
+              </View>
+              <View style={styles.inputContainer}>
+                  <MultiSelect
+                      style={styles.list} data={mockData} labelField='label' valueField='value' placeholder='Favorites activities'
+                      placeholderStyle={styles.input} value={selectedActivities} onChange={(item) => {setSelectedActivities(item)}} renderItem={editDisplay}
+                      maxHeight={100} visibleSelectedItem={false} activeColor='lightblue'
+                  />
+              </View>
           </View>
-        </View>
-      </KeyboardAvoidingView>
+          <View style={styles.foot}>
+            <View style={styles.submitSection}>
+              <TouchableOpacity activeOpacity={0.8} onPress={() => handleSubmit()} style={styles.confirmBtn}>
+                  <Text style={styles.confirm}>Confirm</Text>
+              </TouchableOpacity>
+            </View>
+            <View style={styles.submitSection}>
+              <TouchableOpacity activeOpacity={0.8} onPress={() => setShowModal(!showModal)} style={styles.confirmBtn}>
+                  <Text style={styles.confirm}>Cancel</Text>
+              </TouchableOpacity>
+            </View>
+          </View>
+        </KeyboardAvoidingView>
+      </LinearGradient>
     </Modal>
   )
 
   return (
     <>
-    <SafeAreaView style={styles.container}>
-      <View style={styles.header}>
-        <Image source={require('../assets/logo.png')}/>
-      </View>
-      <View style={styles.body}>
-        <View style={styles.top}>
-          <ImageBackground source={require('../assets/background_2.png')} style={styles.background} imageStyle={{borderRadius: 10}}>
-            <View style={styles.icon}>
-              <FontAwesome name={'user-circle'} size={75} color={'#000000'}/>
+      <LinearGradient colors={['rgba(6, 113, 136, 1)', 'rgba(43, 127, 149, 0.8698)', 'rgba(77, 141, 162, 0.7502)']}
+          start={{ x: 1, y: 0.5 }} end={{ x: 1, y: 1 }} style={styles.gradient}>
+        <SafeAreaView style={styles.container}>
+          <View style={styles.header}>
+            <Image source={require('../assets/logo.png')}/>
+          </View>
+          <View style={styles.body}>
+            <View style={styles.top}>
+              <ImageBackground source={require('../assets/background_2.png')} style={styles.background} imageStyle={{borderRadius: 10}}>
+                <View style={styles.icon}>
+                  <FontAwesome name={'user-circle'} size={75} color={'#000000'}/>
+                </View>
+                <View style={styles.messageContainer}>
+                  <View style={styles.messageSection}>
+                    <Text style={styles.message}>{username}</Text>
+                  </View>
+                  <View style={styles.edit}>
+                    <FontAwesome name={'pencil'} size={15} color={'#000000'} onPress={() => setShowModal(!showModal)}/>
+                  </View>
+                </View>
+                <View style={styles.desc}>
+                  <Text style={styles.descText}>Description : </Text>
+                  <Text style={styles.descText}>Globetrotter</Text>
+                </View>
+              </ImageBackground>
             </View>
-            <View style={styles.messageContainer}>
-              <View style={styles.messageSection}>
-                <Text style={styles.message}>{username}</Text>
+            <View style={styles.main}>
+              <View style={styles.section}>
+                <Text>{birthday}</Text>
               </View>
-              <View style={styles.edit}>
-                <FontAwesome name={'pencil'} size={15} color={'#000000'} onPress={() => setShowModal(!showModal)}/>
+              <View style={styles.section}>
+                <Text>{gender}</Text>
+              </View>
+              <View style={styles.section}>
+                <Text>{country}</Text>
+              </View>
+              <View style={styles.section}>
+                <Text>{destinations}</Text>
+              </View>
+              <Dropdown
+                  style={styles.dropdown} data={favoriteFoods} labelField='label' valueField='value' placeholder='Your favorites food type'
+                  placeholderStyle={'#000000'} renderItem={display} maxHeight={100} value={'Your favorites food'} iconColor='#000000'
+              />
+              <Dropdown
+                  style={styles.dropdown} data={hobbies} labelField='label' valueField='value' placeholder='Your favorites hobbies'
+                  placeholderStyle={'#000000'} renderItem={display} maxHeight={100} value={'Your favorites hobbies'} iconColor='#000000'
+              />
+            </View>
+            <View style={styles.bottom}>
+              <View style={styles.btnContainer}>
+                <TouchableOpacity activeOpacity={0.8} onPress={() => handleLogout()} style={styles.button}>
+                  <Text style={styles.textBtn}>Logout</Text>
+                </TouchableOpacity>
               </View>
             </View>
-            <View style={styles.desc}>
-              <Text style={styles.descText}>Description : </Text>
-              <Text style={styles.descText}>Globetrotter</Text>
-            </View>
-          </ImageBackground>
-        </View>
-        <View style={styles.main}>
-          <View style={styles.section}>
-            <Text>{birthday}</Text>
           </View>
-          <View style={styles.section}>
-            <Text>{gender}</Text>
-          </View>
-          <View style={styles.section}>
-            <Text>{country}</Text>
-          </View>
-          <View style={styles.section}>
-            <Text>{destinations}</Text>
-          </View>
-          <Dropdown
-              style={styles.dropdown} data={favoriteFoods} labelField='label' valueField='value' placeholder='Your favorites food type'
-              placeholderStyle={styles.input} renderItem={display} maxHeight={100} value={'Your favorites food'} iconColor='#000000'
-          />
-          <Dropdown
-              style={styles.dropdown} data={hobbies} labelField='label' valueField='value' placeholder='Your favorites hobbies'
-              placeholderStyle={styles.input} renderItem={display} maxHeight={100} value={'Your favorites hobbies'} iconColor='#000000'
-          />
-        </View>
-        <View style={styles.bottom}>
-          <View style={styles.btnContainer}>
-            <TouchableOpacity activeOpacity={0.8} onPress={() => handleLogout()} style={styles.button}>
-              <Text style={styles.textBtn}>Logout</Text>
-            </TouchableOpacity>
-          </View>
-          <Footer navigation={navigation}/>
-        </View>
-      </View>
-    </SafeAreaView>
-    { showModal && <View style={styles.modal}>
-        {form}
-      </View> }
+        </SafeAreaView>
+      </LinearGradient>
+      <Footer navigation={navigation}/>
+      { showModal && <View style={styles.modal}>
+          {form}
+        </View> }
     </>
   );
 }
@@ -245,7 +252,13 @@ const styles = StyleSheet.create({
       height: Dimensions.get('screen').height,
       justifyContent: "center",
       alignItems: "center",
-      backgroundColor: '#067188'
+  },
+  gradient: {
+    flex: 9,
+    width: '100%',
+    filter: 'blur(2px)',
+    justifyContent: 'center',
+    alignItems: 'center'
   },
   modal: {
     width: Dimensions.get('screen').width,
@@ -354,9 +367,9 @@ const styles = StyleSheet.create({
     alignItems: 'center',
   },
   btnContainer: {
-    flex: 1,
-    flexDirection: 'row',
+    width: '70%',
     justifyContent: 'space-around',
+    alignItems: 'center',
     marginTop: 5,
     marginBottom: 5,
   },
@@ -377,13 +390,17 @@ const styles = StyleSheet.create({
     flex: 1,
     width: '100%',
     alignItems: 'center',
-    backgroundColor: '#067188'
   },
   titleContainer: {
     flex: 1,
     alignItems: 'center',
-    justifyContent: 'flex-end',
+    justifyContent: 'center',
     marginBottom: 10,
+  },
+  title: {
+    color: '#FFFFFF',
+    fontWeight: 'bold',
+    fontSize: 32,
   },
   messageSection: {
     flex: 9,
@@ -433,46 +450,46 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     justifyContent: 'space-around'
 },
-show: {
-    flex: 1,
-    width: '90%',
-    flexDirection: 'row',
-    justifyContent: 'flex-start',
-    alignItems: 'center',
-    borderStyle: 'solid',
-    borderWidth: 1,
-    borderColor: 'white',
-    borderRadius: 5,
-},
-date: {
-    flex: 1,
-    flexDirection: 'row',
-    color: 'white',
-},
-selector: {
-    flex: 1,
-    flexDirection: 'row',
-    justifyContent: 'flex-end',
-    paddingRight: 5,
-},
-selectorText: {
-    color: '#FFFFFF'
-},
-list: {
-    width: '100%',
-},
-inputContainer: {
-    width: '90%',
-    flex: 1,
-    justifyContent: 'center',
-    borderStyle: 'solid',
-    borderWidth: 1,
-    borderColor: 'white',
-    borderRadius: 5,
-    marginTop: 5,
-    paddingLeft: 8,
-},
-input: {
-    color: '#BFC0C5',
-},
+  show: {
+      flex: 1,
+      width: '90%',
+      flexDirection: 'row',
+      justifyContent: 'flex-start',
+      alignItems: 'center',
+      borderStyle: 'solid',
+      borderWidth: 1,
+      borderColor: 'white',
+      borderRadius: 5,
+  },
+  date: {
+      flex: 1,
+      flexDirection: 'row',
+      color: 'white',
+  },
+  selector: {
+      flex: 1,
+      flexDirection: 'row',
+      justifyContent: 'flex-end',
+      paddingRight: 5,
+  },
+  selectorText: {
+      color: '#FFFFFF'
+  },
+  list: {
+      width: '100%',
+  },
+  inputContainer: {
+      width: '90%',
+      flex: 1,
+      justifyContent: 'center',
+      borderStyle: 'solid',
+      borderWidth: 1,
+      borderColor: 'white',
+      borderRadius: 5,
+      marginTop: 5,
+      paddingLeft: 8,
+  },
+  input: {
+      color: '#FFFFFF',
+  },
 });
