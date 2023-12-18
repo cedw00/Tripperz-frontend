@@ -47,7 +47,7 @@ export default function Slot(props) {
       "switched with",
       tempActivSwitch
     );
-    dispatch(switchingActivity(props.slot));
+    dispatch(switchingActivity(props.i));
     if (tempActivSwitch !== '') {
       setSlotActivity(tempActivSwitch);
     } else {

@@ -455,19 +455,19 @@ export default function ResultScreen({ navigation }) {
       let dayPlan = Array.from(uniqueActivities);
       dispatch(addDayPlan(dayPlan));
 
-      const modalSet = new Set();
-      for (let j = modalSet.size; j < 40; j++) {
-        const randomActivity = getRandomActivityByInput(
-          activitiesList,
-          allActivNames
-        );
-        modalSet.add(randomActivity);
-        if (modalSet.size >= 40) {
-          break;
-        }
-      }
-      let modalPlan = Array.from(uniqueActivities);
-      dispatch(updateTempActiv(Array.from(modalPlan)));
+      // const modalSet = new Set();
+      // for (let j = modalSet.size; j < 40; j++) {
+      //   const randomActivity = getRandomActivityByInput(
+      //     activitiesList,
+      //     allActivNames
+      //   );
+      //   modalSet.add(randomActivity);
+      //   if (modalSet.size >= 40) {
+      //     break;
+      //   }
+      // }
+      // let modalPlan = Array.from(uniqueActivities);
+      dispatch(updateTempActiv(dayPlan));
     }
 
     //dispatch(getTripDuration()); // RANDOM TRIP DURATION

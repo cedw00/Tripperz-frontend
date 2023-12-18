@@ -84,9 +84,9 @@ export const activSlice = createSlice({
     },
     switchingActivity: (state, action) => {
       if (state.activToSwitch !== "" && state.tempActivString !== "") {
-        let activityToSwitch = action.payload.indexOf(state.activToSwitch);
-        action.payload.splice(activityToSwitch, 1, state.tempActivString);
-        console.log("activities after switch", action.payload);
+        let activityToSwitch = state.activitiesSet[action.payload].indexOf(state.activToSwitch);
+        state.activitiesSet[action.payload].splice(activityToSwitch, 1, state.tempActivString);
+        console.log("activities after switch", state.activitiesSet[action.payload]);
       }
     },
     getTripDuration: (state, action) => {
