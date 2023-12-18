@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { View, StyleSheet, } from 'react-native';
 import axios from 'axios';
 import { SelectList } from 'react-native-dropdown-select-list';
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { addCountry } from '../../../reducers/search';
 import { addCity } from '../../../reducers/search';
 import { addCityList } from '../../../reducers/search';
@@ -13,6 +13,8 @@ import { addCountryList } from '../../../reducers/search';
 
 
 function SelectedList() {
+
+  //const { city } = useSelector((state) => state.search.value)
 
   const [countries, setCountries] = useState([]);
   const [selectedCountry, setSelectedCountry] = useState('');
@@ -70,12 +72,13 @@ function SelectedList() {
 
   const setCitySelected = (value => {
 
-    setSelectedCity(value)
+    setSelectedCity(value);
+    console.log('selected city', citylist[value].value)
     dispatch(addCity(citylist[value].value));
   })
 
   // SELECT COUNTRY AND CITY
-
+console.log('selected city', selectedCity)
 
 
   return (

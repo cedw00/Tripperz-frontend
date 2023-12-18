@@ -15,6 +15,7 @@ import {
   updatePlannedActivList,
   pushSizes,
   emptySizes,
+  emptyActivities
 } from "../reducers/activ";
 
 export default function TripPlanScreen({ navigation }) {
@@ -86,8 +87,9 @@ export default function TripPlanScreen({ navigation }) {
     )
   });
 
-  const emptySizesArray = () => {
-    dispatch(emptySizes())
+  const emptyArrays = () => {
+    dispatch(emptySizes());
+    dispatch(emptyActivities())
   };
 
   return (
@@ -112,7 +114,7 @@ export default function TripPlanScreen({ navigation }) {
             <Text style={{ color: "white" }}>CONFIRM</Text>
           </View>
         </Pressable>
-        <Pressable onPress={() => {emptySizesArray(), navigation.navigate("Result")}}>
+        <Pressable onPress={() => {emptyArrays(), navigation.navigate("Result")}}>
           <View style={styles.cancel}>
             <Text style={{ color: "black" }}>CANCEL</Text>
           </View>

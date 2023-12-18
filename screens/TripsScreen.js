@@ -28,12 +28,7 @@ export default function TripsScreen({ navigation }) {
   const [allTrips, setAllTrips] = useState([]);
   const [trigger, setTrigger] = useState(false);
 
-  const emptySizesArray = () => {
-    dispatch(emptySizes());
-  };
-
   useEffect(() => {
-    emptySizesArray();
     (async() => {
       const response = await fetch(`http://${backend}:3000/trips/${token}`);
       const data = await response.json();
@@ -41,6 +36,7 @@ export default function TripsScreen({ navigation }) {
         setAllTrips(data.trips);
       }
     })();
+    console.log('tripsData', tripsData);
   }, [trigger]);
 
   const handleDelete = async (id) => {
@@ -57,7 +53,7 @@ export default function TripsScreen({ navigation }) {
   }
 
   const tripsData = allTrips.map((data, i) => {
-
+    
     return (
       <View key={i}>
         <Pressable>
@@ -71,7 +67,7 @@ export default function TripsScreen({ navigation }) {
           <Pressable><FontAwesome name={'trash-o'} size={20} color={'#000000'} onPress={() => handleDelete(data._id)}/></Pressable>
         </View>
       </View>
-    )
+    );
   })
 
   const nextTrips = myTrips.map((trip, i) => {
@@ -139,7 +135,7 @@ const styles = StyleSheet.create({
     resizeMode: "contain", // Choose the resize mode for the image
   },
   titleBlock: {
-    flex: 1,
+    flex: 0.5,
     flexDirection: 'row',
     backgroundColor: "white",
     maxWidth: "100%",
