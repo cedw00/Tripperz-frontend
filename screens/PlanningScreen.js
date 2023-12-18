@@ -13,7 +13,6 @@ import { useSelector, useDispatch } from "react-redux";
 import PlannedDay from "../components/PlannedDay";
 import { updateTripperList } from "../reducers/tripper";
 import { updateNextTrips } from "../reducers/trips";
-import { emptySizes } from "../reducers/activ";
 import Constants from 'expo-constants';
 
 const backend = Constants.expoConfig.hostUri.split(`:`)[0]
@@ -62,9 +61,6 @@ export default function TripPlanScreen({ navigation }) {
     );
   });
 
-  const emptySizesArray = () => {
-    dispatch(emptySizes())
-  };
 
   const handleConfirm = async () => {
     const activities = [];
@@ -93,7 +89,7 @@ export default function TripPlanScreen({ navigation }) {
     const data = await response.json();
     if (data.result) {
       confirmItem();
-      navigation.navigate("DrawerNavigator", { screen: 'Trips' })
+      navigation.navigate("DrawerNavigator", { screen: 'Trips' });
     } else {
       console.log(data.error);
     }
@@ -165,10 +161,7 @@ export default function TripPlanScreen({ navigation }) {
       <ScrollView>{days}</ScrollView>
       <View style={styles.nextContainer}>
         <Pressable
-          onPress={() => {
-            navigation.navigate("DrawerNavigator", { screen: "Trips" }),
-              confirmItem(), emptySizesArray(), handleConfirm()
-          }}
+          onPress={() => handleConfirm()}
         >
           <View style={styles.confirm}>
             <Text style={{ color: "white" }}>CONFIRM</Text>
