@@ -6,7 +6,6 @@ import {
 
 } from 'react-native';
 import DateTimePicker from '@react-native-community/datetimepicker';
-import dayjs from 'dayjs';
 import moment from 'moment';
 import 'moment/locale/fr';
 import { useState, useEffect } from "react";
@@ -111,8 +110,8 @@ console.log()
 
                 </View>
                 <View style={styles.date}>
-                    <Text style={styles.dateText} >Date</Text>
-                    <Text>
+                    <Text style={{color:'#D6DBDC',margin:10}} >Date</Text>
+                    <Text style={styles.dateBorder}>
 
                         <DateTimePicker
                             style={styles.datePicker}
@@ -180,9 +179,7 @@ const styles = StyleSheet.create({
         margin: 15,
         color: '#D6DBDC'
     },
-    dateText: {
-        margin: 15
-    },
+
     date: {
 
         borderWidth: 1,
@@ -196,7 +193,15 @@ const styles = StyleSheet.create({
         borderRadius: 10,
         borderColor: '#D6DBDC'
     },
-
+    dateBorder: {
+        borderWidth: 1,
+        borderColor:'#D6DBDC',
+        borderRadius:10,
+        width:'90%',
+        alignSelf:'center',
+        marginBottom:'5%'
+       
+    },
 
     addTripperz: {
         padding: '5%',

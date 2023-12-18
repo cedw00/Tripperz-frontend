@@ -436,7 +436,7 @@ export default function ResultScreen({ navigation }) {
     };
 
     fetchData();
-  }, [country, city, countryList, cityList]);
+  }, [ navigation]);
 
   const handleSearch = () => {
     navigation.navigate("TripPlan");
@@ -505,8 +505,8 @@ export default function ResultScreen({ navigation }) {
   //ON CLICK ACTIVITIES
 
   const handleClickActivities = () => {
-    navigation.navigate("Home");
-  };
+    navigation.navigate('Home',{activityComponent:true})
+  }
 
   //ON CLICK Destinations
 
