@@ -5,16 +5,19 @@ import { useSelector } from "react-redux";
 
 export default function PlannedDay(props) {
   const activities = useSelector((state) => state.activ.value);
-  const morningSize = useSelector((state) => state.activ.morningValue);
-  const afternoonSize = useSelector((state) => state.activ.afternoonValue);
+
+
+  const allSizes = useSelector((state) => state.activ.sizesArray)
+
+
 
    // TEST STARTING
-   const newMorning = activities.slice(0, morningSize);
+   const newMorning = props.dayPlan.slice(0, allSizes[props.i][0]);
    const morningActivities = newMorning.map((data, index) => {
     return <PlannedSlot activity={data} key={index} />;
   });
 
-  const newAfternoon = activities.slice(4, afternoonSize);
+  const newAfternoon = props.dayPlan.slice(2, allSizes[props.i][1]);
   const afternoonActivities = newAfternoon.map((data, index) => {
     return <PlannedSlot activity={data} key={index} />;
   });
@@ -22,12 +25,12 @@ export default function PlannedDay(props) {
   return (
     <View style={styles.container}>
       <View title="Day" style={styles.dayContainer}>
-        <Text style={styles.dayTitle}>Day 1 - 01/01/2024</Text>
+        <Text style={styles.dayTitle}>Day {props.day} - {props.date}</Text>
         <View title="halfDay" style={styles.morning}>
           <Text style={{ fontSize: 18, marginBottom: "2%" }}>Morning</Text>
           <View style={styles.daySlots}>
             <ScrollView contentContainerStyle={styles.scrollView}>
-              <View>{morningActivities}</View>
+              <View style={{marginBottom: '5%'}}>{morningActivities.length > 0 ? morningActivities : <Text style={{padding: '26%'}}>No activities planned</Text>}</View>
             </ScrollView>
           </View>
         </View>
@@ -35,7 +38,7 @@ export default function PlannedDay(props) {
           <Text style={{ fontSize: 18, marginVertical: "2%" }}>Afternoon</Text>
           <View style={styles.daySlots}>
             <ScrollView contentContainerStyle={styles.scrollView}>
-              <View>{afternoonActivities}</View>
+              <View style={{marginBottom: '5%'}}>{afternoonActivities.length > 0 ? afternoonActivities : <Text style={{padding: '26%'}}>No activities planned</Text>}</View>
             </ScrollView>
           </View>
         </View>

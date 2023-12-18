@@ -6,67 +6,83 @@ import { useDispatch, useSelector } from "react-redux";
 import {
   updateMorningValue,
   updateAfternoonValue,
+  saveSizes,
+  updateSizes,
+  increaseMorning,
+  increaseAfternoon,
+  decreaseMorning,
+  decreaseAfternoon
 } from "../reducers/activ";
 
 export default function Day(props) {
-  const [morningSize, setMorningSize] = useState(4);
-  const [afternoonSize, setAfternoonSize] = useState(8);
+  const [morningSize, setMorningSize] = useState(2);
+  const [afternoonSize, setAfternoonSize] = useState(4);
+  const dayDuration = useSelector((state) => state.activ.plannedValue);
   const activities = useSelector((state) => state.activ.value);
+  const morningValue = useSelector((state) => state.activ.morningValue);
+  const afternoonValue = useSelector((state) => state.activ.afternoonValue);
+  const allSizes = useSelector((state) => state.activ.sizesArray);
+ 
+
+  //const allSizes = useSelector((state) => state.activ.sizes);
+
   const dispatch = useDispatch();
+  // console.log('D => morningSize is', props.morning, 'in DAY', props.day);
+  // console.log('D => afternoonSize is', props.afternoon, 'in DAY', props.day);
+  
 
-  // const loadActivities = () => {
-  //   props.stockActivities();
-  // };
-
-  const newMorning = activities.slice(0, morningSize);
-  const morningActivities = newMorning.map((data, index) => {
+  const morningPlan = props.dayPlan.slice(0, allSizes[props.i][0]);
+  const morningActivities = morningPlan.map((data, index) => {
     return <Slot activity={data} key={index} />;
   });
 
-  const newAfternoon = activities.slice(4, afternoonSize);
-  const afternoonActivities = newAfternoon.map((data, index) => {
+  const afternoonPlan = props.dayPlan.slice(2, allSizes[props.i][1]);
+  const afternoonActivities = afternoonPlan.map((data, index) => {
     return <Slot activity={data} key={index} />;
   });
 
   useEffect(() => {
-    dispatch(updateMorningValue(morningSize));
+    // dispatch(updateMorningValue(morningSize));
+    // dispatch(updateAfternoonValue(afternoonSize));
+    // setMorningSize(morningSize);
+    // setAfternoonSize(afternoonSize);
+    // dispatch(updateSizes(props.i, morningSize, afternoonSize));
 
-    dispatch(updateAfternoonValue(afternoonSize));
+  }, [allSizes[props.i][0], allSizes[props.i][1]]);
 
-    //loadActivities(); // CALLED FUNC TO RELOAD
-
-  }, [morningSize, afternoonSize]);
+  console.log('DAY => allSizes', allSizes)
 
   const moreMorningActivity = () => {
-    setMorningSize(morningSize + 1);
-    dispatch(updateMorningValue(morningSize));
-
-    setAfternoonSize(afternoonSize + 1);
-    dispatch(updateAfternoonValue(afternoonSize));
+    // setMorningSize(morningSize + 1);
+    // dispatch(updateSizes(props.i, morningSize, afternoonSize));
+    dispatch(increaseMorning(props.i))
   };
 
   const moreAfternoonActivity = () => {
-    setAfternoonSize(afternoonSize + 1);
-    dispatch(updateAfternoonValue(afternoonSize));
+    // setAfternoonSize(afternoonSize + 1);
+    // dispatch(updateSizes(props.i, morningSize, afternoonSize));
+    dispatch(increaseAfternoon(props.i))
   };
 
   const lessMorningActivity = () => {
     if (morningSize > 0) {
-      setMorningSize(morningSize - 1);
-      dispatch(updateMorningValue(morningSize));
-    } else {
-      setMorningSize(1);
-      dispatch(updateMorningValue(morningSize));
+      // setMorningSize(morningSize - 1);
+      // dispatch(updateSizes(props.i, morningSize, afternoonSize));
+      dispatch(decreaseMorning(props.i))
+    // } else {
+    //   setMorningSize(1);
+    //   dispatch(updateSizes(props.i, morningSize, afternoonSize));
     }
   };
 
   const lessAfternoonActivity = () => {
     if (afternoonSize > 0) {
-      setAfternoonSize(afternoonSize - 1);
-      dispatch(updateAfternoonValue(afternoonSize));
-    } else {
-      setAfternoonSize(1);
-      dispatch(updateAfternoonValue(afternoonSize));
+      // setAfternoonSize(afternoonSize - 1);
+      // dispatch(updateSizes(props.i, morningSize, afternoonSize));
+      dispatch(decreaseAfternoon(props.i))
+    // } else {
+    //   setAfternoonSize(1);
+    //   dispatch(updateSizes(props.i, morningSize, afternoonSize));
     }
   };
 

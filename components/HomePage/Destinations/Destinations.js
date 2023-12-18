@@ -80,7 +80,7 @@ export default function Destinations(searchCountry, city) {
         dispatch(getDuration(payload));
     }, [depDate, arrDate])
 
-
+console.log()
 
     //ADD TRIPPERZ NUMBER
 
