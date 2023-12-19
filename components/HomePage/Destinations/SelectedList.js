@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { View, StyleSheet, } from 'react-native';
+import { View, StyleSheet, Text } from 'react-native';
 import axios from 'axios';
 import { SelectList } from 'react-native-dropdown-select-list';
 import { useDispatch } from 'react-redux';
@@ -12,13 +12,11 @@ import { addCountryList } from '../../../reducers/search';
 
 
 
-function SelectedList() {
+function SelectedList({ getData }) {
 
   const [countries, setCountries] = useState([]);
-  const [selectedCountry, setSelectedCountry] = useState('');
+  const [selectedCountry, setSelectedCountry] = useState(null);
   const [selectedCity, setSelectedCity] = useState(null);
-
-
 
   const dispatch = useDispatch();
 
@@ -29,7 +27,7 @@ function SelectedList() {
         const response = await axios.get('https://countriesnow.space/api/v0.1/countries');
         const countryData = response.data.data;
         setCountries(countryData);
-  
+
       } catch (error) {
         console.error('Error fetching country data:', error);
       }
@@ -49,14 +47,12 @@ function SelectedList() {
     setSelectedCountry(value)
     const searchCountry = countrylist[value].value;
     dispatch(addCountry(searchCountry));
-
+    getData(searchCountry)
+    
   }
 
 
-
-
-
-  if (selectedCountry !== '') {
+  if (selectedCountry !== null) {
 
     const selectedCities = countries.find(item => item.country === countrylist[selectedCountry].value);
 
@@ -82,38 +78,44 @@ function SelectedList() {
 
     <View style={styles.container}>
 
+      <Text style={styles.title}>Country</Text>
 
       <SelectList
 
         setSelected={handleCountrySelected}
         data={countrylist}
-        dropdownStyles={{ borderColor: '#D6DBDC', }}
+        dropdownStyles={{ borderColor: 'rgba(6, 113, 136, 1)', }}
         search={true}
         placeholder={'Select country'}
         boxStyles={{
           borderWidth: 1,
-          borderColor: '#D6DBDC',
-          color: '#D6DBDC',
-          margin: 15,
+          borderColor: 'rgba(6, 113, 136, 1)',
+          color: 'rgba(6, 113, 136, 1)',
+          marginLeft: 15,
+          marginRight:15,
+          marginBottom:'10%',
         }}
-     
+
 
       />
+     
+      <Text style={styles.title}>City</Text>
 
       <SelectList
 
         setSelected={setCitySelected}
         data={citylist}
-        dropdownStyles={{ borderColor: '#D6DBDC', }}
+        dropdownStyles={{ borderColor: 'rgba(6, 113, 136, 1)', }}
         search={true}
         placeholder={'Select city'}
         boxStyles={{
           borderWidth: 1,
-          borderColor: '#D6DBDC',
-          margin: 15,
+          borderColor: 'rgba(6, 113, 136, 1)',
+          marginLeft: 15,
+          marginRight:15,
+          marginBottom:'5%',
         }}
         dropdownShown={false}
-        
       />
     </View>
 
@@ -122,7 +124,14 @@ function SelectedList() {
 
 
 const styles = StyleSheet.create({
+  title: {
+    color: 'rgba(6, 113, 136, 1)',
+    fontWeight: 'bold',
+    marginLeft: '5%',
+  marginBottom:'5%',
 
+
+  }
 
 });
 

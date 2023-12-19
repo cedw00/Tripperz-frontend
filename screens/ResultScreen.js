@@ -22,7 +22,14 @@ import {
 import { useDispatch, useSelector } from "react-redux";
 import { getRandomActivityByInput } from "../modules/slotMods";
 import Constants from 'expo-constants';
+import { addCountry } from '../reducers/search';
+import { addCity } from '../reducers/search';
+
+
+
 const backend = Constants.expoConfig.hostUri.split(`:`)[0]
+
+
 export default function ResultScreen({ navigation }) {
   const activitiesList = [
     {
@@ -337,6 +344,7 @@ export default function ResultScreen({ navigation }) {
   const allActivNames = "shopping restaurants culturePlaces landscapes sportActivities";
   const dispatch = useDispatch();
  
+ 
   const [searchCountry, setSearchCountry] = useState('');
   const { country } = useSelector((state) => state.search.value)
   const { city } = useSelector((state) => state.search.value)
@@ -373,8 +381,7 @@ export default function ResultScreen({ navigation }) {
           .then(data => {
             delay(1000);
             setItemsToDisplay(data.cities)
-         r
-           
+             
           })
       } else  if (city.length > 0){
       
@@ -399,7 +406,7 @@ export default function ResultScreen({ navigation }) {
     fetchData();
 
 
-  }, [ navigation]);
+  }, [navigation]);
 
 
 
@@ -443,8 +450,22 @@ console.log('name:', element.name);
 
   //ON CLICK Destinations
   const handleClickDestination = () => {
+    dispatch(addCountry(''));
+    dispatch(addCity(''));
     navigation.navigate('Home')
+  
   };
+
+
+  
+    
+  // if (!isFocused) {
+  //   dispatch(addCountry(''));
+  //   dispatch(addCity(''));
+  //   console.log('country',country)
+  // }
+  console.log('is focused',country)
+
   return (
     <SafeAreaView>
       <View style={styles.container}>
@@ -496,8 +517,9 @@ const styles = StyleSheet.create({
   logo: {
     paddingLeft: '15%',
     paddingRight: '15%',
-    bottom: '-20%',
-    width: '60%',
+    top: '25%',
+    resizeMode:'contain',
+    width: '40%',
   },
   buttons: {
     flexDirection: 'row',

@@ -3,11 +3,10 @@ import {
     Text,
     View,
     Platform,
+    TouchableOpacity,
 
 } from 'react-native';
 import DateTimePicker from '@react-native-community/datetimepicker';
-import dayjs from 'dayjs';
-import moment from 'moment';
 import 'moment/locale/fr';
 import { useState } from "react";
 import SelectList from './SelectList';
@@ -103,8 +102,8 @@ export default function Activities() {
 
 
                 <View style={styles.date}>
-                    <Text style={styles.dateText} >Date</Text>
-                    <Text>
+                    <Text style={{ color: 'rgba(6, 113, 136, 1)', margin: 10,fontWeight: 'bold',fontSize: 17, }} >Date</Text>
+                    <Text style={styles.dateBorder}>
 
                         <DateTimePicker
                             style={styles.datePicker}
@@ -135,16 +134,17 @@ export default function Activities() {
 
 
                 <View style={styles.addTripperz}>
-
-                    <Text style={styles.textButton}>Add Tripperz</Text>
+                    <Text style={{ color: '#000000', top: '-10%' }}>Add Tripperz</Text>
                     <View style={styles.buttons}>
-                        <AntDesign name={'minuscircle'} size={30} color={'#000000'} onPress={() => handleRemoveClick()} />
+                        <AntDesign name={'minuscircle'} size={30} color={'rgba(6, 113, 136, 1)'} onPress={() => handleRemoveClick()} />
                         <Text style={styles.counter}>{counter}</Text>
-                        <AntDesign name={'pluscircle'} size={30} color={'#000000'} onPress={() => handleAddClick()} />
+                        <AntDesign name={'pluscircle'} size={30} color={'rgba(6, 113, 136, 1)'} onPress={() => handleAddClick()} />
                     </View>
 
                 </View>
-
+                <TouchableOpacity style={styles.search} activeOpacity={0.8} onPress={() => handleSearch()}>
+                    <Text style={styles.searchText}>Search</Text>
+                </TouchableOpacity>
             </View>
         </View>
 
@@ -153,75 +153,103 @@ export default function Activities() {
 
 const styles = StyleSheet.create({
     container: {
-        width: '70%',
+        width: '80%',
         height: '100%',
-        marginTop: '5%',
+        flexDirection: 'column',
+        justifyContent: 'center',
+        
     },
 
     destination: {
         width: '100%',
-        borderWidth: 1,
+        borderWidth: 2,
+        backgroundColor: '#DEDEDE',
         shadowColor: '#000',
         shadowOffset: { width: 6, height: 6 },
-        shadowOpacity: 0.7,
+        shadowOpacity: 0.3,
         shadowRadius: 2,
         borderRadius: 10,
-        borderColor: '#D6DBDC',
-        elevation: 6,
-        contentWrapper: {
-            borderRadius: 10,
-            overflow: 'hidden', // Clip child elements that go beyond the wrapper
-          },
-
-
+        borderColor: 'rgba(6, 113, 136, 1)',
     },
-    destText: {
-        color: 'red',
+
+       destText: {
         margin: 15,
-        color: '#D6DBDC'
+        color: 'rgba(6, 113, 136, 1)',
+        fontWeight: 'bold',
+        fontSize: 17,
     },
+
     dateText: {
         margin: 15
     },
-    date: {
+ date: {
 
-        borderWidth: 1,
+        borderWidth: 2,
         paddingBottom: 10,
+        backgroundColor: '#DEDEDE',
         marginTop: '10%',
         shadowColor: '#000',
-        shadowOffset: { width: +6, height: 6 },
-        shadowOpacity: 0.7,
+        shadowOffset: { width: 6, height: 6 },
+        shadowOpacity: 0.3,
         shadowRadius: 2,
         borderRadius: 10,
-        borderColor: '#D6DBDC'
+        borderColor: 'rgba(6, 113, 136, 1)'
+    },
+
+    dateBorder: {
+        borderWidth: 1,
+        borderColor: 'rgba(6, 113, 136, 1)',
+        borderRadius: 10,
+        width: '90%',
+        alignSelf: 'center',
+        marginBottom: '5%'
+
     },
 
     addTripperz: {
         padding: '5%',
         borderWidth: 1,
-        borderColor: 'green',
-        borderWidth: 1,
+        backgroundColor: '#DEDEDE',
+        borderWidth: 2,
         marginTop: '10%',
         alignItems: 'center',
         justifyContent: 'center',
         shadowColor: '#000',
         shadowOffset: { width: +6, height: 6 },
-        shadowOpacity: 0.7,
+        shadowOpacity: 0.3,
         shadowRadius: 2,
         borderRadius: 10,
-        borderColor: '#D6DBDC'
+        borderColor: 'rgba(6, 113, 136, 1)'
 
     },
 
     buttons: {
         flexDirection: 'row',
-
-
+        alignItems: 'center',
+        justifyContent: 'center'
     },
+
     counter: {
         paddingRight: '20%',
         paddingLeft: '20%',
-
-
-    }
+        color: 'rgba(6, 113, 136, 1)'
+    },
+    search: {
+        height: '8%',
+        width: '60%',
+        marginTop: 5,
+        borderWidth: 2,
+        borderColor: 'rgba(6, 113, 136, 1)',
+        alignSelf: 'center',
+        justifyContent: 'center',
+        backgroundColor: '#DEDEDE',
+        borderRadius: 8,
+        marginBottom:'10%',
+        marginTop:'5%'
+    },
+    searchText: {
+        color: 'rgba(6, 113, 136, 1)',
+        fontWeight: 'bold',
+        alignSelf: 'center'
+    },
 });
