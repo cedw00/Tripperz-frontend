@@ -193,13 +193,13 @@ export default function ProfileScreen({ navigation }) {
           <View style={styles.foot}>
             <View style={styles.buttons}>
               <View style={styles.submitSection}>
-                <TouchableOpacity activeOpacity={0.8} onPress={() => handleSubmit()} style={styles.confirmBtn}>
-                    <Text style={styles.confirm}>Confirm</Text>
+                <TouchableOpacity activeOpacity={0.8} onPress={() => cancelModif()} style={styles.confirmBtn}>
+                    <Text style={styles.confirm}>Cancel</Text>
                 </TouchableOpacity>
               </View>
               <View style={styles.submitSection}>
-                <TouchableOpacity activeOpacity={0.8} onPress={() => cancelModif()} style={styles.confirmBtn}>
-                    <Text style={styles.confirm}>Cancel</Text>
+                <TouchableOpacity activeOpacity={0.8} onPress={() => handleSubmit()} style={styles.confirmBtn}>
+                    <Text style={styles.confirm}>Confirm</Text>
                 </TouchableOpacity>
               </View>
             </View>
@@ -490,7 +490,7 @@ const styles = StyleSheet.create({
     flex: 2,
     width: '100%',
     alignItems: 'center',
-    justifyContent: 'space-around'
+    justifyContent: 'space-around',
 },
   show: {
       flex: 2,
@@ -519,14 +519,14 @@ const styles = StyleSheet.create({
     flex: 1,
     width: '90%',
     justifyContent: 'center',
-    margin: 5
+    margin: 5,
   },
   label: {
     flex: 1,
     fontSize: 14,
     color: '#FFFFFF',
     marginTop: 10,
-    marginBottom: 5,
+    paddingBottom: 7,
   },
   inputContainer: {
       width: '90%',

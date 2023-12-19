@@ -160,16 +160,16 @@ export default function TripPlanScreen({ navigation }) {
       </View>
       <ScrollView>{days}</ScrollView>
       <View style={styles.nextContainer}>
+        <Pressable onPress={() => {navigation.navigate("TripPlan")}}>
+          <View style={styles.cancel}>
+            <Text style={{ color: "black" }}>CANCEL</Text>
+          </View>
+        </Pressable>
         <Pressable
           onPress={() => handleConfirm()}
         >
           <View style={styles.confirm}>
             <Text style={{ color: "white" }}>CONFIRM</Text>
-          </View>
-        </Pressable>
-        <Pressable onPress={() => {navigation.navigate("TripPlan")}}>
-          <View style={styles.cancel}>
-            <Text style={{ color: "black" }}>CANCEL</Text>
           </View>
         </Pressable>
       </View>

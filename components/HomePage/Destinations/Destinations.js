@@ -74,7 +74,7 @@ export default function Destinations(searchCountry, city) {
         const payload = {
             start: start,
             end: end,
-            duration: daysDifference + 1
+            duration: daysDifference
         }
         dispatch(getDuration(payload));
     }, [depDate, arrDate])

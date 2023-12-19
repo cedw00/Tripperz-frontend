@@ -48,16 +48,17 @@ export default function TripsScreen({ navigation }) {
   };
 
   useEffect(() => {
-    emptySizesArray();
-    (async() => {
-      const response = await fetch(`http://${backend}:3000/trips/${token}`);
-      const data = await response.json();
-      if (data.trips.length > 0) {
-        setAllTrips(data.trips);
-      } else {
-        setAllTrips([]);
-      }
-    })();
+    if (refresh > 0) {
+      (async() => {
+        const response = await fetch(`http://${backend}:3000/trips/${token}`);
+        const data = await response.json();
+        if (data.trips.length > 0) {
+          setAllTrips(data.trips);
+        } else {
+          setAllTrips([]);
+        }
+      })();
+    }
   }, [trigger]);
 
   const handleDelete = async (id) => {
@@ -121,6 +122,7 @@ export default function TripsScreen({ navigation }) {
     )
   } else {
     if (refresh === 0) {
+      emptySizesArray();
       (async() => {
         const response = await fetch(`http://${backend}:3000/trips/${token}`);
         const data = await response.json();
