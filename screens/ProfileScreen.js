@@ -18,16 +18,18 @@ const genderData = [
     { label: 'Female', value: 'Female' },
   ];
   
-  const mockData = [
-    { label: 'Museum', value: '0' },
-    { label: 'Sea', value: '1' },
-    { label: 'Sport', value: '2' },
-    { label: 'Restaurant', value: '3' },
-    { label: 'Theater', value: '4' },
-    { label: 'Sightseeing', value: '5' },
-    { label: 'Amusement Park', value: '6' },
-    { label: 'Mountain', value: '7' },
-  ];
+const mockData = [
+  { label: 'Cultural tourism', value: '0' },
+  { label: 'Guided Tours', value: '1' },
+  { label: 'Outdoor Activities', value: '2' },
+  { label: 'Water activities', value: '3' },
+  { label: 'Culinary experiences', value: '4' },
+  { label: 'Entertainment', value: '5' },
+  { label: 'Sports Activities', value: '6' },
+  { label: 'Relaxation and well-being', value: '7' },
+  { label: 'Ecotourism', value: '8' },
+  { label: 'Shopping', value: '9' },
+];
   
   const foodData = [
     { label: 'Italian', value: '0' },
@@ -170,12 +172,22 @@ export default function ProfileScreen({ navigation }) {
                 </View>
               </View>
               <View style={styles.field}>
-                <Text style={styles.label}>Favorite Food types</Text>
+                <Text style={styles.label}>Favorite types of food</Text>
                 <View style={styles.inputContainer}>
                     <MultiSelect
                         style={styles.list} data={foodData} labelField='label' valueField='value' placeholder='Favorite food types'
                         placeholderStyle={{color: '#A0ACAE'}} value={selectedFood} onChange={(item) => {setSelectedFood(item)}} renderItem={editDisplay} maxHeight={100}
                         visibleSelectedItem={false} activeColor='lightblue'
+                    />
+                </View>
+              </View>
+              <View style={styles.field}>
+                <Text style={styles.label}>Favorite types of activities</Text>
+                <View style={styles.inputContainer}>
+                    <MultiSelect
+                        style={styles.list} data={mockData} labelField='label' valueField='value' placeholder='Favorites types of activities'
+                        placeholderStyle={{color: '#A0ACAE'}} value={selectedActivities} onChange={(item) => {setSelectedActivities(item)}} renderItem={editDisplay}
+                        maxHeight={100} visibleSelectedItem={false} activeColor='lightblue'
                     />
                 </View>
               </View>
@@ -225,7 +237,7 @@ export default function ProfileScreen({ navigation }) {
             <View style={styles.top}>
               <ImageBackground source={require('../assets/background_2.png')} style={styles.background} imageStyle={{borderRadius: 10}}>
                 <View style={styles.icon}>
-                  <FontAwesome name={'user-circle'} size={75} color={'#000000'}/>
+                  <FontAwesome name={'user-circle'} size={70} color={'#000000'}/>
                 </View>
                 <View style={styles.messageContainer}>
                   <View style={styles.messageSection}>
@@ -257,6 +269,10 @@ export default function ProfileScreen({ navigation }) {
               <Dropdown
                   style={styles.dropdown} data={favoriteFoods} labelField='label' valueField='value' placeholder='Your favorites food type'
                   placeholderStyle={'#000000'} renderItem={display} maxHeight={100} value={'Your favorites food'} iconColor='#000000'
+              />
+              <Dropdown
+                  style={styles.dropdown} data={hobbies} labelField='label' valueField='value' placeholder='Your favorites types of hobbies'
+                  placeholderStyle={'#000000'} renderItem={display} maxHeight={100} value={'Your favorites hobbies'} iconColor='#000000'
               />
               <Dropdown
                   style={styles.dropdown} data={hobbies} labelField='label' valueField='value' placeholder='Your favorites hobbies'
@@ -356,7 +372,7 @@ const styles = StyleSheet.create({
     paddingLeft: 8,
   },
   main: {
-    flex: 4,
+    flex: 5,
     width: '90%',
     backgroundColor: '#FDFDFF',
     alignItems: 'center',
@@ -519,14 +535,13 @@ const styles = StyleSheet.create({
     flex: 1,
     width: '90%',
     justifyContent: 'center',
-    margin: 5,
   },
   label: {
     flex: 1,
     fontSize: 14,
     color: '#FFFFFF',
     marginTop: 10,
-    paddingBottom: 7,
+    paddingBottom: 8,
   },
   inputContainer: {
       width: '90%',

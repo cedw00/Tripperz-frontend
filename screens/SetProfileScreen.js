@@ -15,14 +15,16 @@ const genderData = [
 ];
 
 const mockData = [
-  { label: 'Museum', value: '0' },
-  { label: 'Sea', value: '1' },
-  { label: 'Sport', value: '2' },
-  { label: 'Restaurant', value: '3' },
-  { label: 'Theater', value: '4' },
-  { label: 'Sightseeing', value: '5' },
-  { label: 'Amusement Park', value: '6' },
-  { label: 'Mountain', value: '7' },
+  { label: 'Cultural tourism', value: '0' },
+  { label: 'Guided Tours', value: '1' },
+  { label: 'Outdoor Activities', value: '2' },
+  { label: 'Water activities', value: '3' },
+  { label: 'Culinary experiences', value: '4' },
+  { label: 'Entertainment', value: '5' },
+  { label: 'Sports Activities', value: '6' },
+  { label: 'Relaxation and well-being', value: '7' },
+  { label: 'Ecotourism', value: '8' },
+  { label: 'Shopping', value: '9' },
 ];
 
 const foodData = [
@@ -141,6 +143,13 @@ export default function SetProfileScreen({ navigation }) {
                     style={styles.dropdown} data={foodData} labelField='label' valueField='value' placeholder='Favorite food types'
                     placeholderStyle={styles.input} value={selectedFood} onChange={(item) => {setSelectedFood(item)}} renderItem={display} maxHeight={100}
                     visibleSelectedItem={false} activeColor='lightblue'
+                />
+              </View>
+              <View style={styles.inputContainer}>
+                <MultiSelect
+                    style={styles.dropdown} data={mockData} labelField='label' valueField='value' placeholder='Favorites types of activities'
+                    placeholderStyle={styles.input} value={selectedActivities} onChange={(item) => {setSelectedActivities(item)}} renderItem={display}
+                    maxHeight={100} visibleSelectedItem={false} activeColor='lightblue'
                 />
               </View>
               <View style={styles.inputContainer}>
