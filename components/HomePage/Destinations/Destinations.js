@@ -13,6 +13,7 @@ import SelectedList from './SelectedList';
 import AntDesign from 'react-native-vector-icons/AntDesign'
 import { useSelector, useDispatch } from 'react-redux';
 import { getDuration } from '../../../reducers/search';
+import { addTrippers } from '../../../reducers/search';
 
 
 
@@ -85,11 +86,12 @@ export default function Destinations({ navigation }) {
 
     const handleSearch = () => {
 
-
+       
         if (country === '') {
             setErrMsg('It looks like you forgot to choose a country !')
         }
         else {
+            dispatch(addTrippers(counter))
             navigation.navigate('Result')
         }
 

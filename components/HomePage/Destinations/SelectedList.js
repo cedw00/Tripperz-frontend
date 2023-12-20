@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { View, StyleSheet, Text } from 'react-native';
 import axios from 'axios';
 import { SelectList } from 'react-native-dropdown-select-list';
-import { useDispatch, useSelector } from 'react-redux';
+import { useDispatch } from 'react-redux';
 import { addCountry } from '../../../reducers/search';
 import { addCity } from '../../../reducers/search';
 import { addCityList } from '../../../reducers/search';
@@ -121,7 +121,7 @@ function SelectedList({ getData }) {
           marginRight:15,
           marginBottom:'10%',
         }}
-        dropdownShown={false}
+       
       />
     </View>
 

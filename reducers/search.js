@@ -12,6 +12,7 @@ const initialState = {
     start: null,
     end: null,
     duration: null,
+    trippers:null,
   },
 };
 
@@ -37,11 +38,15 @@ export const searchSlice = createSlice({
       state.value.start = action.payload.start;
       state.value.end = action.payload.end;
       state.value.duration = action.payload.duration;
-    }
+    },
+    addTrippers:(state, action) => {
+      state.value.trippers = action.payload
+     
+    },
 
   },
 
 });
 
-export const { addCountry, addCity,addCityList, addCountryList, getDuration } = searchSlice.actions;
+export const { addCountry, addCity,addCityList, addCountryList, getDuration , addTrippers} = searchSlice.actions;
 export default searchSlice.reducer;
