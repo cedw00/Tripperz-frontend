@@ -138,37 +138,37 @@ let activList = [
 let arr = ["apple", "mango",
           "apple", "orange", "mango", "mango"];
 
-function getRandomActivityByInput(activList, userInput) {
-  let filteredActivities = [];
+function getRandomActivityByInput(activList) {
+  // let filteredActivities = [];
 
-  // Check if userInput contains specific keywords
-  const keywords = userInput.toLowerCase().split(" ");
+  // // Check if userInput contains specific keywords
+  // const keywords = userInput.toLowerCase().split(" ");
 
-  // Filter activities based on keywords
-  keywords.forEach((keyword) => {
-    activList.forEach((activityType) => {
-      const keys = Object.keys(activityType);
-      if (keys.length > 0 && keys[0].toLowerCase().includes(keyword)) {
-        filteredActivities = filteredActivities.concat(activityType[keys[0]]);
-      }
-    });
-  });
+  // // Filter activities based on keywords
+  // keywords.forEach((keyword) => {
+  //   activList.forEach((activityType) => {
+  //     const keys = Object.keys(activityType);
+  //     if (keys.length > 0 && keys[0].toLowerCase().includes(keyword)) {
+  //       filteredActivities = filteredActivities.concat(activityType[keys[0]]);
+  //     }
+  //   });
+  // });
 
-  // If no specific activities matched the keywords, select from all activities
-  if (filteredActivities.length === 0) {
-    activList.forEach((activityType) => {
-      const keys = Object.keys(activityType);
-      if (keys.length > 0) {
-        filteredActivities = filteredActivities.concat(activityType[keys[0]]);
-      }
-    });
-  }
+  // // If no specific activities matched the keywords, select from all activities
+  // if (filteredActivities.length === 0) {
+  //   activList.forEach((activityType) => {
+  //     const keys = Object.keys(activityType);
+  //     if (keys.length > 0) {
+  //       filteredActivities = filteredActivities.concat(activityType[keys[0]]);
+  //     }
+  //   });
+  // }
 
   // Select a random activity name from filteredActivities
-  const randomIndex = Math.floor(Math.random() * filteredActivities.length);
-  const randomActivity = filteredActivities[randomIndex];
+  const randomIndex = Math.floor(Math.random() * activList.length);
+  const randomActivity = activList[randomIndex];
 
-  return (randomActivity.name);
+  return (randomActivity);
 };
 
 function removeDuplicates(arr) {
