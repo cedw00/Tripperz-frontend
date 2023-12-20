@@ -68,9 +68,10 @@ const styles = StyleSheet.create({
     alignItems: 'center',
   },
   top: {
-    flex: 1,
+    flex: 0.5,
     justifyContent: 'center',
     alignItems: 'center',
+    marginTop: '20%'
   },
   message: {
     fontWeight: 'bold',
@@ -78,7 +79,7 @@ const styles = StyleSheet.create({
     color: 'white',
   },
   main: {
-    flex: 1,
+    flex: 1.5,
     width: '80%',
   },
   btn: {

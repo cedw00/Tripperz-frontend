@@ -75,7 +75,7 @@ export default function TripsScreen({ navigation }) {
   }
 
   const tripsData = allTrips.map((data, i) => {
-
+    
     return (
       <SafeAreaView key={i}>
         <Pressable>
@@ -180,7 +180,7 @@ const styles = StyleSheet.create({
     resizeMode: "contain", // Choose the resize mode for the image
   },
   titleBlock: {
-    flex: 1,
+    flex: 0.5,
     flexDirection: 'row',
     backgroundColor: "white",
     maxWidth: "100%",

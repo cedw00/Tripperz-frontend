@@ -14,7 +14,8 @@ const initialState = {
   tripDuration: null,
   activitiesSet: [],
   sizes: {},
-  sizesArray: []
+  sizesArray: [],
+  dayPlan: []
 };
 
 export const activSlice = createSlice({
@@ -45,6 +46,10 @@ export const activSlice = createSlice({
       let setAfternoon = state.sizesArray[dayPayload][1];
       state.sizesArray[dayPayload].splice(setMorning, 1, morningPayload);
       state.sizesArray[dayPayload].splice(setAfternoon, 1, afternoonPayload);
+    },
+     deleteMorningActivity: (state, action) => {
+      const {payload1, payload2} = action;
+      state.sizesArray[payload1][0].splice(payload2, 0)
     },
     increaseMorning: (state, action) => {
       state.sizesArray[action.payload][0] += 1
@@ -89,6 +94,9 @@ export const activSlice = createSlice({
         console.log("activities after switch", state.activitiesSet[action.payload]);
       }
     },
+    updateDayPlan: (state, action) => {
+      state.dayPlan = action.payload;
+    },
     getTripDuration: (state, action) => {
       state.tripDuration = Math.floor(Math.random() * 30) + 1;
     },
@@ -100,6 +108,9 @@ export const activSlice = createSlice({
     },
     emptySizes: (state, action) => {
       state.sizesArray = []
+    },
+    emptyActivities: (state, action) => {
+      state.activitiesSet = []
     },
     pushSizes: (state, action) => {
       state.sizesArray.push(action.payload);
@@ -130,6 +141,8 @@ export const {
   increaseMorning,
   increaseAfternoon,
   decreaseMorning,
-  decreaseAfternoon
+  decreaseAfternoon,
+  emptyActivities,
+  deleteMorningActivity
 } = activSlice.actions;
 export default activSlice.reducer;
