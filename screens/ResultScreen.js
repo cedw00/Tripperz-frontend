@@ -21,8 +21,15 @@ import {
 import { createTripCard } from "../reducers/trips";
 import { useDispatch, useSelector } from "react-redux";
 import { getRandomActivityByInput } from "../modules/slotMods";
-import Constants from "expo-constants";
-const backend = Constants.expoConfig.hostUri.split(`:`)[0];
+import Constants from 'expo-constants';
+import { addCountry } from '../reducers/search';
+import { addCity } from '../reducers/search';
+
+
+
+const backend = Constants.expoConfig.hostUri.split(`:`)[0]
+
+
 export default function ResultScreen({ navigation }) {
  
   const [activitiesList, setActivitiesList] = useState([]);
@@ -91,10 +98,11 @@ export default function ResultScreen({ navigation }) {
           .then((response) => response.json())
           .then((data) => {
             delay(1000);
-            setItemsToDisplay(data.cities);
-            r;
-          });
-      } else if (city.length > 0) {
+            setItemsToDisplay(data.cities)
+             
+          })
+      } else  if (city.length > 0){
+      
         const data = {
           country,
           city,
@@ -235,8 +243,22 @@ export default function ResultScreen({ navigation }) {
 
   //ON CLICK Destinations
   const handleClickDestination = () => {
-    navigation.navigate("Home");
+    dispatch(addCountry(''));
+    dispatch(addCity(''));
+    navigation.navigate('Home')
+  
   };
+
+
+  
+    
+  // if (!isFocused) {
+  //   dispatch(addCountry(''));
+  //   dispatch(addCity(''));
+  //   console.log('country',country)
+  // }
+  console.log('is focused',country)
+
   return (
     <SafeAreaView>
       <View style={styles.container}>
@@ -296,10 +318,11 @@ const styles = StyleSheet.create({
     shadowRadius: 4,
   },
   logo: {
-    paddingLeft: "15%",
-    paddingRight: "15%",
-    bottom: "-20%",
-    width: "60%",
+    paddingLeft: '15%',
+    paddingRight: '15%',
+    top: '25%',
+    resizeMode:'contain',
+    width: '40%',
   },
   buttons: {
     flexDirection: "row",

@@ -23,8 +23,7 @@ export default function ModalSlot(props) {
  console.log("activString", activString);
  
  return (
-    <View style={styles.cont}>
-      <Pressable onPress={() => selectActivity()}>
+      <Pressable onPress={() => selectActivity()} style={styles.cont}>
         <View style={styles.slotContainer}>
           <View style={styles.slotContent} title="Slot">
             <Text style={styles.text} title="Activity">
@@ -33,7 +32,6 @@ export default function ModalSlot(props) {
           </View>
         </View>
       </Pressable>
-    </View>
   );
 }
 
@@ -55,10 +53,13 @@ const styles = StyleSheet.create({
     width: 250,
     marginVertical: '5%',
     paddingVertical: '2%',
-    borderWidth: 3, // Pour visualiser la zone du conteneur
     paddingHorizontal: "20%", // Ajouter un padding pour l'espace intérieur
-    backgroundColor: "lightyellow",
-    borderRadius: "10%",
+    backgroundColor: "#FFFFFF",
+    borderRadius: "20%",
     maxHeight: '100%',
+    shadowColor: "#000",
+    shadowOffset: { width: +3, height: 3 },
+    shadowOpacity: 0.7,
+    shadowRadius: 2,
   },
 });
