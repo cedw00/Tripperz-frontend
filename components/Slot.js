@@ -53,11 +53,10 @@ export default function Slot(props) {
     } else {
       setSlotActivity(props.activity)
     }
-    
   };
 
   return (
-    <View style={styles.cont}>
+    <Pressable style={styles.cont} onPress={() => {setModalVisible(true), prepareSwitch();}}>
       <View style={styles.centeredView}>
         <Modal
           animationType="slide"
@@ -82,27 +81,20 @@ export default function Slot(props) {
                   setModalVisible(!modalVisible), executeSwitch();
                 }}
               >
-                <Text style={styles.textStyle}>Hide Modal</Text>
+                <Text style={styles.textStyle}>Confirm</Text>
               </Pressable>
             </View>
           </View>
         </Modal>
       </View>
-
-      <Pressable
-        onPress={() => {
-          setModalVisible(true), prepareSwitch();
-        }}
-      >
-        <View style={styles.slotContainer}>
-          <View style={styles.slotContent} title="Slot">
-            <Text style={styles.text} title="Activity" name={props.activity}>
-              Going @ {slotActivity}
-            </Text>
-          </View>
+      <View style={styles.slotContainer}>
+        <View style={styles.slotContent} title="Slot">
+          <Text style={styles.text} title="Activity" name={props.activity}>
+            Going @ {slotActivity}
+          </Text>
         </View>
-      </Pressable>
-    </View>
+      </View>
+    </Pressable>
   );
 }
 
@@ -117,6 +109,7 @@ const styles = StyleSheet.create({
   },
   slotContainer: {
     maxWidth: "100%", // Largeur maximale du conteneur
+    marginBottom: '2%'
   },
   slotContent: {
     maxWidth: "100%", // Largeur maximale du conteneur
@@ -132,7 +125,9 @@ const styles = StyleSheet.create({
     alignItems: "center",
     width: 250,
     marginTop: 15,
-    marginHorizontal: "10%",
+    marginLeft: "10%",
+    marginRight: '5%',
+    marginBottom: '2%',
     //borderWidth: 3, // Pour visualiser la zone du conteneur
     paddingHorizontal: "3%", // Ajouter un padding pour l'espace intérieur
     paddingVertical: "2%",

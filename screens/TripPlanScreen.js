@@ -15,6 +15,7 @@ import {
   updatePlannedActivList,
   pushSizes,
   emptySizes,
+  emptyActivities
 } from "../reducers/activ";
 
 export default function TripPlanScreen({ navigation }) {
@@ -54,31 +55,12 @@ export default function TripPlanScreen({ navigation }) {
     }
     setDayDuration(tempArray);
     dispatch(updatePlannedActivList(tempArray));
-
-    // for (let i = 0; i < dayDuration.length; i++) {
-    //   dispatch(pushSizes(size));
-    // }
   }, []);
 
-  
-
-  //console.log('TPS => PlannedValue :', plannedValue)
-  
-  //console.log("TPS => activities", activities);
-  //console.log("TPS => dayPlans", daysPlan);
-    //console.log("TPS => sizesArray", sizesArray);
-
-  
-  // LOOPING TO BUILD DEFAULT REDUCER ARRAY FOR SIZES
-  // for (let i = 0; i < dayDuration.length; i++) {
-  //   let size = {morningSize: 2, afternoonSize: 4};
-  //   dispatch(pushSizes(size));
-  // };
+  console.log("TPS => dayPlans", daysPlan);
 
   const days = dayDuration.map((data, i) => {
     const date = `${data.day}/${data.month}/${data.year}`;
-    // const size = {morningSize: morningValue, afternoonSize: afternoonValue};
-    // dispatch(pushSizes(size));
     return (
       <View key={i} title="Day Card" style={styles.dayContainer}>
         <Day day={i + 1} date={date} dayPlan={daysPlan[i]} i={i} /> 
@@ -86,8 +68,9 @@ export default function TripPlanScreen({ navigation }) {
     )
   });
 
-  const emptySizesArray = () => {
-    dispatch(emptySizes())
+  const emptyArrays = () => {
+    dispatch(emptySizes());
+    dispatch(emptyActivities())
   };
 
   return (
@@ -105,16 +88,16 @@ export default function TripPlanScreen({ navigation }) {
         {days}
       </ScrollView>
       <View style={styles.nextContainer}>
+      <Pressable onPress={() => {emptyArrays(), navigation.navigate("Result")}}>
+          <View style={styles.cancel}>
+            <Text style={{ color: "black" }}>CANCEL</Text>
+          </View>
+        </Pressable>
         <Pressable
           onPress={() => navigation.navigate("Planning")}
         >
           <View style={styles.confirm}>
             <Text style={{ color: "white" }}>CONFIRM</Text>
-          </View>
-        </Pressable>
-        <Pressable onPress={() => {emptySizesArray(), navigation.navigate("Result")}}>
-          <View style={styles.cancel}>
-            <Text style={{ color: "black" }}>CANCEL</Text>
           </View>
         </Pressable>
       </View>

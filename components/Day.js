@@ -1,5 +1,12 @@
 import React, { useState, useEffect } from "react";
-import { StyleSheet, Text, View, ScrollView, Pressable } from "react-native";
+import {
+  StyleSheet,
+  Text,
+  View,
+  ScrollView,
+  Pressable,
+  Modal,
+} from "react-native";
 import FontAwesome from "react-native-vector-icons/FontAwesome";
 import Slot from "./Slot";
 import { useDispatch, useSelector } from "react-redux";
@@ -11,85 +18,144 @@ import {
   increaseMorning,
   increaseAfternoon,
   decreaseMorning,
-  decreaseAfternoon
+  decreaseAfternoon,
+  deleteMorningActivity
 } from "../reducers/activ";
 
 export default function Day(props) {
   const [morningSize, setMorningSize] = useState(2);
   const [afternoonSize, setAfternoonSize] = useState(4);
+  const [deleteModalVisible, setDeleteModalVisible] = useState(false);
   const dayDuration = useSelector((state) => state.activ.plannedValue);
   const activities = useSelector((state) => state.activ.value);
   const morningValue = useSelector((state) => state.activ.morningValue);
   const afternoonValue = useSelector((state) => state.activ.afternoonValue);
   const allSizes = useSelector((state) => state.activ.sizesArray);
- 
-
-  //const allSizes = useSelector((state) => state.activ.sizes);
+  const daysPlan = useSelector((state) => state.activ.activitiesSet);
+  const [selectedActivities, setSelectedActivities] = useState([]);
 
   const dispatch = useDispatch();
-  // console.log('D => morningSize is', props.morning, 'in DAY', props.day);
-  // console.log('D => afternoonSize is', props.afternoon, 'in DAY', props.day);
+
+  const morningPlan = daysPlan[props.i].slice(0, allSizes[props.i][0]);
+
+  console.log('morningPlan', morningPlan)
+  const morningActivities = morningPlan.map((data, index) => {
+    console.log("morning", data);
+    console.log('index', morningPlan.indexOf(data));
+
+    return (
+      <View
+        style={{
+          justifyContent: "center",
+          alignItems: "center",
+          flexDirection: "row",
+        }}
+      >
+        <Slot activity={data} key={index} dayPlan={props.dayPlan} i={props.i} />
+        <Pressable onPress={() => {
+          setDeleteModalVisible(true)
+        }}>
+          <FontAwesome
+            name={"info-circle"}
+            size={20}
+            color={"#000000"}
+            style={{ marginRight: "4%", marginTop: "35%" }}
+          />
+        </Pressable>
+      </View>
+    );
+  });
+
+  const afternoonPlan = daysPlan[props.i].slice(2, allSizes[props.i][1]);
+  const afternoonActivities = afternoonPlan.map((data, index) => {
+    console.log("afternoon", data);
+    return (
+      <View
+        style={{
+          justifyContent: "center",
+          alignItems: "center",
+          flexDirection: "row",
+        }}
+      >
+        <Slot activity={data} key={index} dayPlan={props.dayPlan} i={props.i} />
+        <Pressable onPress={() => {setDeleteModalVisible(true)}}>
+          <FontAwesome
+            name={"info-circle"}
+            size={20}
+            color={"#000000"}
+            style={{ marginRight: "4%", marginTop: "35%" }}
+          />
+        </Pressable>
+      </View>
+    );
+  });
   
 
-  const morningPlan = props.dayPlan.slice(0, allSizes[props.i][0]);
-  const morningActivities = morningPlan.map((data, index) => {
-    return <Slot activity={data} key={index} dayPlan={props.dayPlan} i={props.i}/>;
-  });
-
-  const afternoonPlan = props.dayPlan.slice(2, allSizes[props.i][1]);
-  const afternoonActivities = afternoonPlan.map((data, index) => {
-    return <Slot activity={data} key={index} dayPlan={props.dayPlan} i={props.i}/>;
-  });
-
-  useEffect(() => {
-    // dispatch(updateMorningValue(morningSize));
-    // dispatch(updateAfternoonValue(afternoonSize));
-    // setMorningSize(morningSize);
-    // setAfternoonSize(afternoonSize);
-    // dispatch(updateSizes(props.i, morningSize, afternoonSize));
-
-  }, [allSizes[props.i][0], allSizes[props.i][1]]);
-
-  console.log('DAY => allSizes', allSizes)
+  console.log("DAY => allSizes", allSizes);
 
   const moreMorningActivity = () => {
-    // setMorningSize(morningSize + 1);
-    // dispatch(updateSizes(props.i, morningSize, afternoonSize));
-    dispatch(increaseMorning(props.i))
+    dispatch(increaseMorning(props.i));
   };
 
   const moreAfternoonActivity = () => {
-    // setAfternoonSize(afternoonSize + 1);
-    // dispatch(updateSizes(props.i, morningSize, afternoonSize));
-    dispatch(increaseAfternoon(props.i))
+    dispatch(increaseAfternoon(props.i));
   };
 
   const lessMorningActivity = () => {
     if (morningSize > 0) {
-      // setMorningSize(morningSize - 1);
-      // dispatch(updateSizes(props.i, morningSize, afternoonSize));
-      dispatch(decreaseMorning(props.i))
-    // } else {
-    //   setMorningSize(1);
-    //   dispatch(updateSizes(props.i, morningSize, afternoonSize));
+      dispatch(decreaseMorning(props.i));
     }
   };
 
   const lessAfternoonActivity = () => {
     if (afternoonSize > 0) {
-      // setAfternoonSize(afternoonSize - 1);
-      // dispatch(updateSizes(props.i, morningSize, afternoonSize));
-      dispatch(decreaseAfternoon(props.i))
-    // } else {
-    //   setAfternoonSize(1);
-    //   dispatch(updateSizes(props.i, morningSize, afternoonSize));
+      dispatch(decreaseAfternoon(props.i));
     }
   };
 
   return (
     <View style={styles.container}>
+      <View style={styles.centeredView}>
+        <Modal
+          animationType="slide"
+          transparent={true}
+          visible={deleteModalVisible}
+          onRequestClose={() => {
+            Alert.alert("Modal has been closed.");
+            setDeleteModalVisible(!deleteModalVisible);
+          }}
+        >
+          <View style={styles.centeredView}>
+            <View style={styles.modalView}>
+              <Text style={styles.text} title="Switch title">
+                Activity info
+              </Text>
+              {/* <Text style={styles.text}>Are you sure you want to delete this activity?</Text> */}
+              <Pressable
+                style={[styles.button, styles.buttonClose]}
+                onPress={() => {
+                  setDeleteModalVisible(!deleteModalVisible)
+                }}
+              >
+                <Text style={styles.textStyle}>OK</Text>
+              </Pressable>
+              {/* <Pressable
+                style={[styles.button, styles.buttonClose]}
+                onPress={() => {
+                  setDeleteModalVisible(!deleteModalVisible)
+                }}
+              >
+                <Text style={styles.textStyle}>NO</Text>
+              </Pressable> */}
+            </View>
+          </View>
+        </Modal>
+      </View>
+
       <View title="Day" style={styles.dayContainer}>
-        <Text style={styles.dayTitle}>Day {props.day} - {props.date}</Text>
+        <Text style={styles.dayTitle}>
+          Day {props.day} - {props.date}
+        </Text>
         <View title="halfDay" style={styles.morning}>
           <Text style={{ fontSize: 18, marginBottom: "2%" }}>Morning</Text>
           <View style={styles.daySlots}>
@@ -158,7 +224,7 @@ const styles = StyleSheet.create({
       borderColor: "#fff", // Couleur de secours
     },
     borderRadius: "10%",
-    paddingHorizontal: "5%",
+    paddingHorizontal: "2%",
     height: "100%",
     backgroundColor: "white",
     shadowColor: "#000",
@@ -208,5 +274,48 @@ const styles = StyleSheet.create({
   scrollView: {
     flexDirection: "column", // Organiser les éléments en colonnes
     alignItems: "center", // Centrer les éléments horizontalement
+  },
+  centeredView: {
+    justifyContent: "center",
+    alignItems: "center",
+    flex: 2
+  },
+  text: {
+    color: "black",
+    flexWrap: "wrap", // Permettre au texte de passer à la ligne
+    wordWrap: "break-word",
+    textAlign: "center",
+  },
+  modalView: {
+    maxHeight: "80%",
+    width: "85%",
+    backgroundColor: "lightblue",
+    borderRadius: 20,
+    padding: 35,
+    shadowColor: "#000",
+    shadowOffset: {
+      width: 0,
+      height: 2,
+    },
+    shadowOpacity: 0.25,
+    shadowRadius: 4,
+    elevation: 5,
+  },
+  button: {
+    borderRadius: 20,
+    marginTop: 15,
+    padding: 10,
+    elevation: 2,
+  },
+  buttonOpen: {
+    backgroundColor: "#F194FF",
+  },
+  buttonClose: {
+    backgroundColor: "#2196F3",
+  },
+  textStyle: {
+    color: "white",
+    fontWeight: "bold",
+    textAlign: "center",
   },
 });

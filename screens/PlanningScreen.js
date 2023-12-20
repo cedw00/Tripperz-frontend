@@ -13,6 +13,7 @@ import { useSelector, useDispatch } from "react-redux";
 import PlannedDay from "../components/PlannedDay";
 import { updateTripperList } from "../reducers/tripper";
 import { updateNextTrips } from "../reducers/trips";
+import { emptySizes, emptyActivities } from "../reducers/activ";
 import Constants from 'expo-constants';
 
 const backend = Constants.expoConfig.hostUri.split(`:`)[0]
@@ -68,10 +69,10 @@ export default function TripPlanScreen({ navigation }) {
       activities.push({
         name: activity,
         type: 'Test',
-        country: country,
-        city: tripCard.cityName
+        address: `${tripCard.cityName} at ${country}`
       });
     }
+    console.log(activities);
     const trip = {
       token: token,
       start: start,
@@ -90,10 +91,18 @@ export default function TripPlanScreen({ navigation }) {
     if (data.result) {
       confirmItem();
       navigation.navigate("DrawerNavigator", { screen: 'Trips' });
+      emptyArrays();
     } else {
       console.log(data.error);
     }
-  }
+
+  };
+
+
+  const emptyArrays = () => {
+    dispatch(emptySizes());
+    dispatch(emptyActivities())
+  };
 
 
   return (
@@ -111,7 +120,7 @@ export default function TripPlanScreen({ navigation }) {
           <View style={styles.centeredView}>
             <View style={styles.modalView}>
               <Text style={styles.text} title="Switch title">
-                SWITCH DEFAULT ACTIVITY
+                Invite your friends
               </Text>
               <View style={styles.inputContainer}>
                 <TextInput
@@ -125,7 +134,7 @@ export default function TripPlanScreen({ navigation }) {
               <Pressable
                 style={[styles.button, styles.buttonClose]}
                 onPress={() => {
-                  setModalVisible(!modalVisible), inviteTripperz();
+                  setModalVisible(!modalVisible), inviteTripperz()
                 }}
               >
                 <Text style={styles.textStyle}>OK</Text>
@@ -160,16 +169,16 @@ export default function TripPlanScreen({ navigation }) {
       </View>
       <ScrollView>{days}</ScrollView>
       <View style={styles.nextContainer}>
-        <Pressable
-          onPress={() => handleConfirm()}
-        >
-          <View style={styles.confirm}>
-            <Text style={{ color: "white" }}>CONFIRM</Text>
-          </View>
-        </Pressable>
         <Pressable onPress={() => {navigation.navigate("TripPlan")}}>
           <View style={styles.cancel}>
             <Text style={{ color: "black" }}>CANCEL</Text>
+          </View>
+        </Pressable>
+        <Pressable
+          onPress={() => {handleConfirm()}}
+        >
+          <View style={styles.confirm}>
+            <Text style={{ color: "white" }}>CONFIRM</Text>
           </View>
         </Pressable>
       </View>
