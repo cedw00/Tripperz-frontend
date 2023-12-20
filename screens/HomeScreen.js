@@ -32,7 +32,6 @@ export default function HomeScreen({ navigation }) {
   const handleClickDestination = () => {
     const content = (< Destination navigation={navigation} />)
     setDest(content)
-    console.log('content',content)
     setIsClickedActiv(false);
   };
 

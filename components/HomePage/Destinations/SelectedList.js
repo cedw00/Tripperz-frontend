@@ -39,9 +39,15 @@ function SelectedList({ getData }) {
 
   }, []);
 
+
+
+
+
   let countrylist = countries.map((country, i) => ({ key: i, value: country.country }));
   dispatch(addCountryList(countrylist));
 
+
+ // SELECT COUNTRY AND CITY
 
   let citiesList = [];
 
@@ -73,9 +79,6 @@ function SelectedList({ getData }) {
     dispatch(addCity(citylist[value].value));
   })
 
-  // SELECT COUNTRY AND CITY
-console.log('selected city', selectedCity)
-
 
   return (
 
@@ -96,7 +99,7 @@ console.log('selected city', selectedCity)
           color: 'rgba(6, 113, 136, 1)',
           marginLeft: 15,
           marginRight:15,
-          marginBottom:'10%',
+          marginBottom:10,
         }}
 
 
@@ -116,7 +119,7 @@ console.log('selected city', selectedCity)
           borderColor: 'rgba(6, 113, 136, 1)',
           marginLeft: 15,
           marginRight:15,
-          marginBottom:'5%',
+          marginBottom:'10%',
         }}
         dropdownShown={false}
       />

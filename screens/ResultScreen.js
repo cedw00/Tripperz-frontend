@@ -257,7 +257,7 @@ export default function ResultScreen({ navigation }) {
   //   dispatch(addCity(''));
   //   console.log('country',country)
   // }
-  console.log('is focused',country)
+  
 
   return (
     <SafeAreaView>
