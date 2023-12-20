@@ -57,7 +57,7 @@ export default function Slot(props) {
   };
 
   return (
-    <View style={styles.cont}>
+    <Pressable style={styles.cont} onPress={() => {setModalVisible(true), prepareSwitch();}}>
       <View style={styles.centeredView}>
         <Modal
           animationType="slide"
@@ -82,27 +82,20 @@ export default function Slot(props) {
                   setModalVisible(!modalVisible), executeSwitch();
                 }}
               >
-                <Text style={styles.textStyle}>Hide Modal</Text>
+                <Text style={styles.textStyle}>Confirm</Text>
               </Pressable>
             </View>
           </View>
         </Modal>
       </View>
-
-      <Pressable
-        onPress={() => {
-          setModalVisible(true), prepareSwitch();
-        }}
-      >
-        <View style={styles.slotContainer}>
-          <View style={styles.slotContent} title="Slot">
-            <Text style={styles.text} title="Activity" name={props.activity}>
-              Going @ {slotActivity}
-            </Text>
-          </View>
+      <View style={styles.slotContainer}>
+        <View style={styles.slotContent} title="Slot">
+          <Text style={styles.text} title="Activity" name={props.activity}>
+            Going @ {slotActivity}
+          </Text>
         </View>
-      </Pressable>
-    </View>
+      </View>
+    </Pressable>
   );
 }
 

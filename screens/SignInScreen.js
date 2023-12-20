@@ -1,5 +1,6 @@
 import { StyleSheet, Text, View, Image, ImageBackground, TextInput,
     SafeAreaView, Dimensions, TouchableOpacity, KeyboardAvoidingView } from 'react-native';
+import Ionicons from 'react-native-vector-icons/Ionicons';
 import { useState } from 'react';
 import { useDispatch } from 'react-redux';
 import { updateUser, updateProfile } from '../reducers/user';
@@ -15,6 +16,11 @@ export default function SignInScreen({ navigation }) {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
 
+  const handleReturn = () => {
+    setShowError(false)
+    navigation.navigate('Login')
+  }
+  
   const checkForm = async () => {
     const user = {
       email: email,
@@ -34,11 +40,6 @@ export default function SignInScreen({ navigation }) {
       setErrorMsg(data.error);
       return false
     }
-  }
-
-  const handleReturn = () => {
-    setShowError(false)
-    navigation.navigate('Login')
   }
 
   const handleRegister = async () => {
@@ -68,11 +69,9 @@ export default function SignInScreen({ navigation }) {
                     secureTextEntry={true} onChangeText={(value) => setPassword(value)} value={password} style={styles.input}/>
                 </View>
                 { showError && <View style={styles.error}>
+                  <Ionicons name={'warning'} size={25} color={'#FFFFFF'} />
                   <Text style={styles.errorText}>{errorMsg}</Text>
                 </View> }
-                <View style={styles.forgot}>
-                  <Text style={styles.forgotText}>Forgotten password</Text>
-                </View>
             </View>
           </View>
           <View style={styles.bottom}>
@@ -174,6 +173,8 @@ const styles = StyleSheet.create({
   },
   error: {
     width: '80%',
+    flexDirection: 'row',
+    justifyContent: 'center',
     alignItems: 'center',
     marginBottom: 10,
     paddingTop: 8,

@@ -12,6 +12,7 @@ const initialState = {
     favoriteDestinations: [],
     favoriteFoods: null,
     hobbies: [],
+    refresh: 0,
     token: null
   },
 };
@@ -34,11 +35,14 @@ export const userSlice = createSlice({
     state.value.favoriteFoods = action.payload.favoriteFoods;
     state.value.hobbies = action.payload.hobbies;
    },
+   updateRefresh: (state, action) => {
+    state.value.refresh = action.payload;
+   },
    logout: (state) => {
     state.value = {};
    }
  },
 });
 
-export const { updateUser, updateProfile, logout } = userSlice.actions;
+export const { updateUser, updateProfile, updateRefresh, logout } = userSlice.actions;
 export default userSlice.reducer;

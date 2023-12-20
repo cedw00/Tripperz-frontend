@@ -19,7 +19,7 @@ export default function LoginScreen({ navigation }) {
         </View>
         <View style={styles.body}>
           <View style={styles.top}>
-            <Text style={styles.message}>Connection to your account</Text>
+            <Text style={styles.message}>Log In</Text>
           </View>
           <View style={styles.main}>
             <TouchableOpacity activeOpacity={0.8} style={styles.btn}>

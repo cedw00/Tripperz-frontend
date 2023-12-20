@@ -1,7 +1,8 @@
 import { StyleSheet, Text, View, Image, ImageBackground, SafeAreaView, Dimensions, TouchableOpacity,
-  KeyboardAvoidingView, Platform, TextInput  } from 'react-native';
+  KeyboardAvoidingView, Platform, TextInput, Pressable  } from 'react-native';
 import { useDispatch, useSelector } from 'react-redux';
 import { useState } from 'react';
+import Ionicons from 'react-native-vector-icons/Ionicons';
 import FontAwesome from 'react-native-vector-icons/FontAwesome';
 import { Dropdown, MultiSelect } from 'react-native-element-dropdown';
 import DateTimePicker from '@react-native-community/datetimepicker';
@@ -14,14 +15,16 @@ const genderData = [
 ];
 
 const mockData = [
-  { label: 'Museum', value: '0' },
-  { label: 'Sea', value: '1' },
-  { label: 'Sport', value: '2' },
-  { label: 'Restaurant', value: '3' },
-  { label: 'Theater', value: '4' },
-  { label: 'Sightseeing', value: '5' },
-  { label: 'Amusement Park', value: '6' },
-  { label: 'Mountain', value: '7' },
+  { label: 'Cultural tourism', value: '0' },
+  { label: 'Guided Tours', value: '1' },
+  { label: 'Outdoor Activities', value: '2' },
+  { label: 'Water activities', value: '3' },
+  { label: 'Culinary experiences', value: '4' },
+  { label: 'Entertainment', value: '5' },
+  { label: 'Sports Activities', value: '6' },
+  { label: 'Relaxation and well-being', value: '7' },
+  { label: 'Ecotourism', value: '8' },
+  { label: 'Shopping', value: '9' },
 ];
 
 const foodData = [
@@ -45,6 +48,9 @@ export default function SetProfileScreen({ navigation }) {
   const [selectedActivities, setSelectedActivities] = useState([]);
   const [selectedFood, setSelectedFood] = useState([]);
   const [date, setDate] = useState(new Date());
+
+  const [showError, setShowError] = useState(false);
+  const [errorMsg, setErrorMsg] = useState('');
 
   const onChange = (event, selectedDate) => {
     const currentDate = selectedDate;
@@ -75,10 +81,13 @@ export default function SetProfileScreen({ navigation }) {
         body: JSON.stringify(profile),
       });
       const data = await response.json();
-      console.log(data);
       if (data.result) {
+        setErrorMsg(false)
         dispatch(updateProfile(data.user))
         navigation.navigate('DrawerNavigator')
+      } else {
+        setErrorMsg(data.error);
+        setShowError(true);
       }
     };
 
@@ -105,7 +114,7 @@ export default function SetProfileScreen({ navigation }) {
               </View>
             </View>
             <View style={styles.main}>
-              <View style={styles.show}>
+              <Pressable style={styles.show}>
                 <DateTimePicker
                   testID="dateTimePicker"
                   value={date}
@@ -114,7 +123,7 @@ export default function SetProfileScreen({ navigation }) {
                   is24Hour={true}
                   onChange={onChange}
                 />
-              </View>
+              </Pressable>
               <View style={styles.inputContainer}>
                 <Dropdown
                     style={styles.dropdown} data={genderData} labelField='label' valueField='value' placeholder='Gender' placeholderStyle={styles.input}
@@ -138,6 +147,13 @@ export default function SetProfileScreen({ navigation }) {
               </View>
               <View style={styles.inputContainer}>
                 <MultiSelect
+                    style={styles.dropdown} data={mockData} labelField='label' valueField='value' placeholder='Favorites types of activities'
+                    placeholderStyle={styles.input} value={selectedActivities} onChange={(item) => {setSelectedActivities(item)}} renderItem={display}
+                    maxHeight={100} visibleSelectedItem={false} activeColor='lightblue'
+                />
+              </View>
+              <View style={styles.inputContainer}>
+                <MultiSelect
                     style={styles.dropdown} data={mockData} labelField='label' valueField='value' placeholder='Favorites activities'
                     placeholderStyle={styles.input} value={selectedActivities} onChange={(item) => {setSelectedActivities(item)}} renderItem={display}
                     maxHeight={100} visibleSelectedItem={false} activeColor='lightblue'
@@ -148,6 +164,10 @@ export default function SetProfileScreen({ navigation }) {
               <TouchableOpacity activeOpacity={0.8} onPress={() => handleSubmit()} style={styles.button}>
                   <Text style={styles.textBtn}>Plan your trip</Text>
               </TouchableOpacity>
+              { showError && <View style={styles.error}>
+                  <Ionicons name={'warning'} size={25} color={'#FFFFFF'} />
+                  <Text style={styles.errorText}>{errorMsg}</Text>
+              </View> }
               <TouchableOpacity activeOpacity={0.8} onPress={() => handleReturn()} style={styles.button}>
                 <Text style={styles.textBtn}>Go back</Text>
               </TouchableOpacity>
@@ -258,5 +278,19 @@ const styles = StyleSheet.create({
   },
   textBtn: {
     color: 'white',
+  },
+  error: {
+    width: '80%',
+    flexDirection: 'row',
+    justifyContent: 'center',
+    alignItems: 'center',
+    marginBottom: 10,
+    paddingTop: 8,
+    paddingBottom: 8,
+    borderRadius: 8,
+    backgroundColor: 'red',
+  },
+  errorText: {
+    color: '#FFFFFF'
   }
 });
