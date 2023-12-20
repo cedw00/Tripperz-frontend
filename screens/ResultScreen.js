@@ -341,6 +341,7 @@ export default function ResultScreen({ navigation }) {
       ],
     },
   ];
+  
   const allActivNames = "shopping restaurants culturePlaces landscapes sportActivities";
   const dispatch = useDispatch();
  
@@ -429,8 +430,7 @@ export default function ResultScreen({ navigation }) {
   };
   const checkItem = (element) => {
  //console.log('key:', element.key);
-console.log(element.name,'picture:', element.image);
-console.log('name:', element.name);
+
     dispatch(createTripCard(element))
   };
   console.log('RS => This might be your next destination:', tripCard);
@@ -464,7 +464,7 @@ console.log('name:', element.name);
   //   dispatch(addCity(''));
   //   console.log('country',country)
   // }
-  console.log('is focused',country)
+  
 
   return (
     <SafeAreaView>
