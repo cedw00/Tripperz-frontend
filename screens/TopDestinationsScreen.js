@@ -57,7 +57,7 @@ export default function TopDestinationsScreen({ navigation }) {
 
     ];
 
-
+    const dispatch = useDispatch();
 
   const [searchCountry, setSearchCountry] = useState('');
   const { country } = useSelector((state) => state.search.value)

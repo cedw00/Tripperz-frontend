@@ -67,7 +67,7 @@ export default function ResultScreen({ navigation }) {
   const tripCard = useSelector((state) => state.trips.cityCard);
 
   let size = [2, 4];
-  const PLACES_API_KEY = process.env.PLACES_API_KEY;
+  const PLACES_API_KEY = 'AIzaSyDIHWBTXDGk6XeIiwAxnIX2tXN44o1nE7M';
   const [cityAPI, setCityAPI] = useState("");
 
   const [itemsToDisplay, setItemsToDisplay] = useState([]);

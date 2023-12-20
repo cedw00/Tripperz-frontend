@@ -88,7 +88,7 @@ export default function TripPlanScreen({ navigation }) {
         {days}
       </ScrollView>
       <View style={styles.nextContainer}>
-      <Pressable onPress={() => {emptySizesArray(), navigation.navigate("Result")}}>
+      <Pressable onPress={() => {emptyArrays(), navigation.navigate("Result")}}>
           <View style={styles.cancel}>
             <Text style={{ color: "black" }}>CANCEL</Text>
           </View>
