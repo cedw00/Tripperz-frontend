@@ -36,10 +36,6 @@ export default function Day(props) {
 
   const dispatch = useDispatch();
 
-  // const deleteMorningActivity = () => {
-  //   dispatch(deleteMorningActivity(props.i, )
-  // };
-
   const morningPlan = daysPlan[props.i].slice(0, allSizes[props.i][0]);
 
   console.log('morningPlan', morningPlan)
@@ -96,14 +92,6 @@ export default function Day(props) {
   
 
   console.log("DAY => allSizes", allSizes);
-
-  // const deleteMorningActivity = () => {
-  //   // props.dayPlan.splice(1, )
-  // };
-
-  const deleteAfternoonActivity = () => {
-
-  };
 
   const moreMorningActivity = () => {
     dispatch(increaseMorning(props.i));

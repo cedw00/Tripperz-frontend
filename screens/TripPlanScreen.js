@@ -55,31 +55,12 @@ export default function TripPlanScreen({ navigation }) {
     }
     setDayDuration(tempArray);
     dispatch(updatePlannedActivList(tempArray));
-    //console.log('daysPlan', daysPlan)
-    // for (let i = 0; i < dayDuration.length; i++) {
-    //   dispatch(pushSizes(size));
-    // }
   }, []);
 
-  
-
-  //console.log('TPS => PlannedValue :', plannedValue)
-  
-  //console.log("TPS => activities", activities);
   console.log("TPS => dayPlans", daysPlan);
-    //console.log("TPS => sizesArray", sizesArray);
-
-  
-  // LOOPING TO BUILD DEFAULT REDUCER ARRAY FOR SIZES
-  // for (let i = 0; i < dayDuration.length; i++) {
-  //   let size = {morningSize: 2, afternoonSize: 4};
-  //   dispatch(pushSizes(size));
-  // };
 
   const days = dayDuration.map((data, i) => {
     const date = `${data.day}/${data.month}/${data.year}`;
-    // const size = {morningSize: morningValue, afternoonSize: afternoonValue};
-    // dispatch(pushSizes(size));
     return (
       <View key={i} title="Day Card" style={styles.dayContainer}>
         <Day day={i + 1} date={date} dayPlan={daysPlan[i]} i={i} /> 
