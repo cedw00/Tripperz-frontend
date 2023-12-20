@@ -14,9 +14,9 @@ import PlannedDay from "../components/PlannedDay";
 import { updateTripperList } from "../reducers/tripper";
 import { updateNextTrips } from "../reducers/trips";
 import { emptySizes, emptyActivities } from "../reducers/activ";
-import Constants from 'expo-constants';
+import Constants from "expo-constants";
 
-const backend = Constants.expoConfig.hostUri.split(`:`)[0]
+const backend = Constants.expoConfig.hostUri.split(`:`)[0];
 
 export default function TripPlanScreen({ navigation }) {
   const [modalVisible, setModalVisible] = useState(false);
@@ -38,15 +38,33 @@ export default function TripPlanScreen({ navigation }) {
   const dispatch = useDispatch();
 
   const handleTextChange = (newText) => {
-    setOtherTripperz("  @" + newText);
+    setOtherTripperz(newText);
   };
 
   const inviteTripperz = () => {
-    dispatch(updateTripperList(otherTripperz));
-    setOtherTripperz("");
+    console.log('selectedTripper', otherTripperz)
+    fetch(`http://${backend}:3000/users/findUser/${otherTripperz}`)
+      .then((response) => response.json())
+      .then((data) => {
+        console.log('data', data)
+        if (data.email) {
+          // Utilisation des données récupérées
+          console.log("Données reçues :", data);
+          // Faire d'autres opérations avec les données ici
+          dispatch(updateTripperList(otherTripperz));
+          setOtherTripperz("");
+        } else if (data.error) {
+          console.log('ERROR: Email not found')
+        }
+      })
+      .catch((error) => {
+        // Gestion des erreurs
+        console.error("Il y a eu un problème avec la requête Fetch :", error);
+      });
   };
 
   console.log("PS => This might be your next destination:", tripCard);
+  console.log("Invited Tripperz", tripperz);
   const confirmItem = () => {
     dispatch(updateNextTrips());
   };
@@ -62,14 +80,13 @@ export default function TripPlanScreen({ navigation }) {
     );
   });
 
-
   const handleConfirm = async () => {
     const activities = [];
     for (const activity of value) {
       activities.push({
         name: activity,
-        type: 'Test',
-        address: `${tripCard.cityName} at ${country}`
+        type: "Test",
+        address: `${tripCard.cityName} at ${country}`,
       });
     }
     console.log(activities);
@@ -80,30 +97,27 @@ export default function TripPlanScreen({ navigation }) {
       countryDest: country,
       cityDest: tripCard.cityName,
       img: tripCard.cityImage,
-      activitiesList: activities
+      activitiesList: activities,
     };
     const response = await fetch(`http://${backend}:3000/trips/`, {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
       body: JSON.stringify(trip),
     });
     const data = await response.json();
     if (data.result) {
       confirmItem();
-      navigation.navigate("DrawerNavigator", { screen: 'Trips' });
+      navigation.navigate("DrawerNavigator", { screen: "Trips" });
       emptyArrays();
     } else {
       console.log(data.error);
     }
-
   };
-
 
   const emptyArrays = () => {
     dispatch(emptySizes());
-    dispatch(emptyActivities())
+    dispatch(emptyActivities());
   };
-
 
   return (
     <View style={styles.planContainer}>
@@ -126,7 +140,7 @@ export default function TripPlanScreen({ navigation }) {
                 <TextInput
                   text={otherTripperz}
                   onChangeText={handleTextChange}
-                  placeholder="Invite other Tripperz"
+                  placeholder="Email"
                   placeholderTextColor="#999"
                   style={styles.input}
                 ></TextInput>
@@ -134,7 +148,7 @@ export default function TripPlanScreen({ navigation }) {
               <Pressable
                 style={[styles.button, styles.buttonClose]}
                 onPress={() => {
-                  setModalVisible(!modalVisible), inviteTripperz()
+                  setModalVisible(!modalVisible), inviteTripperz();
                 }}
               >
                 <Text style={styles.textStyle}>OK</Text>
@@ -169,13 +183,19 @@ export default function TripPlanScreen({ navigation }) {
       </View>
       <ScrollView>{days}</ScrollView>
       <View style={styles.nextContainer}>
-        <Pressable onPress={() => {navigation.navigate("TripPlan")}}>
+        <Pressable
+          onPress={() => {
+            navigation.navigate("TripPlan");
+          }}
+        >
           <View style={styles.cancel}>
             <Text style={{ color: "black" }}>CANCEL</Text>
           </View>
         </Pressable>
         <Pressable
-          onPress={() => {handleConfirm()}}
+          onPress={() => {
+            handleConfirm();
+          }}
         >
           <View style={styles.confirm}>
             <Text style={{ color: "white" }}>CONFIRM</Text>
