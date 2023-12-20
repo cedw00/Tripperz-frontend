@@ -17,11 +17,11 @@ const ActivityPicker = ({ }) => {
     let activTypes = [];
     const fetchTypes = async () => {
       try {
-        const response = await axios.get(`http://${backend}/countries/Allcountries`);
-        const countryData = response.data;
+        const response = await fetch(`http://${backend}/countries/Allcountries`);
+        const countryData = await response.json();
         console.log(countryData);
-        setTypes(countryData.activTypes)
-        setActivities(countryData.activities)
+        // setTypes(countryData.activTypes)
+        // setActivities(countryData.activities)
 
       } catch (error) {
         console.error('Error fetching country data:', error);
