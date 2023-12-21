@@ -8,93 +8,29 @@ import {
   Image,
   Pressable,
 } from "react-native";
-import Spinner from "react-native-loading-spinner-overlay";
-import moment from 'moment';
 import Day from "../components/Day";
 import {
-  nullifyDuration,
-  updatePlannedActivList,
-  pushSizes,
   emptySizes,
   emptyActivities,
-  updateTripperList,
-  updateTempActiv,
-  addDayPlan,
+  resetId,
 } from "../reducers/activ";
-import { getRandomActivityByInput } from "../modules/slotMods";
+import Constants from "expo-constants";
 
-export default function TripPlanScreen({ navigation }) {
-  // const [morningSize, setMorningSize] = useState(2);
-  // const [afternoonSize, setAfternoonSize] = useState(4);
-  // const[daySize, setDaySize] = useState([]);
-  const activities = useSelector((state) => state.activ.value);
-  const allSizes = useSelector((state) => state.activ.sizesArray);
-  const daysPlan = useSelector((state) => state.activ.activitiesSet);
-  const morningValue = useSelector((state) => state.activ.morningValue);
-  const afternoonValue = useSelector((state) => state.activ.afternoonValue);
-  const plannedValue = useSelector((state) => state.activ.plannedValue);
-  const { email } = useSelector((state) => state.user.value)
-  const [ready, setReady] = useState(false);
+const backend = Constants.expoConfig.hostUri.split(`:`)[0]
 
+export default function UpdateTripScreen({ navigation }) {
+    const dayDuration = useSelector((state) => state.activ.tripDuration);
+    const daysPlan = useSelector((state) => state.activ.activitiesSet);
+    const id = useSelector((state) => state.activ.tripId);
+    const allSizes = useSelector((state) => state.activ.sizesArray);
   
   const dispatch = useDispatch();
 
-  const { duration, start } = useSelector((state) => state.search.value);
-  const [dayDuration, setDayDuration] = useState([]);
-
-  const [activitiesList, setActivitiesList] = useState([]);
-
-  const allActivNames = [
-    "restaurant",
-    "park",
-    "museum",
-    "shopping_mall",
-    "cafe",
-    "bar",
-    "movie_theater",
-    "gym",
-    "zoo",
-    "landmark", // Landmarks (e.g., Eiffel Tower)
-    "art_gallery", // Art galleries
-    "library", // Libraries
-    "aquarium", // Aquariums
-    // 'church', // Churches
-    // 'mosque', // Mosques
-    // 'synagogue', // Synagogues
-    "amusement_park", // Amusement parks
-    "tourist_attraction", // Tourist attractions
-    // Add more activities as needed
-  ];
-  const [spinner, setSpinner] = useState(false);
-  let size = [2, 4];
-  const PLACES_API_KEY = "AIzaSyDIHWBTXDGk6XeIiwAxnIX2tXN44o1nE7M";
+  console.log("TPS => dayPlans", daysPlan);
 
   useEffect(() => {
-    const tempArray = [];
-    const date = moment(start, "DDMMYYYY").toDate();
-    const day = date.getDate();
-    const month = date.getMonth();
-    const year = date.getFullYear();
-    for (let i = 0; i < duration + 1; i++) {
-      const newDate = new Date();
-      newDate.setDate(day + i)
-      newDate.setMonth(newDate.getMonth(), day + i);
-      newDate.setFullYear(year, month, day + i);
-      const obj = {
-        year: newDate.getFullYear(),
-        month: newDate.getMonth() + 1,
-        day: newDate.getDate(),
-      } 
-      tempArray.push(obj);
-    }
-    setDayDuration(tempArray);
-    dispatch(updatePlannedActivList(tempArray));
-    
-  }, []);
-
-  console.log("TPS => dayPlans", daysPlan);
-  console.log('TimeOut Activities in TripPlanScreen', activities);
-
+console.log('dayDuration in UTS', dayDuration)
+  }, [])
 
     const days = dayDuration.map((data, i) => {
       const date = `${data.day}/${data.month}/${data.year}`;
@@ -105,11 +41,34 @@ export default function TripPlanScreen({ navigation }) {
       )
     });
   
+    const handleUpdateTrip = async () => {
+        const trip = {
+            _id: id,
+            activitiesList: daysPlan,
+            allSizes: allSizes,
+        }
+        const response = await fetch(`http://${backend}:3000/trips/update`, {
+          method: 'PUT',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify(trip),
+        });
+        const data = await response.json();
+        if (data.result) {
+          navigation.navigate("Trips");
+          dispatch(emptyActivities());
+          dispatch(emptySizes());
+          dispatch(resetId());
+        } else {
+          console.log(data.error);
+        }
+      };
 
-  const emptyArrays = () => {
-    dispatch(emptySizes());
-    dispatch(emptyActivities())
-  };
+    const handleCancel = () => {
+        navigation.navigate("Trips");
+          dispatch(emptyActivities());
+          dispatch(emptySizes());
+          dispatch(resetId());
+    }
 
   return (
     <View style={styles.planContainer}>
@@ -120,19 +79,19 @@ export default function TripPlanScreen({ navigation }) {
         />
       </View>
       <View style={styles.titleBlock}>
-        <Text style={styles.title}>Plan your{"\n"}next Trip</Text>
+        <Text style={styles.title}>Update your Trip</Text>
       </View>
       <ScrollView>
         {days}
       </ScrollView>
       <View style={styles.nextContainer}>
-      <Pressable onPress={() => {emptyArrays(), navigation.navigate("Result")}}>
+      <Pressable onPress={() => {handleCancel()}}>
           <View style={styles.cancel}>
             <Text style={{ color: "black" }}>CANCEL</Text>
           </View>
         </Pressable>
         <Pressable
-          onPress={() => navigation.navigate("Planning")}
+          onPress={() => handleUpdateTrip()}
         >
           <View style={styles.confirm}>
             <Text style={{ color: "white" }}>CONFIRM</Text>

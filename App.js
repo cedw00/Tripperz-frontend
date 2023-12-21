@@ -15,6 +15,7 @@ import ProfileScreen from "./screens/ProfileScreen";
 import TripsScreen from "./screens/TripsScreen";
 import TopDestionationsScreen from './screens/TopDestinationsScreen';
 import LoadingScreen from "./screens/LoadingScreen";
+import UpdateTripScreen from "./screens/UpdateTripScreen"
 
 import { Provider } from "react-redux";
 import { configureStore } from "@reduxjs/toolkit";
@@ -76,6 +77,7 @@ export default function App() {
           <Stack.Screen name="TopDestionations" component={TopDestionationsScreen} />
           <Stack.Screen name="TripPlan" component={TripPlanScreen} />
           <Stack.Screen name="Planning" component={PlanningScreen} />
+          <Stack.Screen name="UpdateTrip" component={UpdateTripScreen} />
           <Stack.Screen name="DrawerNavigator" component={DrawerNavigator} />
         </Stack.Navigator>
       </NavigationContainer>
