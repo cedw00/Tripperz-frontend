@@ -156,43 +156,7 @@ export default function TripsScreen({ navigation }) {
 
   return (
     <View style={styles.planContainer}>
-      {/* <View style={styles.centeredView}>
-        <Modal
-          animationType="slide"
-          transparent={true}
-          visible={dataModalVisible}
-          onRequestClose={() => {
-            Alert.alert("Modal has been closed.");
-            setDataModalVisible(!dataModalVisible);
-          }}
-        >
-          <View style={styles.centeredView}>
-            <View style={styles.modalView}>
-              <Text style={styles.text} title="Switch title">
-                Update this trip
-              </Text>
-              <Pressable
-                style={[styles.button, styles.buttonClose]}
-                onPress={() => {
-                  setDataModalVisible(!dataModalVisible),
-                    navigation.navigate("UpdateTrip");
-                }}
-              >
-                <Text style={styles.textStyle}>Yes</Text>
-              </Pressable>
-              <Pressable
-                style={[styles.button, styles.buttonClose]}
-                onPress={() => {
-                  setDataModalVisible(!dataModalVisible);
-                }}
-              >
-                <Text style={styles.textStyle}>Not yet</Text>
-              </Pressable>
-            </View>
-          </View>
-        </Modal>
-      </View> */}
-      { deleteModalVisible &&  <View style={styles.centeredView}>
+    <View style={styles.centeredView}>
         <Modal
           animationType="slide"
           transparent={true}
@@ -226,7 +190,7 @@ export default function TripsScreen({ navigation }) {
             </View>
           </View>
         </Modal>
-      </View> }
+      </View>
       <View style={styles.imageContainer}>
         <Image
           source={require("../assets/logo.png")} // Replace with the path to your image
