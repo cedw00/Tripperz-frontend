@@ -14,6 +14,8 @@ import PlanningScreen from "./screens/PlanningScreen";
 import ProfileScreen from "./screens/ProfileScreen";
 import TripsScreen from "./screens/TripsScreen";
 import TopDestionationsScreen from './screens/TopDestinationsScreen';
+import LoadingScreen from "./screens/LoadingScreen";
+import UpdateTripScreen from "./screens/UpdateTripScreen"
 import ActivitiesResultScreen from './screens/ActivitiesResultScreen';
 
 import { Provider } from "react-redux";
@@ -73,11 +75,12 @@ export default function App() {
           <Stack.Screen name="Register" component={RegisterScreen} />
           <Stack.Screen name="SetProfile" component={SetProfileScreen} />
           <Stack.Screen name="Result" component={ResultScreen} />
+          <Stack.Screen name="Loading" component={LoadingScreen} />
           <Stack.Screen name="TopDestionations" component={TopDestionationsScreen} />
           <Stack.Screen name="TripPlan" component={TripPlanScreen} />
           <Stack.Screen name="Planning" component={PlanningScreen} />
+          <Stack.Screen name="UpdateTrip" component={UpdateTripScreen} />
           <Stack.Screen name="ActivitiesResult" component={ActivitiesResultScreen} />
-          
           <Stack.Screen name="DrawerNavigator" component={DrawerNavigator} />
         </Stack.Navigator>
       </NavigationContainer>

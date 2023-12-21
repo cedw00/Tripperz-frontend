@@ -6,42 +6,41 @@ import {
   ScrollView,
   Pressable,
   Modal,
+  Image,
 } from "react-native";
+
 import FontAwesome from "react-native-vector-icons/FontAwesome";
 import Slot from "./Slot";
 import { useDispatch, useSelector } from "react-redux";
 import {
-  updateMorningValue,
-  updateAfternoonValue,
-  saveSizes,
-  updateSizes,
   increaseMorning,
   increaseAfternoon,
   decreaseMorning,
   decreaseAfternoon,
-  deleteMorningActivity
 } from "../reducers/activ";
 
 export default function Day(props) {
-  const [morningSize, setMorningSize] = useState(2);
-  const [afternoonSize, setAfternoonSize] = useState(4);
-  const [deleteModalVisible, setDeleteModalVisible] = useState(false);
-  const dayDuration = useSelector((state) => state.activ.plannedValue);
-  const activities = useSelector((state) => state.activ.value);
-  const morningValue = useSelector((state) => state.activ.morningValue);
-  const afternoonValue = useSelector((state) => state.activ.afternoonValue);
+  const PLACES_API_KEY = "*****";
+
+  // const [morningSize, setMorningSize] = useState(2);
+  // const [afternoonSize, setAfternoonSize] = useState(4);
+  const [dataModalVisible, setDataModalVisible] = useState(false);
+  const [rating, setRating] = useState(null);
+  const [photo, setPhoto] = useState("");
+  const [address, setAddress] = useState("");
+
   const allSizes = useSelector((state) => state.activ.sizesArray);
   const daysPlan = useSelector((state) => state.activ.activitiesSet);
-  const [selectedActivities, setSelectedActivities] = useState([]);
-
+  const fullActivArray = useSelector((state) => state.activ.cardActiv);
+  console.log('fullActiv', fullActivArray)
   const dispatch = useDispatch();
 
   const morningPlan = daysPlan[props.i].slice(0, allSizes[props.i][0]);
 
-  console.log('morningPlan', morningPlan)
+  console.log("morningPlan", morningPlan);
   const morningActivities = morningPlan.map((data, index) => {
     console.log("morning", data);
-    console.log('index', morningPlan.indexOf(data));
+    console.log("index", morningPlan.indexOf(data));
 
     return (
       <View
@@ -52,9 +51,11 @@ export default function Day(props) {
         }}
       >
         <Slot activity={data} key={index} dayPlan={props.dayPlan} i={props.i} />
-        <Pressable onPress={() => {
-          setDeleteModalVisible(true)
-        }}>
+        <Pressable
+          onPress={() => {{ handleInfo(data),
+            setDataModalVisible(true);}
+          }}
+        >
           <FontAwesome
             name={"info-circle"}
             size={20}
@@ -78,7 +79,11 @@ export default function Day(props) {
         }}
       >
         <Slot activity={data} key={index} dayPlan={props.dayPlan} i={props.i} />
-        <Pressable onPress={() => {setDeleteModalVisible(true)}}>
+        <Pressable
+          onPress={() => {
+            {handleInfo(data), setDataModalVisible(true);}
+          }}
+        >
           <FontAwesome
             name={"info-circle"}
             size={20}
@@ -89,7 +94,18 @@ export default function Day(props) {
       </View>
     );
   });
-  
+
+  const handleInfo = (data) => {
+    const findData = fullActivArray.find((e) => e.name === data);
+    console.log('findData',findData);
+    if (findData) {
+      setRating(findData.rating);
+      setAddress(findData.address);
+      setPhoto(
+        `https://maps.googleapis.com/maps/api/place/photo?maxwidth=400&photoreference=${findData.photo}&key=${PLACES_API_KEY}`
+      );
+    }
+  };
 
   console.log("DAY => allSizes", allSizes);
 
@@ -102,13 +118,13 @@ export default function Day(props) {
   };
 
   const lessMorningActivity = () => {
-    if (morningSize > 0) {
+    if (allSizes[props.i][0] > 0) {
       dispatch(decreaseMorning(props.i));
     }
   };
 
   const lessAfternoonActivity = () => {
-    if (afternoonSize > 0) {
+    if (allSizes[props.i][1] > 0) {
       dispatch(decreaseAfternoon(props.i));
     }
   };
@@ -119,10 +135,10 @@ export default function Day(props) {
         <Modal
           animationType="slide"
           transparent={true}
-          visible={deleteModalVisible}
+          visible={dataModalVisible}
           onRequestClose={() => {
             Alert.alert("Modal has been closed.");
-            setDeleteModalVisible(!deleteModalVisible);
+            setDataModalVisible(!dataModalVisible);
           }}
         >
           <View style={styles.centeredView}>
@@ -130,23 +146,20 @@ export default function Day(props) {
               <Text style={styles.text} title="Switch title">
                 Activity info
               </Text>
-              {/* <Text style={styles.text}>Are you sure you want to delete this activity?</Text> */}
+              <Image
+                source={{ uri: photo }}
+                style={{ width: 100, height: 100 }} // Taille de la photo
+              />
+              <Text>{address}</Text>
+              <Text>{rating}</Text>
               <Pressable
                 style={[styles.button, styles.buttonClose]}
                 onPress={() => {
-                  setDeleteModalVisible(!deleteModalVisible)
+                  setDataModalVisible(!dataModalVisible);
                 }}
               >
                 <Text style={styles.textStyle}>OK</Text>
               </Pressable>
-              {/* <Pressable
-                style={[styles.button, styles.buttonClose]}
-                onPress={() => {
-                  setDeleteModalVisible(!deleteModalVisible)
-                }}
-              >
-                <Text style={styles.textStyle}>NO</Text>
-              </Pressable> */}
             </View>
           </View>
         </Modal>
@@ -278,7 +291,7 @@ const styles = StyleSheet.create({
   centeredView: {
     justifyContent: "center",
     alignItems: "center",
-    flex: 2
+    flex: 2,
   },
   text: {
     color: "black",
