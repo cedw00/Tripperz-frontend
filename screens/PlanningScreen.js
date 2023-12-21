@@ -199,7 +199,7 @@ export default function TripPlanScreen({ navigation }) {
           style={styles.image}
         />
       </View>
-      <Text style={styles.title}>Your{"\n"}Planning</Text>
+      <Text style={styles.title}>Your Planning</Text>
       <View style={styles.inviteContainer}>
         <Pressable onPress={() => setModalVisible(true)}>
           <View style={styles.inviteBtn}>
@@ -253,13 +253,14 @@ const styles = StyleSheet.create({
   },
   title: {
     flex: 1,
-    fontSize: 50,
+    fontSize: 30,
     backgroundColor: "white",
     maxWidth: "100%",
     flex: "flex-wrap",
     marginHorizontal: "5%",
     marginBottom: "2%",
-    marginTop: "1%",
+    marginTop: "2%",
+    textAlign: 'center'
   },
   nextContainer: {
     flexDirection: "row",

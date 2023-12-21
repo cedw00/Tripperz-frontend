@@ -9,7 +9,7 @@ import {
   Pressable,
 } from "react-native";
 import Spinner from "react-native-loading-spinner-overlay";
-import moment from 'moment';
+import moment from "moment";
 import Day from "../components/Day";
 import {
   nullifyDuration,
@@ -32,7 +32,6 @@ export default function TripPlanScreen({ navigation }) {
   const daysPlan = useSelector((state) => state.activ.activitiesSet);
   const tripCard = useSelector((state) => state.trips.cityCard);
 
-  
   const dispatch = useDispatch();
 
   const { duration, start } = useSelector((state) => state.search.value);
@@ -73,11 +72,10 @@ export default function TripPlanScreen({ navigation }) {
 
     setTimeout(() => {
       setSpinner(false);
-      console.log('spinner is OFF, ACTIVITIES LIST', activitiesList);
-      console.log('spinner is OFF, ACTIVITIES', activities);
-    }, 6000);    
+      console.log("spinner is OFF, ACTIVITIES LIST", activitiesList);
+      console.log("spinner is OFF, ACTIVITIES", activities);
+    }, 6000);
   }, []);
-
 
   let actArray = [];
   const fetchPlacesForActivity = async (activity) => {
@@ -85,8 +83,8 @@ export default function TripPlanScreen({ navigation }) {
       `https://maps.googleapis.com/maps/api/place/textsearch/json?query=${activity}+in+${tripCard.cityName}&key=${PLACES_API_KEY}`
     );
     const data = await res.json();
-    const bestVenues = data.results.filter((venue) => venue.rating > 4);
-    const places = bestVenues.slice(0, 50);
+    const bestVenues = data.results.filter((venue) => venue.rating > 4.5);
+    const places = bestVenues.slice(0, 100);
     places.forEach((place) => {
       const placeId = place.place_id;
       const name = place.name;
@@ -117,12 +115,12 @@ export default function TripPlanScreen({ navigation }) {
       console.log("Name:", name);
       console.log("Rating:", rating);
       console.log("Address:", address);
-      console.log('Coordinates:', coordinates.lat, coordinates.lng);
+      console.log("Coordinates:", coordinates.lat, coordinates.lng);
       console.log("Types of Place:", types);
       // console.log('Opening Hours:', openingHours);
       console.log("Photos:", photos);
-      console.log('Phone Number:', phoneNumber);
-      console.log('Website:', website);
+      console.log("Phone Number:", phoneNumber);
+      console.log("Website:", website);
       // console.log('Services:', services);
       // console.log('Special Attributes:', specialAttributes);
       console.log("Popularity:", popularity);
@@ -138,7 +136,15 @@ export default function TripPlanScreen({ navigation }) {
   };
   console.log("activitiesList", activitiesList);
 
-  const flyButton = (<View style={styles.confirm}><Pressable onPress={() => handleSearch()}><Text style={{color: 'white'}}>Your planning is ready. LET'S FLY !</Text></Pressable></View>);
+  const flyButton = (
+    <View style={styles.confirm}>
+      <Pressable onPress={() => handleSearch()}>
+        <Text style={{ color: "white" }}>
+          Your planning is ready. LET'S FLY !
+        </Text>
+      </Pressable>
+    </View>
+  );
 
   const handleSearch = () => {
     for (let i = 0; i < duration + 1; i++) {
@@ -154,10 +160,10 @@ export default function TripPlanScreen({ navigation }) {
       dispatch(addDayPlan(dayPlan));
 
       const modalSet = new Set();
-      for (let j = modalSet.size; j < 40; j++) {
+      for (let j = modalSet.size; j < 100; j++) {
         const randomActivity = getRandomActivityByInput(activitiesList);
         modalSet.add(randomActivity);
-        if (modalSet.size >= 40) {
+        if (modalSet.size >= 100) {
           break;
         }
       }
@@ -171,9 +177,8 @@ export default function TripPlanScreen({ navigation }) {
     navigation.navigate("TripPlan");
   };
 
-
   console.log("TPS => dayPlans", daysPlan);
-  console.log('TimeOut Activities in Loading Page', activities);
+  console.log("TimeOut Activities in Loading Page", activities);
 
   return (
     <View style={styles.planContainer}>
@@ -182,7 +187,14 @@ export default function TripPlanScreen({ navigation }) {
           source={require("../assets/logo.png")} // Replace with the path to your image
           style={styles.image}
         />
-        <Spinner visible={spinner} textContent={'Give us some time to make your trip awesome !'}/>
+        <Spinner
+          visible={spinner}
+          textContent={"Give us some time to make your trip awesome !"}
+          textStyle={{
+            color: "white", // Changer la couleur du texte en blanc
+            textAlign: "center", // Centrer le texte horizontalement
+          }}
+        />
         {!spinner ? flyButton : <View></View>}
       </View>
     </View>

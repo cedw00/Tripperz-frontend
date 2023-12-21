@@ -120,7 +120,7 @@ export default function TripPlanScreen({ navigation }) {
         />
       </View>
       <View style={styles.titleBlock}>
-        <Text style={styles.title}>Plan your{"\n"}next Trip</Text>
+        <Text style={styles.title}>Plan your next Trip</Text>
       </View>
       <ScrollView>
         {days}
@@ -155,13 +155,14 @@ const styles = StyleSheet.create({
   },
   title: {
     flex: 1,
-    fontSize: 50,
+    fontSize: 30,
     backgroundColor: "white",
     maxWidth: "100%",
     flex: "flex-wrap",
     marginHorizontal: "5%",
     marginBottom: "2%",
-    marginTop: "1%",
+    marginTop: "2%",
+    textAlign: 'center'
   },
   titleBlock: {
     flex: 1,

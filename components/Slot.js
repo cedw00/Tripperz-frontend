@@ -69,8 +69,8 @@ export default function Slot(props) {
         >
           <View style={styles.centeredView}>
             <View style={styles.modalView}>
-              <Text style={styles.text} title="Switch title">
-                SWITCH DEFAULT ACTIVITY
+              <Text style={styles.modalText} title="Switch title">
+                Choose another activity
               </Text>
               <ScrollView contentContainerStyle={styles.scrollView}>
                 {modalActivities}
@@ -116,9 +116,14 @@ const styles = StyleSheet.create({
   },
   text: {
     color: "black",
-    flexWrap: "wrap", // Permettre au texte de passer à la ligne
-    wordWrap: "break-word",
+    flexWrap: "wrap",
     textAlign: "center",
+  },
+  modalText: {
+    color: "black",
+    flexWrap: "wrap",
+    textAlign: "center",
+     fontSize: 20
   },
   cont: {
     justifyContent: "center",

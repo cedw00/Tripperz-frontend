@@ -43,6 +43,7 @@ export default function TripsScreen({ navigation }) {
   const [refreshing, setRefreshing] = useState(false);
   const [deleteModalVisible, setDeleteModalVisible] = useState(false);
   const [dataModalVisible, setDataModalVisible] = useState(false);
+  const [id, setId] = useState("");
 
   const onRefresh = useCallback(() => {
     setRefreshing(true);
@@ -70,6 +71,7 @@ export default function TripsScreen({ navigation }) {
   }, [trigger]);
 
   const handleDelete = async (id) => {
+    console.log("id", id);
     const response = await fetch(
       `http://${backend}:3000/trips/${id}/${token}`,
       {
@@ -79,6 +81,7 @@ export default function TripsScreen({ navigation }) {
     );
     const data = await response.json();
     if (data.result) {
+      setDeleteModalVisible(!deleteModalVisible);
       setTrigger(!trigger);
     } else {
       console.log(data.error);
@@ -95,10 +98,10 @@ export default function TripsScreen({ navigation }) {
       dispatch(getTripDuration(data.trip.dayDuration));
       dispatch(updateSizes(data.trip.allSizes));
       console.log("dataTripDD", data.trip.dayDuration);
-      
+
       dispatch(updateDayPlan(data.trip.activitiesList));
       dispatch(getTripId(id));
-      navigation.navigate("UpdateTrip")
+      navigation.navigate("UpdateTrip");
     } else {
       console.log(data.error);
     }
@@ -110,8 +113,12 @@ export default function TripsScreen({ navigation }) {
         <Pressable>
           <View style={styles.card}>
             <Image style={styles.tinyLogo} source={{ uri: data.tripImage }} />
-            <Text style={styles.itemtext}>{data.cityDest}</Text>
-            <Text></Text>
+            <View style={{flexDirection: 'column', marginRight: '40%'}}>
+              <Text style={styles.itemtext}>{data.cityDest}</Text>
+              <Text style={styles.durationText}>
+                {data.startDate} - {data.endDate}
+              </Text>
+            </View>
           </View>
         </Pressable>
         <View style={styles.iconContainer}>
@@ -120,7 +127,9 @@ export default function TripsScreen({ navigation }) {
               name={"pencil"}
               size={20}
               color={"#000000"}
-              onPress={() => {handleUpdate(data._id), setDataModalVisible(true)}}
+              onPress={() => {
+                handleUpdate(data._id), setDataModalVisible(true);
+              }}
             />
           </Pressable>
           <Pressable>
@@ -128,7 +137,9 @@ export default function TripsScreen({ navigation }) {
               name={"trash-o"}
               size={20}
               color={"#000000"}
-              onPress={() => setDeleteModalVisible(true)}
+              onPress={() => {
+                setId(data._id), setDeleteModalVisible(true);
+              }}
             />
           </Pressable>
         </View>
@@ -137,9 +148,11 @@ export default function TripsScreen({ navigation }) {
   });
 
   if (!isFocused) {
+    dispatch(updateRefresh(0));
     return <View />;
   } else {
     if (refresh === 0) {
+      console.log("focus");
       emptySizesArray();
       (async () => {
         const response = await fetch(`http://${backend}:3000/trips/${token}`);
@@ -156,7 +169,7 @@ export default function TripsScreen({ navigation }) {
 
   return (
     <View style={styles.planContainer}>
-    <View style={styles.centeredView}>
+      <View style={styles.centeredView}>
         <Modal
           animationType="slide"
           transparent={true}
@@ -174,7 +187,7 @@ export default function TripsScreen({ navigation }) {
               <Pressable
                 style={[styles.button, styles.buttonClose]}
                 onPress={() => {
-                  setDeleteModalVisible(!deleteModalVisible);
+                  handleDelete(id);
                 }}
               >
                 <Text style={styles.textStyle}>YES</Text>
@@ -215,8 +228,8 @@ export default function TripsScreen({ navigation }) {
 const styles = StyleSheet.create({
   planContainer: {
     backgroundColor: "white",
-    width: Dimensions.get('screen').width,
-    height: Dimensions.get('screen').height,
+    width: Dimensions.get("screen").width,
+    height: Dimensions.get("screen").height,
   },
   imageContainer: {
     flex: 1,
@@ -241,12 +254,11 @@ const styles = StyleSheet.create({
   },
   title: {
     flex: 1,
-    fontSize: 50,
+    fontSize: 30,
     backgroundColor: "white",
     maxWidth: "100%",
-    marginHorizontal: "5%",
-    marginBottom: "2%",
-    marginTop: "1%",
+    marginTop: "5%",
+    textAlign: 'center'
   },
   body: {
     justifyContent: "center",
@@ -260,25 +272,32 @@ const styles = StyleSheet.create({
     height: 50,
     backgroundColor: "white",
     flexDirection: "row",
-    borderWidth: 2,
+    borderColor: "#067188",
+    borderBottomWidth: 2,
+    borderLeftWidth: 2,
+    borderRightWidth: 2,
+    borderTopWidth: 1,
     marginBottom: "5%",
   },
   card: {
     alignItems: "center",
     backgroundColor: "#ffffff",
-    height: 250,
+    height: 280,
     width: 350,
-    borderTopLeftRadius: 10,
-    borderTopRightRadius: 10,
+    borderTopLeftRadius: '10%',
+    borderTopRightRadius: '10%',
     overflow: "hidden",
     marginTop: "5%",
-    borderWidth: 2,
+    borderTopWidth: 2,
+    borderLeftWidth: 2,
+    borderRightWidth: 2,
     borderColor: "#067188",
   },
   tinyLogo: {
     borderWidth: 1,
     borderColor: "transparent",
-    borderRadius: 5,
+    borderTopLeftRadius: '8%',
+    borderTopRightRadius: '8%',
     resizeMode: "center",
     height: "80%",
     width: "100%",
@@ -286,11 +305,12 @@ const styles = StyleSheet.create({
   },
   itemtext: {
     width: "100%",
-    height: "20%",
-    textAlignVertical: "center",
-    paddingLeft: "10%",
-    fontWeight: "bold",
+    fontWeight: 400,
     fontSize: 20,
+  },
+   durationText: {
+    width: "100%",
+    fontSize: 15,
   },
   bottom: {
     flex: 2.5,
@@ -324,7 +344,7 @@ const styles = StyleSheet.create({
     shadowOpacity: 0.25,
     shadowRadius: 4,
     elevation: 5,
-    marginTop: '80%'
+    marginTop: "80%",
   },
   button: {
     borderRadius: 20,
