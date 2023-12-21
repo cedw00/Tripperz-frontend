@@ -83,7 +83,6 @@ export default function TripsScreen({ navigation }) {
   }
 
   const tripsData = allTrips.map((data, i) => {
-    
     return (
       <SafeAreaView key={i}>
         <Pressable>
@@ -100,31 +99,12 @@ export default function TripsScreen({ navigation }) {
     )
   })
 
-  const nextTrips = myTrips.map((trip, i) => {
-    return (
-      <View key={i}>
-        <Pressable>
-          <View style={styles.card}>
-            <Image style={styles.tinyLogo} source={{ uri: trip.cityImage }} />
-            <Text style={styles.itemtext}>{trip.cityName}</Text>
-          </View>
-        </Pressable>
-        <View style={styles.iconContainer}>
-          <Pressable><FontAwesome name={'pencil'} size={20} color={'#000000'}/></Pressable>
-          <Pressable><FontAwesome name={'trash-o'} size={20} color={'#000000'}/></Pressable>
-        </View>
-      </View>
-    );
-  });
-
-  // console.log("TS => These are your trips:", myTrips);
-  // console.log("TS => These are your trips:", nextTrips);
-
   const handleUpdateTrip = () => {
     navigation.navigate("TripPlanScreen");
   };
 
   if (!isFocused) {
+    dispatch(updateRefresh(0));
     return (
       <View/>
     )
