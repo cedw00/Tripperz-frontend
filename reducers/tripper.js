@@ -11,8 +11,11 @@ export const tripperSlice = createSlice({
    updateTripperList: (state, action) => {
      state.value.push(action.payload);
    },
+   emptyTripperList: (state) => {
+    state.value = [];
+   }
  },
 });
 
-export const { updateTripperList } = tripperSlice.actions;
+export const { updateTripperList, emptyTripperList } = tripperSlice.actions;
 export default tripperSlice.reducer;

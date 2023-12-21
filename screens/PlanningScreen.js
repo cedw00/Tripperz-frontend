@@ -12,7 +12,13 @@ import {
 import { useSelector, useDispatch } from "react-redux";
 import PlannedDay from "../components/PlannedDay";
 import { updateTripperList } from "../reducers/tripper";
-import { updateNextTrips } from "../reducers/trips";
+import {
+  updateNextTrips,
+  confirmTripperList,
+  confirmDayDuration,
+  confirmDaysPlan,
+  confirmTripSizes,
+} from "../reducers/trips";
 import { emptySizes, emptyActivities } from "../reducers/activ";
 import Constants from "expo-constants";
 
@@ -23,10 +29,13 @@ export default function TripPlanScreen({ navigation }) {
   const [otherTripperz, setOtherTripperz] = useState("");
 
   const { token } = useSelector((state) => state.user.value);
-  const { start, end, country } = useSelector((state) => state.search.value);
+  const { start, end, country, duration } = useSelector(
+    (state) => state.search.value
+  );
   const { value } = useSelector((state) => state.activ);
 
   const tripperz = useSelector((state) => state.tripper.value);
+  const { email } = useSelector((state) => state.user.value);
   const myTrips = useSelector((state) => state.trips.value);
   const tripCard = useSelector((state) => state.trips.cityCard);
   const dayDuration = useSelector((state) => state.activ.plannedValue);
@@ -38,23 +47,35 @@ export default function TripPlanScreen({ navigation }) {
   const dispatch = useDispatch();
 
   const handleTextChange = (newText) => {
+    newText.toLowerCase();
     setOtherTripperz(newText);
   };
 
   const inviteTripperz = () => {
-    console.log('selectedTripper', otherTripperz)
+    console.log("selectedTripper", otherTripperz);
     fetch(`http://${backend}:3000/users/findUser/${otherTripperz}`)
       .then((response) => response.json())
       .then((data) => {
-        console.log('data', data)
+        console.log("data", data);
         if (data.email) {
           // Utilisation des données récupérées
           console.log("Données reçues :", data);
-          // Faire d'autres opérations avec les données ici
-          dispatch(updateTripperList(otherTripperz));
-          setOtherTripperz("");
+          const tripperInvited = tripperz.some(
+            (tripper) => tripper === data.email.email
+          );
+          const yourEmail = email;
+          if (tripperInvited) {
+            console.log("Tripper already invited in this trip");
+          } else if (yourEmail === otherTripperz) {
+            console.log(
+              "You cannot invite yourself. Find some other tripperz for a funnier trip"
+            );
+          } else {
+            dispatch(updateTripperList(otherTripperz));
+            setOtherTripperz("");
+          }
         } else if (data.error) {
-          console.log('ERROR: Email not found')
+          console.log("ERROR: Email not found");
         }
       })
       .catch((error) => {
@@ -65,10 +86,16 @@ export default function TripPlanScreen({ navigation }) {
 
   console.log("PS => This might be your next destination:", tripCard);
   console.log("Invited Tripperz", tripperz);
+
   const confirmItem = () => {
+    // dispatch(confirmTripperList(tripperz));
+    // dispatch(confirmDayDuration(dayDuration));
+    // dispatch(confirmDaysPlan(daysPlan));
+    // dispatch(confirmTripSizes(allSizes));
     dispatch(updateNextTrips());
   };
   console.log("PS => These are your next destination:", myTrips);
+  console.log('PS => This is your dayPlans array', daysPlan)
 
   const days = dayDuration.map((data, i) => {
     console.log(data);
@@ -81,23 +108,29 @@ export default function TripPlanScreen({ navigation }) {
   });
 
   const handleConfirm = async () => {
-    const activities = [];
-    for (const activity of value) {
-      activities.push({
-        name: activity,
-        type: "Test",
-        address: `${tripCard.cityName} at ${country}`,
-      });
-    }
-    console.log(activities);
+    // const activities = [];
+    // for (let i = 0; i < daysPlan.length; i++) {
+    //   for (let j = 0; j < daysPlan[i].length; i++) {
+    //     activities.push({
+    //       name: daysPlan[j],
+    //       type: "Test",
+    //       address: `${tripCard.cityName} at ${country}`,
+    //     });
+    //   }
+    // }
+    // console.log(activities);
     const trip = {
       token: token,
       start: start,
       end: end,
+      duration: duration,
+      dayDuration: dayDuration,
+      daysPlan: daysPlan,
       countryDest: country,
       cityDest: tripCard.cityName,
       img: tripCard.cityImage,
-      activitiesList: activities,
+      activitiesList: daysPlan,
+      tripperz: tripperz,
     };
     const response = await fetch(`http://${backend}:3000/trips/`, {
       method: "POST",
@@ -106,6 +139,7 @@ export default function TripPlanScreen({ navigation }) {
     });
     const data = await response.json();
     if (data.result) {
+      console.log(data.trip._id);
       confirmItem();
       navigation.navigate("DrawerNavigator", { screen: "Trips" });
       emptyArrays();
@@ -160,7 +194,7 @@ export default function TripPlanScreen({ navigation }) {
 
       <View style={styles.imageContainer}>
         <Image
-          source={require("../assets/images/tripperz-logo/trippng.png")} // Replace with the path to your image
+          source={require("../assets/logo.png")} // Replace with the path to your image
           style={styles.image}
         />
       </View>

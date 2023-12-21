@@ -7,6 +7,7 @@ import {
   Pressable,
   Modal,
 } from "react-native";
+
 import FontAwesome from "react-native-vector-icons/FontAwesome";
 import Slot from "./Slot";
 import { useDispatch, useSelector } from "react-redux";
