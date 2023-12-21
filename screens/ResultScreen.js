@@ -11,6 +11,7 @@ import {
   Pressable,
 } from "react-native";
 import React, { useState, useEffect } from "react";
+import Spinner from "react-native-loading-spinner-overlay";
 import {
   updateActivList,
   getTripDuration,
@@ -22,46 +23,47 @@ import { createTripCard } from "../reducers/trips";
 import { useDispatch, useSelector } from "react-redux";
 import { getRandomActivityByInput } from "../modules/slotMods";
 import Constants from "expo-constants";
-const backend = Constants.expoConfig.hostUri.split(`:`)[0];
-export default function ResultScreen({ navigation }) {
- 
-  const [activitiesList, setActivitiesList] = useState([]);
+import { addCountry } from "../reducers/search";
+import { addCity } from "../reducers/search";
 
-  const allActivNames = [
-    "restaurant",
-    "park",
-    "museum",
-    "shopping_mall",
-    "cafe",
-    "bar",
-    "movie_theater",
-    "gym",
-    "zoo",
-    "landmark", // Landmarks (e.g., Eiffel Tower)
-    "art_gallery", // Art galleries
-    "library", // Libraries
-    "aquarium", // Aquariums
-    // 'church', // Churches
-    // 'mosque', // Mosques
-    // 'synagogue', // Synagogues
-    "amusement_park", // Amusement parks
-    "tourist_attraction", // Tourist attractions
-    // Add more activities as needed
-  ];
+const backend = Constants.expoConfig.hostUri.split(`:`)[0];
+
+export default function ResultScreen({ navigation }) {
+  // const [activitiesList, setActivitiesList] = useState([]);
+  // const activities = useSelector((state) => state.activ.value);
+
+  // const allActivNames = [
+  //   "restaurant",
+  //   "park",
+  //   "museum",
+  //   "shopping_mall",
+  //   "cafe",
+  //   "bar",
+  //   "movie_theater",
+  //   "gym",
+  //   "zoo",
+  //   "landmark", // Landmarks (e.g., Eiffel Tower)
+  //   "art_gallery", // Art galleries
+  //   "library", // Libraries
+  //   "aquarium", // Aquariums
+  //   // 'church', // Churches
+  //   // 'mosque', // Mosques
+  //   // 'synagogue', // Synagogues
+  //   "amusement_park", // Amusement parks
+  //   "tourist_attraction", // Tourist attractions
+  //   // Add more activities as needed
+  // ];
 
   const dispatch = useDispatch();
 
   const [searchCountry, setSearchCountry] = useState("");
+  const [spinner, setSpinner] = useState(false);
   const { country } = useSelector((state) => state.search.value);
   const { city } = useSelector((state) => state.search.value);
   const { cityList } = useSelector((state) => state.search.value);
   const { countryList } = useSelector((state) => state.search.value);
   const { duration } = useSelector((state) => state.search.value);
   const tripCard = useSelector((state) => state.trips.cityCard);
-
-  let size = [2, 4];
-  const PLACES_API_KEY = process.env.PLACES_API_KEY;
-  const [cityAPI, setCityAPI] = useState("");
 
   const [itemsToDisplay, setItemsToDisplay] = useState([]);
   useEffect(() => {
@@ -92,7 +94,6 @@ export default function ResultScreen({ navigation }) {
           .then((data) => {
             delay(1000);
             setItemsToDisplay(data.cities);
-            r;
           });
       } else if (city.length > 0) {
         const data = {
@@ -113,111 +114,20 @@ export default function ResultScreen({ navigation }) {
     };
 
     fetchData();
-    allActivNames.forEach((activity) => {
-      fetchPlacesForActivity(activity);
-    });
   }, [navigation]);
-
-  let actArray = [];
-  const fetchPlacesForActivity = async (activity) => {
-    const res = await fetch(
-      `https://maps.googleapis.com/maps/api/place/textsearch/json?query=${activity}+in+${city}&key=${PLACES_API_KEY}`
-    );
-    const data = await res.json();
-    const bestVenues = data.results.filter((venue) => venue.rating > 4);
-    const places = bestVenues.slice(0, 50);
-    places.forEach((place) => {
-      const placeId = place.place_id;
-      const name = place.name;
-      const rating = place.rating || "N/A"; // If rating is undefined, show 'N/A'
-      const address = place.formatted_address;
-      const coordinates = place.geometry.location;
-      const types = place.types;
-      const openingHours = place.opening_hours
-        ? place.opening_hours.weekday_text
-        : "N/A";
-      const photos = place.photos;
-      //? place.photos.map(photo => `https://maps.googleapis.com/maps/api/place/photo?maxwidth=400&photoreference=${photo.photo_reference}&key=${API_KEY}`) : [];
-      const phoneNumber = place.formatted_phone_number || "N/A";
-      const website = place.website || "N/A";
-      const services = place.types.join(", ");
-      const specialAttributes = place.plus_code
-        ? place.plus_code.compound_code
-        : "N/A"; // Example special attribute
-      const popularity = place.user_ratings_total || "N/A";
-      const serviceArea = place.formatted_address; // For demonstration purposes, using formatted_address as a placeholder for service area
-      const attribution =
-        "Conditions et exigences pour utiliser les données de Google Places API conformément aux conditions d'utilisation de Google.";
-
-      // PUSHING EACH ACTIVITY IN THE TABLE
-      actArray.push(name);
-
-      console.log("Place ID:", placeId);
-      console.log("Name:", name);
-      console.log("Rating:", rating);
-      console.log("Address:", address);
-      console.log('Coordinates:', coordinates.lat, coordinates.lng);
-      console.log("Types of Place:", types);
-      // console.log('Opening Hours:', openingHours);
-      console.log("Photos:", photos);
-      console.log('Phone Number:', phoneNumber);
-      console.log('Website:', website);
-      // console.log('Services:', services);
-      // console.log('Special Attributes:', specialAttributes);
-      console.log("Popularity:", popularity);
-      // console.log('Service Area:', serviceArea);
-      // console.log('Attribution:', attribution);
-      console.log("---------------------------------------");
-    });
-    console.log("\n");
-    /*      .catch(error => {
-        console.error('Error fetching data:', error);
-      });*/
-    setActivitiesList(actArray);
-  };
-  console.log("activitiesList", activitiesList);
-
-  const handleSearch = () => {
-    for (let i = 0; i < duration + 1; i++) {
-      const uniqueActivities = new Set();
-      for (let j = uniqueActivities.size; j < 20; j++) {
-        const randomActivity = getRandomActivityByInput(activitiesList);
-        uniqueActivities.add(randomActivity);
-        if (uniqueActivities.size >= 20) {
-          break;
-        }
-      }
-      let dayPlan = Array.from(uniqueActivities);
-      dispatch(addDayPlan(dayPlan));
-
-      const modalSet = new Set();
-      for (let j = modalSet.size; j < 40; j++) {
-        const randomActivity = getRandomActivityByInput(activitiesList);
-        modalSet.add(randomActivity);
-        if (modalSet.size >= 40) {
-          break;
-        }
-      }
-      let modalPlan = Array.from(uniqueActivities);
-      dispatch(updateTempActiv(Array.from(modalPlan)));
-    }
-
-    for (let i = 0; i < duration + 1; i++) {
-      dispatch(pushSizes(size));
-    }
-    navigation.navigate("TripPlan");
-  };
 
   const checkItem = (element) => {
     console.log(element.name, "picture:", element.image);
     console.log("name:", element.name);
     dispatch(createTripCard(element));
+    navigation.navigate("Loading");
   };
+
   console.log("RS => This might be your next destination:", tripCard);
+
   const Item = (item) => (
     <Pressable
-      onPress={() => {
-        handleSearch(), checkItem(item);
+      onPress={() => {checkItem(item);
       }}
       key={item.key}
     >
@@ -235,10 +145,20 @@ export default function ResultScreen({ navigation }) {
 
   //ON CLICK Destinations
   const handleClickDestination = () => {
+    dispatch(addCountry(""));
+    dispatch(addCity(""));
     navigation.navigate("Home");
   };
+
+  // if (!isFocused) {
+  //   dispatch(addCountry(''));
+  //   dispatch(addCity(''));
+  //   console.log('country',country)
+  // }
+
   return (
     <SafeAreaView>
+      <Spinner visible={spinner} textContent={"Your trip is being planned"} />
       <View style={styles.container}>
         <View style={styles.header}>
           <Image style={styles.logo} source={require("../assets/logo.png")} />
@@ -298,8 +218,9 @@ const styles = StyleSheet.create({
   logo: {
     paddingLeft: "15%",
     paddingRight: "15%",
-    bottom: "-20%",
-    width: "60%",
+    top: "25%",
+    resizeMode: "contain",
+    width: "40%",
   },
   buttons: {
     flexDirection: "row",

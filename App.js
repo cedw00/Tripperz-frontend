@@ -13,6 +13,8 @@ import TripPlanScreen from "./screens/TripPlanScreen";
 import PlanningScreen from "./screens/PlanningScreen";
 import ProfileScreen from "./screens/ProfileScreen";
 import TripsScreen from "./screens/TripsScreen";
+import TopDestionationsScreen from './screens/TopDestinationsScreen';
+import LoadingScreen from "./screens/LoadingScreen";
 
 import { Provider } from "react-redux";
 import { configureStore } from "@reduxjs/toolkit";
@@ -70,9 +72,10 @@ export default function App() {
           <Stack.Screen name="Register" component={RegisterScreen} />
           <Stack.Screen name="SetProfile" component={SetProfileScreen} />
           <Stack.Screen name="Result" component={ResultScreen} />
+          <Stack.Screen name="Loading" component={LoadingScreen} />
+          <Stack.Screen name="TopDestionations" component={TopDestionationsScreen} />
           <Stack.Screen name="TripPlan" component={TripPlanScreen} />
           <Stack.Screen name="Planning" component={PlanningScreen} />
-          
           <Stack.Screen name="DrawerNavigator" component={DrawerNavigator} />
         </Stack.Navigator>
       </NavigationContainer>

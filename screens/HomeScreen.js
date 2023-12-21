@@ -4,59 +4,37 @@ import Destination from '../components/HomePage/Destinations/Destinations'
 import { useState, useEffect } from 'react';
 import Footer from '../components/Footer';
 import { LinearGradient } from 'expo-linear-gradient';
-import { useSelector, useDispatch } from "react-redux";
+import { useDispatch } from "react-redux";
 import { addCountry } from '../reducers/search';
 import { addCity } from '../reducers/search';
 
 
+
+
 export default function HomeScreen({ navigation }) {
+ 
+  
 
   const [dest, setDest] = useState(null);
   const [activ, setActiv] = useState((<Activities activity={'Activités'} date={'date'} />));
   const [isClickedActiv, setIsClickedActiv] = useState(true);
-  const [errMsg, setErrMsg] = useState('')
+ 
+  // const { city } = useSelector((state) => state.search.value)
 
-  const { country } = useSelector((state) => state.search.value)
-  const { city } = useSelector((state) => state.search.value)
-
-  const dispatch = useDispatch();
-
-
-  console.log('country', country)
-
-
-  useEffect(() => {
-    if (country !== '') {
-      setErrMsg('');
-    }
-  }, [country]);
-
-
-
-
-  const handleSearch = () => {
-
-    if (isClickedActiv === false && country === '') {
-      setErrMsg('Oops! It looks like you forgot to choose a country !')
-    }
-    else {
-      navigation.navigate('Result')
-    }
-  }
+  
 
   const handleClickActivities = () => {
-    const content = (<Activities />)
+    const content = (<Activities navigation={navigation}/>)
     setActiv(content)
     setIsClickedActiv(true)
-
-
   }
 
   const handleClickDestination = () => {
-    const content = (< Destination errMessage={setErrMsg} />)
+    const content = (< Destination navigation={navigation} />)
     setDest(content)
     setIsClickedActiv(false);
   };
+
 
   let activitiesStyle = {
     width: 131,
@@ -148,6 +126,8 @@ export default function HomeScreen({ navigation }) {
   }
 
 
+ 
+
 
 
   return (
@@ -184,12 +164,7 @@ export default function HomeScreen({ navigation }) {
           {!isClickedActiv && dest}
         </View>
 
-
         <View style={styles.bottom}>
-          <Text style={{ color: 'white' }}>{errMsg}</Text>
-          <TouchableOpacity style={styles.search} activeOpacity={0.8} onPress={() => handleSearch()}>
-            <Text style={styles.searchText}>Search</Text>
-          </TouchableOpacity>
           <Footer style={styles.footer} navigation={navigation} />
         </View>
       </View>
@@ -228,8 +203,9 @@ const styles = StyleSheet.create({
 
     paddingLeft: '15%',
     paddingRight: '15%',
-    bottom: '-20%',
-    width: '60%',
+    top: '25%',
+    resizeMode:'contain',
+    width: '40%',
 
   },
 
@@ -264,7 +240,7 @@ const styles = StyleSheet.create({
   },
   top: {
     width: '100%',
-    height: '70%',
+    height: '85%',
     marginTop: '15%',
     justifyContent: 'center',
     alignItems: 'center',
@@ -272,24 +248,8 @@ const styles = StyleSheet.create({
   },
 
   bottom: {
-    height: '35%',
+    height: '15%',
     alignItems: 'center',
   },
 
-
-  search: {
-    height: '18%',
-    width: '60%',
-    marginTop: 5,
-    borderWidth: 6,
-    alignItems: 'center',
-    justifyContent: 'center',
-    backgroundColor: '#000000',
-    borderRadius: 8,
-    marginBottom: '10%'
-
-  },
-  searchText: {
-    color: 'white'
-  },
 });

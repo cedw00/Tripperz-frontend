@@ -8,6 +8,7 @@ import {
   Image,
   Pressable,
 } from "react-native";
+import Spinner from "react-native-loading-spinner-overlay";
 import moment from 'moment';
 import Day from "../components/Day";
 import {
@@ -15,25 +16,58 @@ import {
   updatePlannedActivList,
   pushSizes,
   emptySizes,
-  emptyActivities
+  emptyActivities,
+  updateTripperList,
+  updateTempActiv,
+  addDayPlan,
 } from "../reducers/activ";
+import { getRandomActivityByInput } from "../modules/slotMods";
 
 export default function TripPlanScreen({ navigation }) {
   // const [morningSize, setMorningSize] = useState(2);
   // const [afternoonSize, setAfternoonSize] = useState(4);
-  const[daySize, setDaySize] = useState([]);
+  // const[daySize, setDaySize] = useState([]);
   const activities = useSelector((state) => state.activ.value);
   const allSizes = useSelector((state) => state.activ.sizesArray);
   const daysPlan = useSelector((state) => state.activ.activitiesSet);
   const morningValue = useSelector((state) => state.activ.morningValue);
   const afternoonValue = useSelector((state) => state.activ.afternoonValue);
   const plannedValue = useSelector((state) => state.activ.plannedValue);
+  const { email } = useSelector((state) => state.user.value)
+  const [ready, setReady] = useState(false);
 
   
   const dispatch = useDispatch();
 
   const { duration, start } = useSelector((state) => state.search.value);
   const [dayDuration, setDayDuration] = useState([]);
+
+  const [activitiesList, setActivitiesList] = useState([]);
+
+  const allActivNames = [
+    "restaurant",
+    "park",
+    "museum",
+    "shopping_mall",
+    "cafe",
+    "bar",
+    "movie_theater",
+    "gym",
+    "zoo",
+    "landmark", // Landmarks (e.g., Eiffel Tower)
+    "art_gallery", // Art galleries
+    "library", // Libraries
+    "aquarium", // Aquariums
+    // 'church', // Churches
+    // 'mosque', // Mosques
+    // 'synagogue', // Synagogues
+    "amusement_park", // Amusement parks
+    "tourist_attraction", // Tourist attractions
+    // Add more activities as needed
+  ];
+  const [spinner, setSpinner] = useState(false);
+  let size = [2, 4];
+  const PLACES_API_KEY = "AIzaSyDIHWBTXDGk6XeIiwAxnIX2tXN44o1nE7M";
 
   useEffect(() => {
     const tempArray = [];
@@ -55,18 +89,48 @@ export default function TripPlanScreen({ navigation }) {
     }
     setDayDuration(tempArray);
     dispatch(updatePlannedActivList(tempArray));
+
+    /// FETCH API ///
+      for (let i = 0; i < duration + 1; i++) {
+        const uniqueActivities = new Set();
+        for (let j = uniqueActivities.size; j < 20; j++) {
+          const randomActivity = getRandomActivityByInput(activities);
+          uniqueActivities.add(randomActivity);
+          if (uniqueActivities.size >= 20) {
+            break;
+          }
+        }
+        let dayPlan = Array.from(uniqueActivities);
+        dispatch(addDayPlan(dayPlan));
+  
+        const modalSet = new Set();
+        for (let j = modalSet.size; j < 40; j++) {
+          const randomActivity = getRandomActivityByInput(activities);
+          modalSet.add(randomActivity);
+          if (modalSet.size >= 40) {
+            break;
+          }
+        }
+        let modalPlan = Array.from(uniqueActivities);
+        dispatch(updateTempActiv(Array.from(modalPlan)));
+        
+      }
+    
   }, []);
 
   console.log("TPS => dayPlans", daysPlan);
+  console.log('TimeOut Activities in TripPlanScreen', activities);
 
-  const days = dayDuration.map((data, i) => {
-    const date = `${data.day}/${data.month}/${data.year}`;
-    return (
-      <View key={i} title="Day Card" style={styles.dayContainer}>
-        <Day day={i + 1} date={date} dayPlan={daysPlan[i]} i={i} /> 
-      </View>
-    )
-  });
+
+    const days = dayDuration.map((data, i) => {
+      const date = `${data.day}/${data.month}/${data.year}`;
+      return (
+        <View key={i} title="Day Card" style={styles.dayContainer}>
+         <Day day={i + 1} date={date} dayPlan={daysPlan[i]} i={i} />
+        </View>
+      )
+    });
+  
 
   const emptyArrays = () => {
     dispatch(emptySizes());
@@ -77,7 +141,7 @@ export default function TripPlanScreen({ navigation }) {
     <View style={styles.planContainer}>
       <View style={styles.imageContainer}>
         <Image
-          source={require("../assets/images/tripperz-logo/trippng.png")} // Replace with the path to your image
+          source={require("../assets/logo.png")} // Replace with the path to your image
           style={styles.image}
         />
       </View>
@@ -88,16 +152,16 @@ export default function TripPlanScreen({ navigation }) {
         {days}
       </ScrollView>
       <View style={styles.nextContainer}>
+      <Pressable onPress={() => {emptyArrays(), navigation.navigate("Result")}}>
+          <View style={styles.cancel}>
+            <Text style={{ color: "black" }}>CANCEL</Text>
+          </View>
+        </Pressable>
         <Pressable
           onPress={() => navigation.navigate("Planning")}
         >
           <View style={styles.confirm}>
             <Text style={{ color: "white" }}>CONFIRM</Text>
-          </View>
-        </Pressable>
-        <Pressable onPress={() => {emptyArrays(), navigation.navigate("Result")}}>
-          <View style={styles.cancel}>
-            <Text style={{ color: "black" }}>CANCEL</Text>
           </View>
         </Pressable>
       </View>
