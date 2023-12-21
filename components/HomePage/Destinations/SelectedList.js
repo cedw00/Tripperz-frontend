@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { View, StyleSheet, Text } from 'react-native';
 import axios from 'axios';
 import { SelectList } from 'react-native-dropdown-select-list';
-import { useDispatch, useSelector } from 'react-redux';
+import { useDispatch } from 'react-redux';
 import { addCountry } from '../../../reducers/search';
 import { addCity } from '../../../reducers/search';
 import { addCityList } from '../../../reducers/search';
@@ -40,14 +40,11 @@ function SelectedList({ getData }) {
   }, []);
 
 
-
-
-
   let countrylist = countries.map((country, i) => ({ key: i, value: country.country }));
   dispatch(addCountryList(countrylist));
 
 
- // SELECT COUNTRY AND CITY
+  // SELECT COUNTRY AND CITY
 
   let citiesList = [];
 
@@ -56,9 +53,8 @@ function SelectedList({ getData }) {
     const searchCountry = countrylist[value].value;
     dispatch(addCountry(searchCountry));
     getData(searchCountry)
-    
-  }
 
+  }
 
   if (selectedCountry !== null) {
 
@@ -98,13 +94,13 @@ function SelectedList({ getData }) {
           borderColor: 'rgba(6, 113, 136, 1)',
           color: 'rgba(6, 113, 136, 1)',
           marginLeft: 15,
-          marginRight:15,
-          marginBottom:10,
+          marginRight: 15,
+          marginBottom: 10,
         }}
 
 
       />
-     
+
       <Text style={styles.title}>City</Text>
 
       <SelectList
@@ -118,10 +114,10 @@ function SelectedList({ getData }) {
           borderWidth: 1,
           borderColor: 'rgba(6, 113, 136, 1)',
           marginLeft: 15,
-          marginRight:15,
-          marginBottom:'10%',
+          marginRight: 15,
+          marginBottom: '10%',
         }}
-        dropdownShown={false}
+
       />
     </View>
 
@@ -134,7 +130,7 @@ const styles = StyleSheet.create({
     color: 'rgba(6, 113, 136, 1)',
     fontWeight: 'bold',
     marginLeft: '5%',
-  marginBottom:'5%',
+    marginBottom: '5%',
 
 
   }

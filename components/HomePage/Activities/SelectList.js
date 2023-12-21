@@ -1,27 +1,30 @@
 import React, { useState, useEffect } from 'react';
 import { View, StyleSheet, Text } from 'react-native';
-import axios from 'axios';
 import { SelectList } from 'react-native-dropdown-select-list';
 import Constants from 'expo-constants';
+import { useDispatch } from 'react-redux';
+import { addActivityType } from '../../../reducers/activSearch';
+import { addActivity } from '../../../reducers/activSearch';
 
 
 const backend = Constants.expoConfig.hostUri.split(`:`)[0];
 
-const ActivityPicker = ({ }) => {
+const ActivityPicker = ({ getData }) => {
+
+  const dispatch = useDispatch();
+
   const [Types, setTypes] = useState([]);
-  const [Activities, setActivities] = useState ([])
-  const [selectedType, setSelectedType] =  useState (null)
-  const [selectedActivity, setSelectedActivity] =  useState (null)
+  const [Activities, setActivities] = useState([])
+  const [finalList, setFinalList] = useState([{ key: 0, value: 'No data found' }])
+  const [selectedActivity, setSelectedActivity] = useState(null)
 
   useEffect(() => {
-    let activTypes = [];
     const fetchTypes = async () => {
       try {
-        const response = await axios.get(`http://${backend}/countries/Allcountries`);
-        const countryData = response.data;
-        console.log(countryData);
+        const response = await fetch(`http://${backend}:3000/countries/Allcountries`);
+        const countryData = await response.json();
+        setActivities(countryData.activTypes)
         setTypes(countryData.activTypes)
-        setActivities(countryData.activities)
 
       } catch (error) {
         console.error('Error fetching country data:', error);
@@ -29,61 +32,49 @@ const ActivityPicker = ({ }) => {
     };
 
     fetchTypes();
-  }, []);
 
+  }, []);
+ 
   // SELECT ACTIVITY TYPE
 
   const handleTypeSelected = (value) => {
-    setSelectedType(value)
-    // const searchCountry = countrylist[value].value;
-    // dispatch(addCountry(searchCountry));
-    // getData(searchCountry)
-    
+    const activityList = Activities.filter((element) => element.value === value)
+    setFinalList(activityList[0].activities)
+    dispatch(addActivityType(value));
+    getData(value)
   }
 
 
 
-   // SELECT ACTIVITY
+  // SELECT ACTIVITY
 
-   const handleActivitySelected = (value) => {
+  const handleActivitySelected = (value) => {
+    console.log('value',value)
     setSelectedActivity(value)
-    // const searchCountry = countrylist[value].value;
-    // dispatch(addCountry(searchCountry));
-    // getData(searchCountry)
-    
+    const searchActivities = finalList[value].value;
+    console.log('search activ',searchActivities)
+    dispatch(addActivity(searchActivities));
   }
-
-  // let countrylist = countries.map((country, i) => ({ key: i, value: country.country }));
-  // let citiesList = [];
-
-  // if (selectedCountry !== null) {
-  //   const selectedCities = countries.find(item => item.country === countrylist[selectedCountry].value);
-
-  //   citiesList = selectedCities.cities;
-  // }
-
-  // let citylist = citiesList.map((city, i) => ({ key: i, value: city }));
-
-  // SELECT COUNTRY AND CITY
-
 
   return (
 
     <View style={styles.container}>
-      <Text style={styles.title}>Trip Style</Text>
+      <Text style={styles.title}>Activity Type</Text>
 
       <SelectList
 
-        setSelected={(value) => {handleTypeSelected}}
+        setSelected={handleTypeSelected}
         data={Types}
-        dropdownStyles={{ borderColor: '#D6DBDC', }}
+        dropdownStyles={{ borderColor: 'rgba(6, 113, 136, 1)', }}
         search={true}
         placeholder={'Select Style'}
         boxStyles={{
           borderWidth: 1,
           borderColor: 'rgba(6, 113, 136, 1)',
           color: 'rgba(6, 113, 136, 1)',
-          margin: 15,
+          marginLeft: 15,
+          marginRight: 15,
+          marginBottom: 10,
         }}
 
 
@@ -93,16 +84,18 @@ const ActivityPicker = ({ }) => {
       <SelectList
 
         setSelected={handleActivitySelected}
-        data={Activities}
-        dropdownStyles={{ borderColor: '#D6DBDC', }}
+        data={finalList}
+        dropdownStyles={{ borderColor: 'rgba(6, 113, 136, 1)', }}
         search={true}
         placeholder={'Select Activity'}
         boxStyles={{
           borderWidth: 1,
           borderColor: 'rgba(6, 113, 136, 1)',
-          color: 'rgba(6, 113, 136, 1)',
-          margin: 15,
+          marginLeft: 15,
+          marginRight: 15,
+          marginBottom: '10%',
         }}
+
       />
     </View>
 
@@ -115,8 +108,7 @@ const styles = StyleSheet.create({
     color: 'rgba(6, 113, 136, 1)',
     fontWeight: 'bold',
     marginLeft: '5%',
-
-
+    marginBottom: '5%',
   }
 
 });

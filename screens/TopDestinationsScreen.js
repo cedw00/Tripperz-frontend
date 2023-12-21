@@ -35,25 +35,25 @@ export default function TopDestinationsScreen({ navigation }) {
   const topDestinations =
     [
       { country: 'France', city: 'Paris' },
-      // { country: 'United Arab Emirates', city: 'Dubai' },
-      { country: 'Espagne', city: 'Madrid' },
-      { country: 'Japon', city: 'Tokyo' },
-      { country: 'Pays-Bas', city: 'Amsterdam' },
-      { country: 'Allemagne', city: 'Berlin' },
-      { country: 'Italie', city: 'Rome' },
-      //{ country: 'United States', city: 'New York' },
-      { country: 'Espagne', city: 'Barcelone' },
-      { country: 'Royaume-Uni', city: 'Londres' },
-      { country: 'Singapour', city: 'Singapour' },
-      { country: 'Allemagne', city: 'Munich' },
-      //{ country: 'Italie', city: 'Milan' },
-      { country: 'Corée du Sud', city: 'Séoul' },
-      { country: 'Irlande', city: 'Dublin' },
-      { country: 'Japon', city: 'Osaka' },
-      //{ country: 'Hong Kong', city: 'Hong Kong' },
-      { country: 'Autriche', city: 'Vienne' },
-      //{ country: 'United States', city: 'Los Angeles' },
-      { country: 'Portugal', city: 'Lisbonne' }
+      // // { country: 'United Arab Emirates', city: 'Dubai' },
+      // { country: 'Espagne', city: 'Madrid' },
+      // { country: 'Japon', city: 'Tokyo' },
+      // { country: 'Pays-Bas', city: 'Amsterdam' },
+      // { country: 'Allemagne', city: 'Berlin' },
+      // { country: 'Italie', city: 'Rome' },
+      // //{ country: 'United States', city: 'New York' },
+      // { country: 'Espagne', city: 'Barcelone' },
+      // { country: 'Royaume-Uni', city: 'Londres' },
+      // { country: 'Singapour', city: 'Singapour' },
+      // { country: 'Allemagne', city: 'Munich' },
+      // //{ country: 'Italie', city: 'Milan' },
+      // { country: 'Corée du Sud', city: 'Séoul' },
+      // { country: 'Irlande', city: 'Dublin' },
+      // { country: 'Japon', city: 'Osaka' },
+      // //{ country: 'Hong Kong', city: 'Hong Kong' },
+      // { country: 'Autriche', city: 'Vienne' },
+      // //{ country: 'United States', city: 'Los Angeles' },
+      // { country: 'Portugal', city: 'Lisbonne' }
 
     ];
 
@@ -73,7 +73,8 @@ export default function TopDestinationsScreen({ navigation }) {
   
     const fetchPromises = [];
   
-    for (let i = 0; i < topDestinations.length; i++) {
+    for (let i = 0; i < 1; i++) {
+      console.log('top dest',topDestinations[i])
       const dest = {
         country: topDestinations[i].country,
         city: topDestinations[i].city,
@@ -87,6 +88,7 @@ export default function TopDestinationsScreen({ navigation }) {
         })
           .then((response) => response.json())
           .then((data) => {
+            console.log('data',data)
             const city = {
               country: dest.country,
               city: data.city.name,
