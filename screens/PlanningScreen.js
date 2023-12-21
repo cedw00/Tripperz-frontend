@@ -108,6 +108,7 @@ export default function TripPlanScreen({ navigation }) {
   });
 
   const handleConfirm = async () => {
+    console.log('dayplan confirm', daysPlan);
     // const activities = [];
     // for (let i = 0; i < daysPlan.length; i++) {
     //   for (let j = 0; j < daysPlan[i].length; i++) {
@@ -125,11 +126,11 @@ export default function TripPlanScreen({ navigation }) {
       end: end,
       duration: duration,
       dayDuration: dayDuration,
-      daysPlan: daysPlan,
       countryDest: country,
       cityDest: tripCard.cityName,
       img: tripCard.cityImage,
       activitiesList: daysPlan,
+      allSizes: allSizes,
       tripperz: tripperz,
     };
     const response = await fetch(`http://${backend}:3000/trips/`, {

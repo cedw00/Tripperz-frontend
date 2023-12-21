@@ -26,7 +26,7 @@ import {
 export default function Day(props) {
   const [morningSize, setMorningSize] = useState(2);
   const [afternoonSize, setAfternoonSize] = useState(4);
-  const [deleteModalVisible, setDeleteModalVisible] = useState(false);
+  const [dataModalVisible, setDataModalVisible] = useState(false);
   const dayDuration = useSelector((state) => state.activ.plannedValue);
   const activities = useSelector((state) => state.activ.value);
   const morningValue = useSelector((state) => state.activ.morningValue);
@@ -54,7 +54,7 @@ export default function Day(props) {
       >
         <Slot activity={data} key={index} dayPlan={props.dayPlan} i={props.i} />
         <Pressable onPress={() => {
-          setDeleteModalVisible(true)
+          setDataModalVisible(true)
         }}>
           <FontAwesome
             name={"info-circle"}
@@ -79,7 +79,7 @@ export default function Day(props) {
         }}
       >
         <Slot activity={data} key={index} dayPlan={props.dayPlan} i={props.i} />
-        <Pressable onPress={() => {setDeleteModalVisible(true)}}>
+        <Pressable onPress={() => {setDataModalVisible(true)}}>
           <FontAwesome
             name={"info-circle"}
             size={20}
@@ -120,10 +120,10 @@ export default function Day(props) {
         <Modal
           animationType="slide"
           transparent={true}
-          visible={deleteModalVisible}
+          visible={dataModalVisible}
           onRequestClose={() => {
             Alert.alert("Modal has been closed.");
-            setDeleteModalVisible(!deleteModalVisible);
+            setDataModalVisible(!dataModalVisible);
           }}
         >
           <View style={styles.centeredView}>
@@ -131,11 +131,11 @@ export default function Day(props) {
               <Text style={styles.text} title="Switch title">
                 Activity info
               </Text>
-              {/* <Text style={styles.text}>Are you sure you want to delete this activity?</Text> */}
+              {/* <Text style={styles.text}>Are you sure you want to data this activity?</Text> */}
               <Pressable
                 style={[styles.button, styles.buttonClose]}
                 onPress={() => {
-                  setDeleteModalVisible(!deleteModalVisible)
+                  setDataModalVisible(!dataModalVisible)
                 }}
               >
                 <Text style={styles.textStyle}>OK</Text>
@@ -143,7 +143,7 @@ export default function Day(props) {
               {/* <Pressable
                 style={[styles.button, styles.buttonClose]}
                 onPress={() => {
-                  setDeleteModalVisible(!deleteModalVisible)
+                  setDataModalVisible(!dataModalVisible)
                 }}
               >
                 <Text style={styles.textStyle}>NO</Text>
