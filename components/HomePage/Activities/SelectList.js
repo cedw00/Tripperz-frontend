@@ -9,7 +9,7 @@ import { addActivity } from '../../../reducers/activSearch';
 
 const backend = Constants.expoConfig.hostUri.split(`:`)[0];
 
-const ActivityPicker = ({ getData}) => {
+const ActivityPicker = ({ getData }) => {
 
   const dispatch = useDispatch();
 
@@ -23,8 +23,8 @@ const ActivityPicker = ({ getData}) => {
       try {
         const response = await fetch(`http://${backend}:3000/countries/Allcountries`);
         const countryData = await response.json();
+        setActivities(countryData.activTypes)
         setTypes(countryData.activTypes)
-        setActivities(countryData.activities)
 
       } catch (error) {
         console.error('Error fetching country data:', error);
@@ -34,18 +34,14 @@ const ActivityPicker = ({ getData}) => {
     fetchTypes();
 
   }, []);
-
+ 
   // SELECT ACTIVITY TYPE
 
   const handleTypeSelected = (value) => {
-    const searchType = Types[value].value;
-    console.log('search Type',searchType)
-    const activityList = Activities.filter((element) => element.Type === searchType)
-  
-    const finalList = activityList.map(({ key, value }) => ({ key, value }))
-    setFinalList(finalList)
-    dispatch(addActivityType(searchType));
-    getData(searchType)
+    const activityList = Activities.filter((element) => element.value === value)
+    setFinalList(activityList[0].activities)
+    dispatch(addActivityType(value));
+    getData(value)
   }
 
 
@@ -53,8 +49,10 @@ const ActivityPicker = ({ getData}) => {
   // SELECT ACTIVITY
 
   const handleActivitySelected = (value) => {
+    console.log('value',value)
     setSelectedActivity(value)
-    const searchActivities = Activities[value].value;
+    const searchActivities = finalList[value].value;
+    console.log('search activ',searchActivities)
     dispatch(addActivity(searchActivities));
   }
 

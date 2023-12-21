@@ -39,86 +39,86 @@ export default function ActivitiesResultScreen({ navigation }) {
     const { activity } = useSelector((state) => state.activSearch.value);
     const { trippers } = useSelector((state) => state.activSearch.value)
     const { duration } = useSelector((state) => state.search.value);
-    const tripCard = useSelector((state) => state.trips.cityCard);
+    //const tripCard = useSelector((state) => state.trips.cityCard);
 
-    console.log('activity type',activityType)
-    console.log('activity',activity)
+    console.log('activity type', activityType)
+    console.log('activity', activity)
 
     const [itemsToDisplay, setItemsToDisplay] = useState([]);
     useEffect(() => {
         const fetchData = async () => {
-          // const delay = (ms) => new Promise(resolve => setTimeout(resolve, ms));
-          // fetch(`http://192.168.10.155:3000/countries/Allcountries`)
-          //   .then(response => response.json())
-          //   .then(data => {
-          //      delay(500);
-          //     //const item = { name: data.countries.name, image: data.countries.img, key: data.results[0].id };
-          //     newItemsToDisplay=data.countries;
-          //     console.log('new items to display',newItemsToDisplay)
-          //   }).then(() => {
-          //     setItemsToDisplay(newItemsToDisplay);
-          //   })
-    
-          let newItemsToDisplay = [];
-          if (activity === '') {
-            const data = {
-                activityType,
-            };
-            const delay = (ms) => new Promise((resolve) => setTimeout(resolve, ms));
-            fetch(`http://${backend}:3000/countries/activitiesTypes`, {
-              method: "POST",
-              headers: { "Content-Type": "application/json" },
-              body: JSON.stringify(data),
-            })
-              .then((response) => response.json())
-              .then((data) => {
-                delay(1000);
-                console.log('data.found cities',data.foundCities)
-                setItemsToDisplay(data.foundCities)
-              })
-          } else if (activity.length > 0) {
-    
-            const data = {
-                activityType,
-                activity,
-            };
-            fetch(`http://${backend}:3000/countries/activity`, {
-              method: "POST",
-              headers: { "Content-Type": "application/json" },
-              body: JSON.stringify(data),
-            })
-              .then((response) => response.json())
-              .then((data) => {
-    
-                console.log('data',data)
-                newItemsToDisplay.push(data.city);
-    
-                setItemsToDisplay(newItemsToDisplay);
-              });
-          }
+            // const delay = (ms) => new Promise(resolve => setTimeout(resolve, ms));
+            // fetch(`http://192.168.10.155:3000/countries/Allcountries`)
+            //   .then(response => response.json())
+            //   .then(data => {
+            //      delay(500);
+            //     //const item = { name: data.countries.name, image: data.countries.img, key: data.results[0].id };
+            //     newItemsToDisplay=data.countries;
+            //     console.log('new items to display',newItemsToDisplay)
+            //   }).then(() => {
+            //     setItemsToDisplay(newItemsToDisplay);
+            //   })
+
+            let newItemsToDisplay = [];
+            if (activity === '') {
+                const data = {
+                    activityType,
+                };
+                const delay = (ms) => new Promise((resolve) => setTimeout(resolve, ms));
+                fetch(`http://${backend}:3000/countries/activitiesTypes`, {
+                    method: "POST",
+                    headers: { "Content-Type": "application/json" },
+                    body: JSON.stringify(data),
+                })
+                    .then((response) => response.json())
+                    .then((data) => {
+                        delay(1000);
+                        console.log('data.found cities', data.foundCities)
+                        setItemsToDisplay(data.foundCities)
+                    })
+            } else if (activity !== '') {
+
+                const data = {
+                    activityType,
+                    activity,
+                };
+                fetch(`http://${backend}:3000/countries/activity`, {
+                    method: "POST",
+                    headers: { "Content-Type": "application/json" },
+                    body: JSON.stringify(data),
+                })
+                    .then((response) => response.json())
+                    .then((data) => {
+
+                        console.log('data', data)
+                        newItemsToDisplay.push(data.foundCities);
+                        setItemsToDisplay(newItemsToDisplay[0]);
+                    });
+            }
         };
-    
+
         fetchData();
         // allActivNames.forEach((activity) => {
         //   fetchPlacesForActivity(activity);
         // });
-      }, [navigation]);
+    }, [navigation]);
+
+ 
 
 
-  
     const Item = (item) => (
         <Pressable
-          onPress={() => {
-            handleSearch(), checkItem(item);
-          }}
-          key={item.key}
+            onPress={() => {
+                handleSearch(), checkItem(item);
+            }}
+            key={item.key}
         >
-          <View style={styles.card}>
-            <Image style={styles.tinyLogo} source={{ uri: item.image }} />
-            <Text style={styles.itemtext}>{item.city}, {item.country}</Text>
-          </View>
+            <View style={styles.card}>
+                <Image style={styles.tinyLogo} source={{ uri: item.image }} />
+                <Text style={styles.itemtext}>{item.city}, {item.country}</Text>
+            </View>
         </Pressable>
-      );
+    );
 
     const handleClickActivities = () => {
         navigation.navigate("Home");
@@ -157,15 +157,15 @@ export default function ActivitiesResultScreen({ navigation }) {
                     </View>
                 </View>
                 <View style={styles.body}>
-                <FlatList
-            style={styles.flatlist}
-            data={itemsToDisplay}
-            renderItem={({ item }) => {
-              return (
-                <Item country={item.country} city={item.city} image={item.image} />
-              );
-            }}
-          />
+                    <FlatList
+                        style={styles.flatlist}
+                        data={itemsToDisplay}
+                        renderItem={({ item }) => {
+                            return (
+                                <Item country={item.country} city={item.city} image={item.image} />
+                            );
+                        }}
+                    />
                 </View>
             </View>
         </SafeAreaView>
