@@ -35,29 +35,27 @@ export default function TopDestinationsScreen({ navigation }) {
   const topDestinations =
     [
       { country: 'France', city: 'Paris' },
-      // // { country: 'United Arab Emirates', city: 'Dubai' },
-      // { country: 'Espagne', city: 'Madrid' },
-      // { country: 'Japon', city: 'Tokyo' },
-      // { country: 'Pays-Bas', city: 'Amsterdam' },
-      // { country: 'Allemagne', city: 'Berlin' },
-      // { country: 'Italie', city: 'Rome' },
-      // //{ country: 'United States', city: 'New York' },
-      // { country: 'Espagne', city: 'Barcelone' },
-      // { country: 'Royaume-Uni', city: 'Londres' },
-      // { country: 'Singapour', city: 'Singapour' },
-      // { country: 'Allemagne', city: 'Munich' },
-      // //{ country: 'Italie', city: 'Milan' },
-      // { country: 'Corée du Sud', city: 'Séoul' },
-      // { country: 'Irlande', city: 'Dublin' },
-      // { country: 'Japon', city: 'Osaka' },
-      // //{ country: 'Hong Kong', city: 'Hong Kong' },
-      // { country: 'Autriche', city: 'Vienne' },
-      // //{ country: 'United States', city: 'Los Angeles' },
-      // { country: 'Portugal', city: 'Lisbonne' }
+      { country: 'United Arab Emirates', city: 'Dubai' },
+      { country: 'Spain', city: 'Madrid' },
+      { country: 'Japan', city: 'Tokyo' },
+      { country: 'Netherlands', city: 'Amsterdam' },
+      { country: 'Germany', city: 'Berlin' },
+      { country: 'Italy', city: 'Rome' },
+      { country: 'United States', city: 'New York City' },
+      { country: 'Spain', city: 'Barcelona' },
+      { country: 'United Kingdom', city: 'London' },
+      { country: 'Singapore', city: 'Singapore' },
+      { country: 'Germany', city: 'Munich' },
+      { country: 'Italy', city: 'Milan' },
+      { country: 'South Korea', city: 'Seoul' },
+      { country: 'Ireland', city: 'Dublin' },
+      { country: 'China', city: 'Hong Kong' },
+      { country: 'United States', city: 'Los Angeles' },
+      { country: 'Portugal', city: 'Lisbon' }
 
     ];
 
-    const dispatch = useDispatch();
+  const dispatch = useDispatch();
 
   const [searchCountry, setSearchCountry] = useState('');
   const { country } = useSelector((state) => state.search.value)
@@ -70,16 +68,15 @@ export default function TopDestinationsScreen({ navigation }) {
   const [itemsToDisplay, setItemsToDisplay] = useState([])
   useEffect(() => {
     let newItemsToDisplay = [];
-  
+
     const fetchPromises = [];
-  
-    for (let i = 0; i < 1; i++) {
-      console.log('top dest',topDestinations[i])
+
+    for (let i = 0; i < topDestinations.length; i++) {
       const dest = {
         country: topDestinations[i].country,
         city: topDestinations[i].city,
       };
-  
+
       const promise = new Promise((resolve, reject) => {
         fetch(`http://${backend}:3000/countries/city`, {
           method: 'POST',
@@ -88,21 +85,21 @@ export default function TopDestinationsScreen({ navigation }) {
         })
           .then((response) => response.json())
           .then((data) => {
-            console.log('data',data)
+            console.log('data', data)
             const city = {
               country: dest.country,
               city: data.city.name,
               image: data.city.cityImg,
             };
-            
+
             newItemsToDisplay.push(city);
-            resolve(); 
+            resolve();
           })
           .catch((error) => {
-            reject(error); 
+            reject(error);
           });
       });
-  
+
       fetchPromises.push(promise);
     }
     Promise.all(fetchPromises)
@@ -141,6 +138,7 @@ export default function TopDestinationsScreen({ navigation }) {
   //       dispatch(createTripCard(element))
   //     };
   //     console.log('RS => This might be your next destination:', tripCard);
+
 
   const Item = (item) => (
     <Pressable onPress={() => { handleSearch(), checkItem(item) }} key={item.key}>
@@ -187,7 +185,7 @@ export default function TopDestinationsScreen({ navigation }) {
             data={itemsToDisplay}
             renderItem={({ item }) => {
               return (
-                <Item country = {item.country} name={item.city} image={item.image} key={item._id} />)
+                <Item country={item.country} name={item.city} image={item.image} key={item._id} />)
             }}
           />
         </View>

@@ -96,7 +96,6 @@ export default function Activities({ navigation }) {
 
     }
 
-
     return (
         <View style={styles.container}>
             <View style={styles.card}>
