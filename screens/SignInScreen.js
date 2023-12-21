@@ -1,5 +1,5 @@
 import { StyleSheet, Text, View, Image, ImageBackground, TextInput,
-    SafeAreaView, Dimensions, TouchableOpacity, KeyboardAvoidingView } from 'react-native';
+    SafeAreaView, Dimensions, TouchableOpacity, KeyboardAvoidingView, } from 'react-native';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 import { useState } from 'react';
 import { useDispatch } from 'react-redux';
