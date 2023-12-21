@@ -2,36 +2,67 @@ import React, { useState, useEffect } from 'react';
 import { View, StyleSheet, Text } from 'react-native';
 import axios from 'axios';
 import { SelectList } from 'react-native-dropdown-select-list';
+import Constants from 'expo-constants';
 
 
-const CountryPicker = ({ setSelected, selectedCountry, setCitySelected, setCountry }) => {
-  const [countries, setCountries] = useState([]);
+const backend = Constants.expoConfig.hostUri.split(`:`)[0];
+
+const ActivityPicker = ({ }) => {
+  const [Types, setTypes] = useState([]);
+  const [Activities, setActivities] = useState ([])
+  const [selectedType, setSelectedType] =  useState (null)
+  const [selectedActivity, setSelectedActivity] =  useState (null)
 
   useEffect(() => {
-    const fetchCountries = async () => {
+    let activTypes = [];
+    const fetchTypes = async () => {
       try {
-        const response = await axios.get('https://countriesnow.space/api/v0.1/countries');
-        const countryData = response.data.data;
-        setCountries(countryData);
+        const response = await axios.get(`http://${backend}/countries/Allcountries`);
+        const countryData = response.data;
+        console.log(countryData);
+        setTypes(countryData.activTypes)
+        setActivities(countryData.activities)
+
       } catch (error) {
         console.error('Error fetching country data:', error);
       }
     };
 
-    fetchCountries();
+    fetchTypes();
   }, []);
 
+  // SELECT ACTIVITY TYPE
 
-  let countrylist = countries.map((country, i) => ({ key: i, value: country.country }));
-  let citiesList = [];
-
-  if (selectedCountry !== null) {
-    const selectedCities = countries.find(item => item.country === countrylist[selectedCountry].value);
-
-    citiesList = selectedCities.cities;
+  const handleTypeSelected = (value) => {
+    setSelectedType(value)
+    // const searchCountry = countrylist[value].value;
+    // dispatch(addCountry(searchCountry));
+    // getData(searchCountry)
+    
   }
 
-  let citylist = citiesList.map((city, i) => ({ key: i, value: city }));
+
+
+   // SELECT ACTIVITY
+
+   const handleActivitySelected = (value) => {
+    setSelectedActivity(value)
+    // const searchCountry = countrylist[value].value;
+    // dispatch(addCountry(searchCountry));
+    // getData(searchCountry)
+    
+  }
+
+  // let countrylist = countries.map((country, i) => ({ key: i, value: country.country }));
+  // let citiesList = [];
+
+  // if (selectedCountry !== null) {
+  //   const selectedCities = countries.find(item => item.country === countrylist[selectedCountry].value);
+
+  //   citiesList = selectedCities.cities;
+  // }
+
+  // let citylist = citiesList.map((city, i) => ({ key: i, value: city }));
 
   // SELECT COUNTRY AND CITY
 
@@ -43,8 +74,8 @@ const CountryPicker = ({ setSelected, selectedCountry, setCitySelected, setCount
 
       <SelectList
 
-        setSelected={(value) => { setSelected(value) }}
-        data={countrylist}
+        setSelected={(value) => {handleTypeSelected}}
+        data={Types}
         dropdownStyles={{ borderColor: '#D6DBDC', }}
         search={true}
         placeholder={'Select Style'}
@@ -61,8 +92,8 @@ const CountryPicker = ({ setSelected, selectedCountry, setCitySelected, setCount
       <Text style={styles.title}>Activity</Text>
       <SelectList
 
-        setSelected={(value) => setCitySelected(value)}
-        data={citylist}
+        setSelected={handleActivitySelected}
+        data={Activities}
         dropdownStyles={{ borderColor: '#D6DBDC', }}
         search={true}
         placeholder={'Select Activity'}
@@ -90,4 +121,4 @@ const styles = StyleSheet.create({
 
 });
 
-export default CountryPicker;
+export default ActivityPicker;

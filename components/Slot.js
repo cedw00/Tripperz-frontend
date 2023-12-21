@@ -53,7 +53,6 @@ export default function Slot(props) {
     } else {
       setSlotActivity(props.activity)
     }
-    
   };
 
   return (
@@ -110,6 +109,7 @@ const styles = StyleSheet.create({
   },
   slotContainer: {
     maxWidth: "100%", // Largeur maximale du conteneur
+    marginBottom: '2%'
   },
   slotContent: {
     maxWidth: "100%", // Largeur maximale du conteneur
@@ -125,7 +125,9 @@ const styles = StyleSheet.create({
     alignItems: "center",
     width: 250,
     marginTop: 15,
-    marginHorizontal: "10%",
+    marginLeft: "10%",
+    marginRight: '5%',
+    marginBottom: '2%',
     //borderWidth: 3, // Pour visualiser la zone du conteneur
     paddingHorizontal: "3%", // Ajouter un padding pour l'espace intérieur
     paddingVertical: "2%",

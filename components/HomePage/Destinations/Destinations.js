@@ -17,8 +17,8 @@ import { getDuration } from '../../../reducers/search';
 
 
 export default function Destinations({ navigation }) {
-    
- const dispatch = useDispatch();
+
+    const dispatch = useDispatch();
 
 
 
@@ -31,15 +31,13 @@ export default function Destinations({ navigation }) {
 
 
 
-      useEffect(() => {
+    useEffect(() => {
 
         if (country !== '') {
-          setErrMsg('');
+            setErrMsg('');
         }
-      }, [country]);
+    }, [country]);
 
-
-  
     const getData = (data) => {
         setCountry(data)
     }
@@ -85,7 +83,6 @@ export default function Destinations({ navigation }) {
     //SEARCH + ERR MESSAGE
 
 
-
     const handleSearch = () => {
 
 
@@ -98,6 +95,9 @@ export default function Destinations({ navigation }) {
 
     }
 
+    const handleTopDest = () => {
+        navigation.navigate('TopDestionations')
+    }
 
     return (
         <View style={styles.container}>
@@ -107,16 +107,18 @@ export default function Destinations({ navigation }) {
                     <Text style={styles.destText}>Destination</Text>
 
                     <View style={styles.countrylist}>
-                    <Text style={{color:'red',top:'45%',alignSelf:'center'}}>{errMsg}</Text>
 
-                        <SelectedList getData={getData}  />
-                    
+                        <SelectedList getData={getData} />
+
                     </View>
 
-
+                    <View>
+                        <Text style={{ color: 'red', alignSelf: 'center', bottom: '70%' }}>{errMsg}</Text>
+                    </View>
                 </View>
+
                 <View style={styles.date}>
-                    <Text style={{ color: 'rgba(6, 113, 136, 1)', margin: 10, fontWeight: 'bold', fontSize:17, }} >Date</Text>
+                    <Text style={{ color: 'rgba(6, 113, 136, 1)', margin: 10, fontWeight: 'bold', fontSize: 17, }} >Date</Text>
                     <Text style={styles.dateBorder}>
 
                         <DateTimePicker
@@ -151,10 +153,16 @@ export default function Destinations({ navigation }) {
                     </View>
 
                 </View>
+                <View style={styles.submits}>
+                    <TouchableOpacity style={styles.search} activeOpacity={0.8} onPress={() => handleSearch()}>
+                        <Text style={styles.searchText}>Search</Text>
+                    </TouchableOpacity>
+                    <TouchableOpacity style={styles.topDest} activeOpacity={0.8} onPress={() => handleTopDest()}>
+                        <Text style={styles.topDestText}>     Top {"\n"} Destinations</Text>
+                        <AntDesign name={'star'} size={30} style={styles.star} />
+                    </TouchableOpacity>
+                </View>
 
-                <TouchableOpacity style={styles.search} activeOpacity={0.8} onPress={() => handleSearch()}>
-                    <Text style={styles.searchText}>Search</Text>
-                </TouchableOpacity>
             </View>
         </View>
 
@@ -183,8 +191,8 @@ const styles = StyleSheet.create({
     },
 
     destText: {
-        marginTop:'5%',
-        marginLeft:15,
+        marginTop: '5%',
+        marginLeft: 15,
         color: 'rgba(6, 113, 136, 1)',
         fontWeight: 'bold',
         fontSize: 17,
@@ -195,7 +203,7 @@ const styles = StyleSheet.create({
         borderWidth: 2,
         paddingBottom: 10,
         backgroundColor: '#DEDEDE',
-        marginTop: '10%',
+        marginTop: '5%',
         shadowColor: '#000',
         shadowOffset: { width: 6, height: 6 },
         shadowOpacity: 0.3,
@@ -218,7 +226,7 @@ const styles = StyleSheet.create({
         borderWidth: 1,
         backgroundColor: '#DEDEDE',
         borderWidth: 2,
-        marginTop: '10%',
+        marginTop: '5%',
         alignItems: 'center',
         justifyContent: 'center',
         shadowColor: '#000',
@@ -242,9 +250,34 @@ const styles = StyleSheet.create({
         paddingLeft: '20%',
         color: 'rgba(6, 113, 136, 1)'
     },
+    submits: {
+        height: '20%',
+        flexDirection: 'row',
+        justifyContent: 'center'
+    },
+
     search: {
-        height: '8%',
-        width: '60%',
+        height: '40%',
+        width: '40%',
+        marginTop: 5,
+        borderWidth: 2,
+        borderColor: 'rgba(6, 113, 136, 1)',
+        alignSelf: 'center',
+        justifyContent: 'center',
+        backgroundColor: '#DEDEDE',
+        borderRadius: 8,
+        marginBottom: '10%',
+        marginTop: '5%',
+        marginRight: '5%'
+    },
+    searchText: {
+        color: 'rgba(6, 113, 136, 1)',
+        fontWeight: 'bold',
+        alignSelf: 'center'
+    },
+    topDest: {
+        height: '40%',
+        width: '40%',
         marginTop: 5,
         borderWidth: 2,
         borderColor: 'rgba(6, 113, 136, 1)',
@@ -254,10 +287,19 @@ const styles = StyleSheet.create({
         borderRadius: 8,
         marginBottom: '10%',
         marginTop: '5%'
+
     },
-    searchText: {
-        color: 'rgba(6, 113, 136, 1)',
-        fontWeight: 'bold',
-        alignSelf: 'center'
+    topDestText: {
+        top:'30%',
+        left:5,
+        alignSelf: 'flex-start',
+        color:'rgba(6, 113, 136, 1)',
+        fontWeight:'bold',
     },
+    star: {
+        bottom: '40%',
+        right: '5%',
+        color: '#D4AF37',
+        alignSelf: 'flex-end'
+    }
 });

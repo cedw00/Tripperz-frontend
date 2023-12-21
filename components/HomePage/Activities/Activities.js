@@ -15,33 +15,27 @@ import AntDesign from 'react-native-vector-icons/AntDesign'
 
 
 
-
-
-
 export default function Activities() {
 
 
-    //Activitiesa  DROPDOWN
+    //ACTIVITY TYPE  DROPDOWN
 
-    const [selectedCountry, setSelectedCountry] = useState(null);
+    const [selectedType, setSelectedType] = useState(null);
 
-    const handleSelectCountry = (country) => {
-        setSelectedCountry(country);
-
-    };
-
-
-
-    //City DROPDOWN
-
-    const [selectedCity, setSelectedCity] = useState(null);
-
-    const handleSelectCity = (city) => {
-        setSelectedCity(city);
+    const handleSelectedType = (country) => {
+        setSelectedType(country);
 
     };
 
 
+    //ACTIVITIES DROPDOWN
+
+    const [selectedActivity, setSelectedActivity] = useState(null);
+
+    const handleSelectedActivity = (city) => {
+        setSelectedActivity(city);
+
+    };
 
 
     //DATE INPUT
@@ -81,18 +75,18 @@ export default function Activities() {
         <View style={styles.container}>
             <View style={styles.card}>
 
-                <View style={styles.destination}>
+                <View style={styles.activities}>
 
-                    <Text style={styles.destText}>Activities</Text>
+                    <Text style={styles.activText}>Activities</Text>
 
-                    <View style={styles.countrylist}>
+                    <View>
                         <SelectList
 
-                            setSelected={handleSelectCountry}
-                            selectedCountry={selectedCountry}
+                            setSelected={handleSelectedType}
+                            selectedCountry={selectedType}
 
-                            setCitySelected={handleSelectCity}
-                            selectedCity={selectedCity}
+                            setCitySelected={handleSelectedActivity}
+                            selectedCity={selectedActivity}
 
                         />
 
@@ -124,12 +118,6 @@ export default function Activities() {
 
                     </Text>
 
-
-
-
-
-
-
                 </View>
 
 
@@ -160,7 +148,7 @@ const styles = StyleSheet.create({
         
     },
 
-    destination: {
+    activities: {
         width: '100%',
         borderWidth: 2,
         backgroundColor: '#DEDEDE',
@@ -172,7 +160,7 @@ const styles = StyleSheet.create({
         borderColor: 'rgba(6, 113, 136, 1)',
     },
 
-       destText: {
+       activText: {
         margin: 15,
         color: 'rgba(6, 113, 136, 1)',
         fontWeight: 'bold',
