@@ -24,18 +24,13 @@ import {
 import { getRandomActivityByInput } from "../modules/slotMods";
 
 export default function TripPlanScreen({ navigation }) {
-  // const [morningSize, setMorningSize] = useState(2);
-  // const [afternoonSize, setAfternoonSize] = useState(4);
-  // const[daySize, setDaySize] = useState([]);
   const activities = useSelector((state) => state.activ.value);
-  const allSizes = useSelector((state) => state.activ.sizesArray);
   const daysPlan = useSelector((state) => state.activ.activitiesSet);
   const tripCard = useSelector((state) => state.trips.cityCard);
 
   const dispatch = useDispatch();
 
   const { duration, start } = useSelector((state) => state.search.value);
-  const [dayDuration, setDayDuration] = useState([]);
 
   const [activitiesList, setActivitiesList] = useState([]);
 
@@ -53,6 +48,20 @@ export default function TripPlanScreen({ navigation }) {
     "art_gallery", // Art galleries
     "library", // Libraries
     "aquarium", // Aquariums
+    "spa", // NEW
+    "yoga", // NEW
+    "golf_course", // NEW
+    "tour", // NEW
+    "brunch", // NEW
+    "yoga studio", // NEW
+    "iconic architecture", // NEW
+    "bus tours", // NEW
+    "thematic tours", // NEW
+    "boat excursions", // NEW
+    "theatre", // NEW
+    "pool clubs", // NEW
+    "market", // NEW
+    "cooking class", // NEW
     // 'church', // Churches
     // 'mosque', // Mosques
     // 'synagogue', // Synagogues

@@ -29,30 +29,6 @@ import { addCity } from "../reducers/search";
 const backend = Constants.expoConfig.hostUri.split(`:`)[0];
 
 export default function ResultScreen({ navigation }) {
-  // const [activitiesList, setActivitiesList] = useState([]);
-  // const activities = useSelector((state) => state.activ.value);
-
-  // const allActivNames = [
-  //   "restaurant",
-  //   "park",
-  //   "museum",
-  //   "shopping_mall",
-  //   "cafe",
-  //   "bar",
-  //   "movie_theater",
-  //   "gym",
-  //   "zoo",
-  //   "landmark", // Landmarks (e.g., Eiffel Tower)
-  //   "art_gallery", // Art galleries
-  //   "library", // Libraries
-  //   "aquarium", // Aquariums
-  //   // 'church', // Churches
-  //   // 'mosque', // Mosques
-  //   // 'synagogue', // Synagogues
-  //   "amusement_park", // Amusement parks
-  //   "tourist_attraction", // Tourist attractions
-  //   // Add more activities as needed
-  // ];
 
   const dispatch = useDispatch();
 

@@ -24,50 +24,14 @@ import {
 import { getRandomActivityByInput } from "../modules/slotMods";
 
 export default function TripPlanScreen({ navigation }) {
-  // const [morningSize, setMorningSize] = useState(2);
-  // const [afternoonSize, setAfternoonSize] = useState(4);
-  // const[daySize, setDaySize] = useState([]);
   const activities = useSelector((state) => state.activ.value);
-  const allSizes = useSelector((state) => state.activ.sizesArray);
   const daysPlan = useSelector((state) => state.activ.activitiesSet);
-  const morningValue = useSelector((state) => state.activ.morningValue);
-  const afternoonValue = useSelector((state) => state.activ.afternoonValue);
-  const plannedValue = useSelector((state) => state.activ.plannedValue);
-  const { email } = useSelector((state) => state.user.value)
-  const [ready, setReady] = useState(false);
 
   
   const dispatch = useDispatch();
 
   const { duration, start } = useSelector((state) => state.search.value);
   const [dayDuration, setDayDuration] = useState([]);
-
-  const [activitiesList, setActivitiesList] = useState([]);
-
-  const allActivNames = [
-    "restaurant",
-    "park",
-    "museum",
-    "shopping_mall",
-    "cafe",
-    "bar",
-    "movie_theater",
-    "gym",
-    "zoo",
-    "landmark", // Landmarks (e.g., Eiffel Tower)
-    "art_gallery", // Art galleries
-    "library", // Libraries
-    "aquarium", // Aquariums
-    // 'church', // Churches
-    // 'mosque', // Mosques
-    // 'synagogue', // Synagogues
-    "amusement_park", // Amusement parks
-    "tourist_attraction", // Tourist attractions
-    // Add more activities as needed
-  ];
-  const [spinner, setSpinner] = useState(false);
-  let size = [2, 4];
-  const PLACES_API_KEY = "**************";
 
   useEffect(() => {
     const tempArray = [];
