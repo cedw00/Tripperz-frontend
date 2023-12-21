@@ -2,14 +2,10 @@ import { StyleSheet, Text, View, Image, ImageBackground, SafeAreaView, Dimension
 import FontAwesome from 'react-native-vector-icons/FontAwesome';
 
 export default function LoginScreen({ navigation }) {
-  
-  const goToSignIn = () => {
-    navigation.navigate('SignIn');
-  }
 
-  const handleSubmit = () => {
-    navigation.navigate('Register')
-  };
+  const redirectTo = (path) => {
+    navigation.navigate(`${path}`)
+  }
 
   return (
     <ImageBackground source={require('../assets/background_1.png')} style={styles.background}>
@@ -31,13 +27,13 @@ export default function LoginScreen({ navigation }) {
             <TouchableOpacity activeOpacity={0.8} style={styles.btn}>
               <Text style={styles.btnText}><FontAwesome name={'facebook-square'} size={20} color={'#FFFFFF'}/> Continue with Facebook</Text>
             </TouchableOpacity>
-            <TouchableOpacity activeOpacity={0.8} style={styles.btn} onPress={() => goToSignIn()}>
+            <TouchableOpacity activeOpacity={0.8} style={styles.btn} onPress={() => redirectTo('SignIn')}>
               <Text style={styles.btnText}><FontAwesome name={'at'} size={20} color={'#FFFFFF'}/> Continue with your email</Text>
             </TouchableOpacity>
           </View>
         </View>
         <View style={styles.bottom}>
-            <TouchableOpacity activeOpacity={0.8} onPress={() => handleSubmit()} style={styles.registerBtn}>
+            <TouchableOpacity activeOpacity={0.8} onPress={() => redirectTo('Register')} style={styles.registerBtn}>
               <Text style={styles.register}>Not registered yet ?</Text>
             </TouchableOpacity>
           </View>

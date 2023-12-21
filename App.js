@@ -74,7 +74,6 @@ export default function App() {
           <Stack.Screen name="TopDestionations" component={TopDestionationsScreen} />
           <Stack.Screen name="TripPlan" component={TripPlanScreen} />
           <Stack.Screen name="Planning" component={PlanningScreen} />
-          
           <Stack.Screen name="DrawerNavigator" component={DrawerNavigator} />
         </Stack.Navigator>
       </NavigationContainer>

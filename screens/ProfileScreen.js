@@ -8,6 +8,7 @@ import Ionicons from 'react-native-vector-icons/Ionicons';
 import { Dropdown, MultiSelect } from 'react-native-element-dropdown';
 import DateTimePicker from '@react-native-community/datetimepicker';
 import { LinearGradient } from 'expo-linear-gradient';
+import moment from 'moment';
 import Footer from '../components/Footer';
 import Constants from 'expo-constants';
 
@@ -42,15 +43,21 @@ const mockData = [
 
 export default function ProfileScreen({ navigation }) {
   const dispatch = useDispatch();
-  const { username, birthday, gender, country, favoriteDestinations, favoriteFoods, hobbies, token } = useSelector((state) => state.user.value)
+  const { username, email, phone, birthday, gender, country, favoriteDestinations, favoriteFoods, hobbies, token } = useSelector((state) => state.user.value)
   
   const [destinations, setDestinations] = useState('');
+
+  const [newUsername, setNewUsername] = useState(username);
+  const [newEmail, setNewEmail] = useState(email);
+  const [newPhoneNb, setNewPhoneNb] = useState(phone);
+  const [newPassword, setNewPassword] = useState(null);
   const [newGender, setNewGender] = useState(gender);
   const [newCountry, setNewCountry] = useState(country);
   const [newFavoriteDestinations, setNewFavoriteDestinations] = useState('');
   const [selectedActivities, setSelectedActivities] = useState([]);
   const [selectedFood, setSelectedFood] = useState([]);
-  const [date, setDate] = useState(new Date());
+  const [date, setDate] = useState(moment(birthday, 'DD/MM/YYYY').toDate());
+
   const [showModal, setShowModal] = useState(false);
   const [errorMsg, setErrorMsg] = useState(null);
   const [showError, setShowError] = useState(false);
@@ -135,72 +142,89 @@ export default function ProfileScreen({ navigation }) {
             <Text style={styles.title}>Edit your profile</Text>
           </View>
           <View style={styles.form}>
-              <View style={styles.field}>
-                <Text style={styles.label}>Birthday</Text>
-                <View style={styles.show}>
-                    <DateTimePicker
-                        testID="dateTimePicker"
-                        value={date}
-                        mode={'date'}
-                        maximumDate={new Date()}
-                        is24Hour={true}
-                        onChange={onChange}
-                    />
-                </View>
+            <View style={styles.field}>
+              <View style={styles.inputContainer}>
+                  <TextInput placeholder={username} onChangeText={(value) => setNewUsername(value)} placeholderTextColor={'#A0ACAE'}
+                  value={newUsername} style={styles.input}/>  
               </View>
-              <View style={styles.field}>
-                <Text style={styles.label}>Gender</Text>
-                <View style={styles.inputContainer}>
-                    <Dropdown
-                        style={styles.list} data={genderData} labelField='label' valueField='value' placeholder={gender} placeholderStyle={{color: '#A0ACAE'}}
-                        value={newGender} onChange={(item) => {setNewGender(item.value)}} renderItem={editDisplay} maxHeight={100}
-                    />
-                </View>
+            </View>
+            <View style={styles.field}>
+              <View style={styles.inputContainer}>
+                  <TextInput placeholder={email} onChangeText={(value) => setNewEmail(value)} placeholderTextColor={'#A0ACAE'}
+                  value={newEmail} style={styles.input}/>  
               </View>
-              <View style={styles.field}>
-                <Text style={styles.label}>Country</Text>
-                <View style={styles.inputContainer}>
-                    <TextInput placeholder={country} onChangeText={(value) => setNewCountry(value)} placeholderTextColor={'#A0ACAE'}
-                    value={newCountry} style={styles.input}/>  
-                </View>
+            </View>
+            <View style={styles.field}>
+              <View style={styles.inputContainer}>
+                  <TextInput placeholder={phone} onChangeText={(value) => setNewPhoneNb(value)} placeholderTextColor={'#A0ACAE'}
+                  value={newPhoneNb} style={styles.input}/>  
               </View>
-              <View style={styles.field}>
-                <Text style={styles.label}>Favorite Destinations</Text>
-                <View style={styles.inputContainer}>
-                    <TextInput placeholder="Favorite Destinations" onChangeText={(value) => setNewFavoriteDestinations(value)} placeholderTextColor={'#A0ACAE'}
-                    value={newFavoriteDestinations} style={styles.input}/>  
-                </View>
+            </View>
+            <View style={styles.field}>
+              <View style={styles.inputContainer}>
+                  <TextInput placeholder={"Enter your new password"} onChangeText={(value) => setNewPassword(value)} placeholderTextColor={'#A0ACAE'}
+                  value={newPassword} style={styles.input}/>  
               </View>
-              <View style={styles.field}>
-                <Text style={styles.label}>Favorite types of food</Text>
-                <View style={styles.inputContainer}>
-                    <MultiSelect
-                        style={styles.list} data={foodData} labelField='label' valueField='value' placeholder='Favorite food types'
-                        placeholderStyle={{color: '#A0ACAE'}} value={selectedFood} onChange={(item) => {setSelectedFood(item)}} renderItem={editDisplay} maxHeight={100}
-                        visibleSelectedItem={false} activeColor='lightblue'
-                    />
-                </View>
+            </View>
+            <View style={styles.field}>
+              <View style={styles.show}>
+                  <DateTimePicker
+                      testID="dateTimePicker"
+                      value={date}
+                      mode={'date'}
+                      maximumDate={new Date()}
+                      is24Hour={true}
+                      onChange={onChange}
+                  />
               </View>
-              <View style={styles.field}>
-                <Text style={styles.label}>Favorite types of activities</Text>
-                <View style={styles.inputContainer}>
-                    <MultiSelect
-                        style={styles.list} data={mockData} labelField='label' valueField='value' placeholder='Favorites types of activities'
-                        placeholderStyle={{color: '#A0ACAE'}} value={selectedActivities} onChange={(item) => {setSelectedActivities(item)}} renderItem={editDisplay}
-                        maxHeight={100} visibleSelectedItem={false} activeColor='lightblue'
-                    />
-                </View>
+            </View>
+            <View style={styles.field}>
+              <View style={styles.inputContainer}>
+                  <Dropdown
+                      style={styles.list} data={genderData} labelField='label' valueField='value' placeholder={gender} placeholderStyle={{color: '#A0ACAE'}}
+                      value={newGender} onChange={(item) => {setNewGender(item.value)}} renderItem={editDisplay} maxHeight={100}
+                  />
               </View>
-              <View style={styles.field}>
-                <Text style={styles.label}>Favorite activities</Text>
-                <View style={styles.inputContainer}>
-                    <MultiSelect
-                        style={styles.list} data={mockData} labelField='label' valueField='value' placeholder='Favorites activities'
-                        placeholderStyle={{color: '#A0ACAE'}} value={selectedActivities} onChange={(item) => {setSelectedActivities(item)}} renderItem={editDisplay}
-                        maxHeight={100} visibleSelectedItem={false} activeColor='lightblue'
-                    />
-                </View>
+            </View>
+            <View style={styles.field}>
+              <View style={styles.inputContainer}>
+                  <TextInput placeholder={country} onChangeText={(value) => setNewCountry(value)} placeholderTextColor={'#A0ACAE'}
+                  value={newCountry} style={styles.input}/>  
               </View>
+            </View>
+            <View style={styles.field}>
+              <View style={styles.inputContainer}>
+                  <TextInput placeholder="Favorite Destinations" onChangeText={(value) => setNewFavoriteDestinations(value)} placeholderTextColor={'#A0ACAE'}
+                  value={newFavoriteDestinations} style={styles.input}/>  
+              </View>
+            </View>
+            <View style={styles.field}>
+              <View style={styles.inputContainer}>
+                  <MultiSelect
+                      style={styles.list} data={foodData} labelField='label' valueField='value' placeholder='Favorite food types'
+                      placeholderStyle={{color: '#A0ACAE'}} value={selectedFood} onChange={(item) => {setSelectedFood(item)}} renderItem={editDisplay} maxHeight={100}
+                      visibleSelectedItem={false} activeColor='lightblue'
+                  />
+              </View>
+            </View>
+            <View style={styles.field}>
+              <View style={styles.inputContainer}>
+                  <MultiSelect
+                      style={styles.list} data={mockData} labelField='label' valueField='value' placeholder='Favorites types of activities'
+                      placeholderStyle={{color: '#A0ACAE'}} value={selectedActivities} onChange={(item) => {setSelectedActivities(item)}} renderItem={editDisplay}
+                      maxHeight={100} visibleSelectedItem={false} activeColor='lightblue'
+                  />
+              </View>
+            </View>
+            <View style={styles.field}>
+              <View style={styles.inputContainer}>
+                  <MultiSelect
+                      style={styles.list} data={mockData} labelField='label' valueField='value' placeholder='Favorites activities'
+                      placeholderStyle={{color: '#A0ACAE'}} value={selectedActivities} onChange={(item) => {setSelectedActivities(item)}} renderItem={editDisplay}
+                      maxHeight={100} visibleSelectedItem={false} activeColor='lightblue'
+                  />
+              </View>
+            </View>
           </View>
           <View style={styles.foot}>
             <View style={styles.buttons}>
@@ -503,7 +527,7 @@ const styles = StyleSheet.create({
     color: 'white',
   },
   form: {
-    flex: 2,
+    flex: 3,
     width: '100%',
     alignItems: 'center',
     justifyContent: 'space-around',
@@ -535,6 +559,8 @@ const styles = StyleSheet.create({
     flex: 1,
     width: '90%',
     justifyContent: 'center',
+    alignItems: 'center',
+    marginBottom: 10,
   },
   label: {
     flex: 1,

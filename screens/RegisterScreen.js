@@ -23,7 +23,7 @@ export default function RegisterScreen({ navigation }) {
   const checkForm = () => {
     let okay = 0;
     const pattern = /^[0-9a-z._-]+@{1}[0-9a-z.-]{2,}[.]{1}[a-z]{2,5}$/gi;
-    const phonePattern = /0[6-7]{1}[0-9]{8}/;
+    const phonePattern = /0[2-8]{1}[0-9]{8}/;
     email.match(pattern) ? okay++ : okay = 0;
     pseudo.trim() !== '' ? okay++ : okay = 0;
     phoneNb.match(phonePattern) ? okay++ : okay = 0;

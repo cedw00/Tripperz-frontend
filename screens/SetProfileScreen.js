@@ -57,9 +57,9 @@ export default function SetProfileScreen({ navigation }) {
     setDate(currentDate);
   };
 
-    const handleReturn = () => {
-        navigation.navigate('Register')
-    };
+  const handleReturn = () => {
+      navigation.navigate('Register')
+  };
 
     const handleSubmit = async () => {
       const month = date.getMonth() + 1;

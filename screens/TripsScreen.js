@@ -12,12 +12,10 @@ import {
 import FontAwesome from 'react-native-vector-icons/FontAwesome';
 import React, { useState, useEffect, useCallback } from "react";
 import { useIsFocused } from '@react-navigation/native';
-import { createTripCard } from "../reducers/trips";
 import { updateRefresh } from "../reducers/user";
 import { useDispatch, useSelector } from "react-redux";
 import Footer from '../components/Footer';
 import Constants from 'expo-constants';
-import { all } from "axios";
 import { emptySizes } from "../reducers/activ";
 
 const backend = Constants.expoConfig.hostUri.split(`:`)[0]
@@ -35,6 +33,7 @@ export default function TripsScreen({ navigation }) {
   const [trigger, setTrigger] = useState(false);
 
   const [refreshing, setRefreshing] = useState(false);
+  const [error, setError] = useState(null);
 
   const onRefresh = useCallback(() => {
     setRefreshing(true);
@@ -50,27 +49,36 @@ export default function TripsScreen({ navigation }) {
   useEffect(() => {
     if (refresh > 0) {
       (async() => {
-        const response = await fetch(`http://${backend}:3000/trips/${token}`);
-        const data = await response.json();
-        if (data.trips.length > 0) {
-          setAllTrips(data.trips);
+        if (token !== null) {
+          const response = await fetch(`http://${backend}:3000/trips/${token}`);
+          const data = await response.json();
+          if (data.trips.length > 0) {
+            setAllTrips(data.trips);
+          } else {
+            setAllTrips([]);
+            setError(data.error);
+          }
         } else {
-          setAllTrips([]);
+
         }
       })();
     }
   }, [trigger]);
 
   const handleDelete = async (id) => {
-    const response = await fetch(`http://${backend}:3000/trips/${id}/${token}`, {
+    if (token !== null) {
+      const response = await fetch(`http://${backend}:3000/trips/${id}/${token}`, {
       method: 'DELETE',
       headers: { 'Content-Type': 'application/json' },
-    });
-    const data = await response.json();
-    if (data.result) {
-      setTrigger(!trigger)
+      });
+      const data = await response.json();
+      if (data.result) {
+        setTrigger(!trigger)
+      } else {
+        setError(data.error);
+      }
     } else {
-      console.log(data.error);
+      setError('Invalid token');
     }
   }
 
@@ -123,16 +131,21 @@ export default function TripsScreen({ navigation }) {
   } else {
     if (refresh === 0) {
       emptySizesArray();
-      (async() => {
-        const response = await fetch(`http://${backend}:3000/trips/${token}`);
-        const data = await response.json();
-        if (data.trips.length > 0) {
-          setAllTrips(data.trips);
-        } else {
-          setAllTrips([]);
-        }
-      })();
-      dispatch(updateRefresh(1));
+      if (token !== null) {
+        (async() => {
+          const response = await fetch(`http://${backend}:3000/trips/${token}`);
+          const data = await response.json();
+          if (data.trips.length > 0) {
+            setAllTrips(data.trips);
+          } else {
+            setAllTrips([]);
+            setError(data.error);
+          }
+        })();
+        dispatch(updateRefresh(1));
+      } else {
+        setError('Invalid token');
+      }
     }
   }
 
@@ -149,7 +162,7 @@ export default function TripsScreen({ navigation }) {
           <Text style={styles.title}>Your Trips</Text>
         </View>
         <View style={styles.body}>
-          <ScrollView>{tripsData.length > 0 ? tripsData : <Text>No trips planned yet</Text>}</ScrollView>
+          <ScrollView>{tripsData.length > 0 ? tripsData : <Text>{error}</Text>}</ScrollView>
         </View>
         <View style={styles.bottom}>
           <Footer navigation={navigation}/>
