@@ -1,6 +1,5 @@
 import React, { useState, useEffect } from 'react';
 import { View, StyleSheet, Text } from 'react-native';
-import axios from 'axios';
 import { SelectList } from 'react-native-dropdown-select-list';
 import { useDispatch } from 'react-redux';
 import { addCountry } from '../../../reducers/search';
@@ -26,7 +25,7 @@ function SelectedList({ getData }) {
 
   const dispatch = useDispatch();
 
-  
+
 // CREATING COUNTRIES LIST
 
   useEffect(() => {
@@ -72,7 +71,6 @@ function SelectedList({ getData }) {
   if (selectedCountry !== null) {
     const selectedCities = data.find((item) => item.country === countries[selectedCountry].value);
     citiesList = selectedCities.cities;
-    console.log('citiesList',citiesList)
     dispatch(addCityList(citiesList))
   }
 
@@ -84,7 +82,6 @@ function SelectedList({ getData }) {
 
   const setCitySelected = (value => {
     setSelectedCity(value);
-    console.log('selected city', citylist[value].value)
     dispatch(addCity(citylist[value].value));
   })
 

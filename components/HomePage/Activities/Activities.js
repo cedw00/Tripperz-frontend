@@ -3,7 +3,6 @@ import {
     Text,
     View,
     TouchableOpacity,
-
 } from 'react-native';
 import DateTimePicker from '@react-native-community/datetimepicker';
 import moment from 'moment';
@@ -30,18 +29,13 @@ export default function Activities({ navigation }) {
 
 
     useEffect(() => {
-
         if (activityType !== '') {
             setErrMsg('');
         }
     }, [activityType]);
-
-
     const getData = (data) => {
-      
         setActivityType(data)
     }
-
 
 
     //DATE INPUT
@@ -49,12 +43,14 @@ export default function Activities({ navigation }) {
     const onDepChange = (event, selectedDate) => {
         const currentDate = selectedDate || date
         setDepDate(currentDate)
-
     }
+
+
     const onArrChange = (event, selectedDate) => {
         const currentDate = selectedDate || date
         setArrDate(currentDate)
     }
+
 
     useEffect(() => {
         const timeDifference = (arrDate - depDate);
@@ -76,6 +72,7 @@ export default function Activities({ navigation }) {
         setCounter(counter + 1);
     };
 
+
     const handleRemoveClick = () => {
         counter !== 0 && setCounter(counter - 1);
     };
@@ -93,31 +90,23 @@ export default function Activities({ navigation }) {
             dispatch(addTrippers(counter))
             navigation.navigate('ActivitiesResult')
         }
-
     }
 
     return (
         <View style={styles.container}>
             <View style={styles.card}>
-
                 <View style={styles.activities}>
-
                     <Text style={styles.activText}>Activities</Text>
                     <View style={styles.countrylist}>
-
                         <SelectList getData={getData} />
-
                     </View>
                     <View>
                         <Text style={{ color: 'red', alignSelf: 'center', bottom: '70%' }}>{errMsg}</Text>
                     </View>
-
                 </View>
-
                 <View style={styles.date}>
                     <Text style={{ color: 'rgba(6, 113, 136, 1)', margin: 10, fontWeight: 'bold', fontSize: 17, }} >Date</Text>
                     <Text style={styles.dateBorder}>
-
                         <DateTimePicker
                             style={styles.datePicker}
                             selectedItemColor='#D6DBDC'
@@ -135,11 +124,8 @@ export default function Activities({ navigation }) {
                             onChange={onArrChange}
                             value={arrDate}
                         />
-
                     </Text>
-
                 </View>
-
                 <View style={styles.addTripperz}>
                     <Text style={{ color: '#000000', top: '-10%' }}>Add Tripperz</Text>
                     <View style={styles.buttons}>
@@ -148,8 +134,9 @@ export default function Activities({ navigation }) {
                         <AntDesign name={'pluscircle'} size={30} color={'rgba(6, 113, 136, 1)'} onPress={() => handleAddClick()} />
                     </View>
                 </View>
-
-
+                <View>
+                    
+                </View>
                 <TouchableOpacity style={styles.search} activeOpacity={0.8} onPress={() => handleSearch()}>
                     <Text style={styles.searchText}>Search</Text>
                 </TouchableOpacity>
@@ -165,9 +152,7 @@ const styles = StyleSheet.create({
         height: '100%',
         flexDirection: 'column',
         justifyContent: 'center',
-
     },
-
     activities: {
         width: '100%',
         borderWidth: 2,
@@ -179,23 +164,21 @@ const styles = StyleSheet.create({
         borderRadius: 10,
         borderColor: 'rgba(6, 113, 136, 1)',
     },
-
     activText: {
         margin: 15,
+        marginTop: '5%',
         color: 'rgba(6, 113, 136, 1)',
         fontWeight: 'bold',
         fontSize: 17,
     },
-
     dateText: {
         margin: 15
     },
     date: {
-
         borderWidth: 2,
         paddingBottom: 10,
         backgroundColor: '#DEDEDE',
-        marginTop: '10%',
+        marginTop: '5%',
         shadowColor: '#000',
         shadowOffset: { width: 6, height: 6 },
         shadowOpacity: 0.3,
@@ -203,7 +186,6 @@ const styles = StyleSheet.create({
         borderRadius: 10,
         borderColor: 'rgba(6, 113, 136, 1)'
     },
-
     dateBorder: {
         borderWidth: 1,
         borderColor: 'rgba(6, 113, 136, 1)',
@@ -211,15 +193,13 @@ const styles = StyleSheet.create({
         width: '90%',
         alignSelf: 'center',
         marginBottom: '5%'
-
     },
-
     addTripperz: {
         padding: '5%',
         borderWidth: 1,
         backgroundColor: '#DEDEDE',
         borderWidth: 2,
-        marginTop: '10%',
+        marginTop: '5%',
         alignItems: 'center',
         justifyContent: 'center',
         shadowColor: '#000',
@@ -228,15 +208,12 @@ const styles = StyleSheet.create({
         shadowRadius: 2,
         borderRadius: 10,
         borderColor: 'rgba(6, 113, 136, 1)'
-
     },
-
     buttons: {
         flexDirection: 'row',
         alignItems: 'center',
         justifyContent: 'center'
     },
-
     counter: {
         paddingRight: '20%',
         paddingLeft: '20%',
@@ -253,7 +230,7 @@ const styles = StyleSheet.create({
         backgroundColor: '#DEDEDE',
         borderRadius: 8,
         marginBottom: '10%',
-        marginTop: '5%'
+        marginTop: '10%'
     },
     searchText: {
         color: 'rgba(6, 113, 136, 1)',

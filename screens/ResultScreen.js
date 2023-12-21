@@ -63,7 +63,7 @@ export default function ResultScreen({ navigation }) {
   const [searchCountry, setSearchCountry] = useState("");
   const { country } = useSelector((state) => state.search.value);
   const { city } = useSelector((state) => state.search.value);
-  const { trippers } = useSelector((state) => state.search.value)
+  const { trippers } = useSelector((state) => state.search.value);
   const { cityList } = useSelector((state) => state.search.value);
   const { countryList } = useSelector((state) => state.search.value);
   const { duration } = useSelector((state) => state.search.value);
@@ -93,12 +93,10 @@ export default function ResultScreen({ navigation }) {
         })
           .then((response) => response.json())
           .then((data) => {
-            console.log('data',data)
             delay(1000);
             setItemsToDisplay(data.cities.cities)
           })
       } else if (city.length > 0) {
-
         const data = {
           country,
           city,
@@ -110,9 +108,7 @@ export default function ResultScreen({ navigation }) {
         })
           .then((response) => response.json())
           .then((data) => {
-
             newItemsToDisplay.push(data.city);
-
             setItemsToDisplay(newItemsToDisplay);
           });
       }
@@ -123,6 +119,7 @@ export default function ResultScreen({ navigation }) {
       fetchPlacesForActivity(activity);
     });
   }, [navigation]);
+
 
   let actArray = [];
   const fetchPlacesForActivity = async (activity) => {
@@ -207,7 +204,6 @@ export default function ResultScreen({ navigation }) {
       let modalPlan = Array.from(uniqueActivities);
       dispatch(updateTempActiv(Array.from(modalPlan)));
     }
-
     for (let i = 0; i < duration + 1; i++) {
       dispatch(pushSizes(size));
     }
@@ -234,6 +230,9 @@ export default function ResultScreen({ navigation }) {
       </View>
     </Pressable>
   );
+
+
+
   //ON CLICK ACTIVITIES
 
   const handleClickActivities = () => {
@@ -248,16 +247,7 @@ export default function ResultScreen({ navigation }) {
 
   };
 
-
-
-
-  // if (!isFocused) {
-  //   dispatch(addCountry(''));
-  //   dispatch(addCity(''));
-  //   console.log('country',country)
-  // }
-
-
+  
   return (
     <SafeAreaView>
       <View style={styles.container}>

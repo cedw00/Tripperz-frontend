@@ -47,18 +47,6 @@ export default function ActivitiesResultScreen({ navigation }) {
     const [itemsToDisplay, setItemsToDisplay] = useState([]);
     useEffect(() => {
         const fetchData = async () => {
-            // const delay = (ms) => new Promise(resolve => setTimeout(resolve, ms));
-            // fetch(`http://192.168.10.155:3000/countries/Allcountries`)
-            //   .then(response => response.json())
-            //   .then(data => {
-            //      delay(500);
-            //     //const item = { name: data.countries.name, image: data.countries.img, key: data.results[0].id };
-            //     newItemsToDisplay=data.countries;
-            //     console.log('new items to display',newItemsToDisplay)
-            //   }).then(() => {
-            //     setItemsToDisplay(newItemsToDisplay);
-            //   })
-
             let newItemsToDisplay = [];
             if (activity === '') {
                 const data = {
@@ -77,7 +65,6 @@ export default function ActivitiesResultScreen({ navigation }) {
                         setItemsToDisplay(data.foundCities)
                     })
             } else if (activity !== '') {
-
                 const data = {
                     activityType,
                     activity,
@@ -89,8 +76,6 @@ export default function ActivitiesResultScreen({ navigation }) {
                 })
                     .then((response) => response.json())
                     .then((data) => {
-
-                        console.log('data', data)
                         newItemsToDisplay.push(data.foundCities);
                         setItemsToDisplay(newItemsToDisplay[0]);
                     });
@@ -103,7 +88,7 @@ export default function ActivitiesResultScreen({ navigation }) {
         // });
     }, [navigation]);
 
- 
+
 
 
     const Item = (item) => (
