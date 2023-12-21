@@ -16,6 +16,7 @@ import TripsScreen from "./screens/TripsScreen";
 import TopDestionationsScreen from './screens/TopDestinationsScreen';
 import LoadingScreen from "./screens/LoadingScreen";
 import UpdateTripScreen from "./screens/UpdateTripScreen"
+import ActivitiesResultScreen from './screens/ActivitiesResultScreen';
 
 import { Provider } from "react-redux";
 import { configureStore } from "@reduxjs/toolkit";
@@ -24,9 +25,10 @@ import activ from "./reducers/activ";
 import tripper from "./reducers/tripper";
 import search from './reducers/search';
 import trips from './reducers/trips';
+import activSearch from './reducers/activSearch';
 
 const store = configureStore({
-  reducer: { user, activ, tripper, search, trips },
+  reducer: { user, activ, tripper, search, trips, activSearch },
 });
 
 const Stack = createNativeStackNavigator();
@@ -78,6 +80,7 @@ export default function App() {
           <Stack.Screen name="TripPlan" component={TripPlanScreen} />
           <Stack.Screen name="Planning" component={PlanningScreen} />
           <Stack.Screen name="UpdateTrip" component={UpdateTripScreen} />
+          <Stack.Screen name="ActivitiesResult" component={ActivitiesResultScreen} />
           <Stack.Screen name="DrawerNavigator" component={DrawerNavigator} />
         </Stack.Navigator>
       </NavigationContainer>

@@ -29,32 +29,22 @@ import { addCity } from "../reducers/search";
 const backend = Constants.expoConfig.hostUri.split(`:`)[0];
 
 export default function ResultScreen({ navigation }) {
-
   const dispatch = useDispatch();
 
   const [searchCountry, setSearchCountry] = useState("");
   const [spinner, setSpinner] = useState(false);
   const { country } = useSelector((state) => state.search.value);
   const { city } = useSelector((state) => state.search.value);
+  const { trippers } = useSelector((state) => state.search.value);
   const { cityList } = useSelector((state) => state.search.value);
   const { countryList } = useSelector((state) => state.search.value);
   const { duration } = useSelector((state) => state.search.value);
   const tripCard = useSelector((state) => state.trips.cityCard);
 
   const [itemsToDisplay, setItemsToDisplay] = useState([]);
+
   useEffect(() => {
     const fetchData = async () => {
-      // const delay = (ms) => new Promise(resolve => setTimeout(resolve, ms));
-      // fetch(`http://192.168.10.155:3000/countries/Allcountries`)
-      //   .then(response => response.json())
-      //   .then(data => {
-      //      delay(500);
-      //     //const item = { name: data.countries.name, image: data.countries.img, key: data.results[0].id };
-      //     newItemsToDisplay=data.countries;
-      //     console.log('new items to display',newItemsToDisplay)
-      //   }).then(() => {
-      //     setItemsToDisplay(newItemsToDisplay);
-      //   })
       let newItemsToDisplay = [];
       if (city === null) {
         const data = {
@@ -69,8 +59,8 @@ export default function ResultScreen({ navigation }) {
           .then((response) => response.json())
           .then((data) => {
             delay(1000);
-            setItemsToDisplay(data.cities);
-          });
+            setItemsToDisplay(data.cities.cities)
+          })
       } else if (city.length > 0) {
         const data = {
           country,
@@ -113,6 +103,9 @@ export default function ResultScreen({ navigation }) {
       </View>
     </Pressable>
   );
+
+
+
   //ON CLICK ACTIVITIES
 
   const handleClickActivities = () => {
@@ -121,16 +114,10 @@ export default function ResultScreen({ navigation }) {
 
   //ON CLICK Destinations
   const handleClickDestination = () => {
-    dispatch(addCountry(""));
-    dispatch(addCity(""));
-    navigation.navigate("Home");
+    dispatch(addCountry(''));
+    dispatch(addCity(''));
+    navigation.navigate('Home')
   };
-
-  // if (!isFocused) {
-  //   dispatch(addCountry(''));
-  //   dispatch(addCity(''));
-  //   console.log('country',country)
-  // }
 
   return (
     <SafeAreaView>
@@ -192,11 +179,11 @@ const styles = StyleSheet.create({
     shadowRadius: 4,
   },
   logo: {
-    paddingLeft: "15%",
-    paddingRight: "15%",
-    top: "25%",
-    resizeMode: "contain",
-    width: "40%",
+    paddingLeft: '15%',
+    paddingRight: '15%',
+    top: '25%',
+    resizeMode: 'contain',
+    width: '40%',
   },
   buttons: {
     flexDirection: "row",
