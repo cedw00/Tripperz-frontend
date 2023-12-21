@@ -31,7 +31,9 @@ const backend = Constants.expoConfig.hostUri.split(`:`)[0]
 
 
 export default function ResultScreen({ navigation }) {
- 
+
+
+
   const [activitiesList, setActivitiesList] = useState([]);
 
   const allActivNames = [
@@ -61,20 +63,21 @@ export default function ResultScreen({ navigation }) {
   const [searchCountry, setSearchCountry] = useState("");
   const { country } = useSelector((state) => state.search.value);
   const { city } = useSelector((state) => state.search.value);
-  const { trippers } = useSelector ((state) => state.search.value )
+  const { trippers } = useSelector((state) => state.search.value)
   const { cityList } = useSelector((state) => state.search.value);
   const { countryList } = useSelector((state) => state.search.value);
   const { duration } = useSelector((state) => state.search.value);
   const tripCard = useSelector((state) => state.trips.cityCard);
-  
 
-  
+
+
 
   let size = [2, 4];
   const PLACES_API_KEY = '***';
   const [cityAPI, setCityAPI] = useState("");
 
   const [itemsToDisplay, setItemsToDisplay] = useState([]);
+
   useEffect(() => {
     const fetchData = async () => {
       // const delay = (ms) => new Promise(resolve => setTimeout(resolve, ms));
@@ -88,7 +91,7 @@ export default function ResultScreen({ navigation }) {
       //   }).then(() => {
       //     setItemsToDisplay(newItemsToDisplay);
       //   })
-     
+
       let newItemsToDisplay = [];
       if (city === null) {
         const data = {
@@ -105,8 +108,8 @@ export default function ResultScreen({ navigation }) {
             delay(1000);
             setItemsToDisplay(data.cities.cities)
           })
-      } else  if (city.length > 0){
-      
+      } else if (city.length > 0) {
+
         const data = {
           country,
           city,
@@ -118,9 +121,9 @@ export default function ResultScreen({ navigation }) {
         })
           .then((response) => response.json())
           .then((data) => {
-            
+
             newItemsToDisplay.push(data.city);
-           
+
             setItemsToDisplay(newItemsToDisplay);
           });
       }
@@ -189,7 +192,7 @@ export default function ResultScreen({ navigation }) {
       });*/
     setActivitiesList(actArray);
   };
- 
+
 
   const handleSearch = () => {
     for (let i = 0; i < duration + 1; i++) {
@@ -228,7 +231,7 @@ export default function ResultScreen({ navigation }) {
     dispatch(createTripCard(element));
   };
   console.log("RS => This might be your next destination:", tripCard);
-
+  
   const Item = (item) => (
     <Pressable
       onPress={() => {
@@ -253,18 +256,18 @@ export default function ResultScreen({ navigation }) {
     dispatch(addCountry(''));
     dispatch(addCity(''));
     navigation.navigate('Home')
-  
+
   };
 
 
-  
-    
+
+
   // if (!isFocused) {
   //   dispatch(addCountry(''));
   //   dispatch(addCity(''));
   //   console.log('country',country)
   // }
-  
+
 
   return (
     <SafeAreaView>
@@ -328,7 +331,7 @@ const styles = StyleSheet.create({
     paddingLeft: '15%',
     paddingRight: '15%',
     top: '25%',
-    resizeMode:'contain',
+    resizeMode: 'contain',
     width: '40%',
   },
   buttons: {

@@ -16,7 +16,7 @@ export default function HomeScreen({ navigation }) {
   
 
   const [dest, setDest] = useState(null);
-  const [activ, setActiv] = useState((<Activities activity={'Activités'} date={'date'} />));
+  const [activ, setActiv] = useState((<Activities activity={'Activités'} date={'date'} navigation={navigation} />));
   const [isClickedActiv, setIsClickedActiv] = useState(true);
  
   // const { city } = useSelector((state) => state.search.value)

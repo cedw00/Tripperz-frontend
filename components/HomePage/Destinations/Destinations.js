@@ -11,7 +11,7 @@ import 'moment/locale/fr';
 import { useState, useEffect } from "react";
 import SelectedList from './SelectedList';
 import AntDesign from 'react-native-vector-icons/AntDesign'
-import { useSelector, useDispatch } from 'react-redux';
+import { useDispatch } from 'react-redux';
 import { getDuration } from '../../../reducers/search';
 import { addTrippers } from '../../../reducers/search';
 
@@ -153,8 +153,8 @@ export default function Destinations({ navigation }) {
                         <Text style={styles.counter}>{counter}</Text>
                         <AntDesign name={'pluscircle'} size={30} color={'rgba(6, 113, 136, 1)'} onPress={() => handleAddClick()} />
                     </View>
-
                 </View>
+                
                 <View style={styles.submits}>
                     <TouchableOpacity style={styles.search} activeOpacity={0.8} onPress={() => handleSearch()}>
                         <Text style={styles.searchText}>Search</Text>
@@ -260,7 +260,7 @@ const styles = StyleSheet.create({
 
     search: {
         height: '40%',
-        width: '40%',
+        width: '45%',
         marginTop: 5,
         borderWidth: 2,
         borderColor: 'rgba(6, 113, 136, 1)',
@@ -279,7 +279,7 @@ const styles = StyleSheet.create({
     },
     topDest: {
         height: '40%',
-        width: '40%',
+        width: '45%',
         marginTop: 5,
         borderWidth: 2,
         borderColor: 'rgba(6, 113, 136, 1)',
