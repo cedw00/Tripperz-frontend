@@ -16,16 +16,19 @@ export default function SignInScreen({ navigation }) {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
 
+  // Hide error messages and return to LoginScreen
   const handleReturn = () => {
     setShowError(false)
     navigation.navigate('Login')
   }
-  
+
+  // Function to check if email and password are correct
   const checkForm = async () => {
     const user = {
       email: email,
       password: password,
     }
+    // Waiting the response of backend before starting any other process
     const response = await fetch(`http://${backend}:3000/users/signin`, {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
@@ -33,6 +36,7 @@ export default function SignInScreen({ navigation }) {
     });
     const data = await response.json();
     if (data.result) {
+      // If a user in found then send his data in the reducer user
       dispatch(updateUser(data.user))
       dispatch(updateProfile(data.user))
       return true

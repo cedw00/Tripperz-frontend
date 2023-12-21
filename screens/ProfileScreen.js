@@ -19,19 +19,6 @@ const genderData = [
     { label: 'Female', value: 'Female' },
   ];
   
-const mockData = [
-  { label: 'Cultural tourism', value: '0' },
-  { label: 'Guided Tours', value: '1' },
-  { label: 'Outdoor Activities', value: '2' },
-  { label: 'Water activities', value: '3' },
-  { label: 'Culinary experiences', value: '4' },
-  { label: 'Entertainment', value: '5' },
-  { label: 'Sports Activities', value: '6' },
-  { label: 'Relaxation and well-being', value: '7' },
-  { label: 'Ecotourism', value: '8' },
-  { label: 'Shopping', value: '9' },
-];
-  
   const foodData = [
     { label: 'Italian', value: '0' },
     { label: 'Cakes', value: '1' },
@@ -43,7 +30,7 @@ const mockData = [
 
 export default function ProfileScreen({ navigation }) {
   const dispatch = useDispatch();
-  const { username, email, phone, birthday, gender, country, favoriteDestinations, favoriteFoods, hobbies, token } = useSelector((state) => state.user.value)
+  const { username, email, phone, birthday, gender, country, favoriteDestinations, favoriteFoods, favoriteTypes, hobbies, token } = useSelector((state) => state.user.value)
   
   const [destinations, setDestinations] = useState('');
 
@@ -54,7 +41,10 @@ export default function ProfileScreen({ navigation }) {
   const [newGender, setNewGender] = useState(gender);
   const [newCountry, setNewCountry] = useState(country);
   const [newFavoriteDestinations, setNewFavoriteDestinations] = useState('');
-  const [selectedActivities, setSelectedActivities] = useState([]);
+  const [activitiesTypes, setActivitiesTypes] = useState([]);
+  const [favoriteActivitiesTypes, setFavoriteActivitiesTypes] = useState([]);
+  const [interest, setInterest] = useState([]);
+  const [selectedHobbies, setSelectedHobbies] = useState([]);
   const [selectedFood, setSelectedFood] = useState([]);
   const [date, setDate] = useState(moment(birthday, 'DD/MM/YYYY').toDate());
 
@@ -64,6 +54,35 @@ export default function ProfileScreen({ navigation }) {
   const [trigger, setTrigger] = useState(false);
 
   useEffect(() => {
+    const typesList = [];
+    const activitiesList = [];
+    let index = 0;
+    let count = 0;
+    (async () => {
+      // Get the name and type of all activities in database
+      const response = await fetch(`http://${backend}:3000/countries/Allcountries`);
+      const countryData = await response.json();
+      for(const data of countryData.activTypes) {
+        // Check if type is already in list to avoid case clone
+        const isPresent = typesList.some(type => type.label.toLowerCase() === data.value.toLowerCase());
+        if (!isPresent) {
+          typesList.push({label: data.value, value: index});
+          index++;
+        }
+      }
+      for (const type of countryData.activTypes) {
+        for (const activity of type.activities) {
+          // Check if activity is already in list to avoid case clone
+          const isPresent = activitiesList.some(activityField => activityField.label.toLowerCase() === activity.value.toLowerCase());
+          if (!isPresent) {
+            activitiesList.push({label: activity.value, value: count});
+            count++;
+          }
+        }
+      }
+    })();
+    setActivitiesTypes(typesList);
+    setInterest(activitiesList);
     const str = favoriteDestinations.toString();
     const pattern = /,/g;
     const newStr = str.replace(pattern, ', ');
@@ -91,7 +110,7 @@ export default function ProfileScreen({ navigation }) {
   const handleSubmit = async () => {
     const month = date.getMonth() + 1;
     const str = `${date.getDate()}/${month}/${date.getFullYear()}`;
-    const interests = selectedActivities.map(data => mockData[data].label);
+    const interestsList = favoriteActivitiesTypes.map(data => activitiesTypes[data].label);
     const favoriteFood = selectedFood.map(data => foodData[data].label);
     const profile = {
       birthday: str,
@@ -99,7 +118,7 @@ export default function ProfileScreen({ navigation }) {
       country: newCountry,
       favDest: newFavoriteDestinations.split(', '),
       favFood: favoriteFood,
-      hobbies: interests,
+      hobbies: interestsList,
       token: token
     };
     const response = await fetch(`http://${backend}:3000/profile/update`, {
@@ -117,7 +136,6 @@ export default function ProfileScreen({ navigation }) {
       setErrorMsg(data.error);
       setShowError(!showError);
     }
-    
   }
 
   const cancelModif = () => {
@@ -194,14 +212,14 @@ export default function ProfileScreen({ navigation }) {
             </View>
             <View style={styles.field}>
               <View style={styles.inputContainer}>
-                  <TextInput placeholder="Favorite Destinations" onChangeText={(value) => setNewFavoriteDestinations(value)} placeholderTextColor={'#A0ACAE'}
+                  <TextInput placeholder="New favorite Destinations" onChangeText={(value) => setNewFavoriteDestinations(value)} placeholderTextColor={'#A0ACAE'}
                   value={newFavoriteDestinations} style={styles.input}/>  
               </View>
             </View>
             <View style={styles.field}>
               <View style={styles.inputContainer}>
                   <MultiSelect
-                      style={styles.list} data={foodData} labelField='label' valueField='value' placeholder='Favorite food types'
+                      style={styles.list} data={foodData} labelField='label' valueField='value' placeholder='New favorite food types'
                       placeholderStyle={{color: '#A0ACAE'}} value={selectedFood} onChange={(item) => {setSelectedFood(item)}} renderItem={editDisplay} maxHeight={100}
                       visibleSelectedItem={false} activeColor='lightblue'
                   />
@@ -210,18 +228,18 @@ export default function ProfileScreen({ navigation }) {
             <View style={styles.field}>
               <View style={styles.inputContainer}>
                   <MultiSelect
-                      style={styles.list} data={mockData} labelField='label' valueField='value' placeholder='Favorites types of activities'
-                      placeholderStyle={{color: '#A0ACAE'}} value={selectedActivities} onChange={(item) => {setSelectedActivities(item)}} renderItem={editDisplay}
-                      maxHeight={100} visibleSelectedItem={false} activeColor='lightblue'
+                      style={styles.list} data={activitiesTypes} labelField='label' valueField='value' placeholder='New favorites types of activities'
+                      placeholderStyle={{color: '#A0ACAE'}} value={favoriteActivitiesTypes} onChange={(item) => {setFavoriteActivitiesTypes(item)}}
+                      renderItem={editDisplay} maxHeight={100} visibleSelectedItem={false} activeColor='lightblue'
                   />
               </View>
             </View>
             <View style={styles.field}>
               <View style={styles.inputContainer}>
                   <MultiSelect
-                      style={styles.list} data={mockData} labelField='label' valueField='value' placeholder='Favorites activities'
-                      placeholderStyle={{color: '#A0ACAE'}} value={selectedActivities} onChange={(item) => {setSelectedActivities(item)}} renderItem={editDisplay}
-                      maxHeight={100} visibleSelectedItem={false} activeColor='lightblue'
+                      style={styles.list} data={interest} labelField='label' valueField='value' placeholder='New favorites activities'
+                      placeholderStyle={{color: '#A0ACAE'}} value={selectedHobbies} onChange={(item) => {setSelectedHobbies(item)}}
+                      renderItem={editDisplay} maxHeight={100} visibleSelectedItem={false} activeColor='lightblue'
                   />
               </View>
             </View>
@@ -295,8 +313,8 @@ export default function ProfileScreen({ navigation }) {
                   placeholderStyle={'#000000'} renderItem={display} maxHeight={100} value={'Your favorites food'} iconColor='#000000'
               />
               <Dropdown
-                  style={styles.dropdown} data={hobbies} labelField='label' valueField='value' placeholder='Your favorites types of hobbies'
-                  placeholderStyle={'#000000'} renderItem={display} maxHeight={100} value={'Your favorites hobbies'} iconColor='#000000'
+                  style={styles.dropdown} data={favoriteTypes} labelField='label' valueField='value' placeholder='Your favorites types of hobbies'
+                  placeholderStyle={'#000000'} renderItem={display} maxHeight={100} value={'Your favorites types of hobbies'} iconColor='#000000'
               />
               <Dropdown
                   style={styles.dropdown} data={hobbies} labelField='label' valueField='value' placeholder='Your favorites hobbies'

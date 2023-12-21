@@ -22,9 +22,12 @@ export default function RegisterScreen({ navigation }) {
 
   const checkForm = () => {
     let okay = 0;
+    // Verify if email contains @ and .
     const pattern = /^[0-9a-z._-]+@{1}[0-9a-z.-]{2,}[.]{1}[a-z]{2,5}$/gi;
+    // Verify if phone number contains 10 number and do not start with 00, 01 or 09
     const phonePattern = /0[2-8]{1}[0-9]{8}/;
     email.match(pattern) ? okay++ : okay = 0;
+    // Verify if given username is not empty or only composed of spaces 
     pseudo.trim() !== '' ? okay++ : okay = 0;
     phoneNb.match(phonePattern) ? okay++ : okay = 0;
     if (okay === 3) {
@@ -58,6 +61,7 @@ export default function RegisterScreen({ navigation }) {
           body: JSON.stringify(user),
         }).then(response => response.json()).then(data => {
           if (data.result) {
+            // If response from backend is okay then send data of user in reducer user
             setEmail('');
             setPseudo('');
             setPhoneNb('');

@@ -3,6 +3,7 @@ import FontAwesome from 'react-native-vector-icons/FontAwesome';
 
 export default function LoginScreen({ navigation }) {
 
+  // Function to redirect to RegisterScreen or SignInScreen based on which button was pressed
   const redirectTo = (path) => {
     navigation.navigate(`${path}`)
   }

@@ -1,7 +1,7 @@
 import { StyleSheet, Text, View, Image, ImageBackground, SafeAreaView, Dimensions, TouchableOpacity,
   KeyboardAvoidingView, Platform, TextInput, Pressable  } from 'react-native';
 import { useDispatch, useSelector } from 'react-redux';
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 import FontAwesome from 'react-native-vector-icons/FontAwesome';
 import { Dropdown, MultiSelect } from 'react-native-element-dropdown';
@@ -14,44 +14,71 @@ const genderData = [
   { label: 'Female', value: 'Female' },
 ];
 
-const mockData = [
-  { label: 'Cultural tourism', value: '0' },
-  { label: 'Guided Tours', value: '1' },
-  { label: 'Outdoor Activities', value: '2' },
-  { label: 'Water activities', value: '3' },
-  { label: 'Culinary experiences', value: '4' },
-  { label: 'Entertainment', value: '5' },
-  { label: 'Sports Activities', value: '6' },
-  { label: 'Relaxation and well-being', value: '7' },
-  { label: 'Ecotourism', value: '8' },
-  { label: 'Shopping', value: '9' },
-];
-
 const foodData = [
   { label: 'Italian', value: '0' },
   { label: 'Cakes', value: '1' },
   { label: 'French', value: '2' },
-  { label: 'Fast-Food', value: '3' },
-  { label: 'Asian', value: '4' },
-  { label: 'Vegan', value: '5' },
+  { label: 'Chinese', value: '3' },
+  { label: 'Japanese', value: '4' },
+  { label: 'Indian', value: '5' },
+  { label: 'Greek', value: '6' },
+  { label: 'Spicy', value: '7' },
+  { label: 'Turkish', value: '8' },
+  { label: 'Vegan', value: '9' },
 ];
-
 
 const backend = Constants.expoConfig.hostUri.split(`:`)[0]
 
 export default function SetProfileScreen({ navigation }) {
   const dispatch = useDispatch();
   const { token } = useSelector((state) => state.user.value);
+  
   const [gender, setGender] = useState(null);
   const [country, setCountry] = useState('');
   const [favoriteDestinations, setFavoriteDestinations] = useState('');
-  const [selectedActivities, setSelectedActivities] = useState([]);
+  const [activitiesTypes, setActivitiesTypes] = useState([]);
+  const [favoriteActivitiesTypes, setFavoriteActivitiesTypes] = useState([]);
+  const [hobbies, setHobbies] = useState([]);
+  const [selectedHobbies, setSelectedHobbies] = useState([]);
   const [selectedFood, setSelectedFood] = useState([]);
   const [date, setDate] = useState(new Date());
 
   const [showError, setShowError] = useState(false);
   const [errorMsg, setErrorMsg] = useState('');
 
+  useEffect(() => {
+    const typesList = [];
+    const activitiesList = [];
+    let index = 0;
+    let count = 0;
+    (async () => {
+      // Get the name and type of all activities in database
+      const response = await fetch(`http://${backend}:3000/countries/Allcountries`);
+      const countryData = await response.json();
+      for(const data of countryData.activTypes) {
+        // Check if type is already in list to avoid case clone
+        const isPresent = typesList.some(type => type.label.toLowerCase() === data.value.toLowerCase());
+        if (!isPresent) {
+          typesList.push({label: data.value, value: index});
+          index++;
+        }
+      }
+      for (const type of countryData.activTypes) {
+        for (const activity of type.activities) {
+          // Check if activity is already in list to avoid case clone
+          const isPresent = activitiesList.some(activityField => activityField.label.toLowerCase() === activity.value.toLowerCase());
+          if (!isPresent) {
+            activitiesList.push({label: activity.value, value: count});
+            count++;
+          }
+        }
+      }
+    })();
+    setActivitiesTypes(typesList);
+    setHobbies(activitiesList);
+  }, [])
+
+  // Set a new date of birth
   const onChange = (event, selectedDate) => {
     const currentDate = selectedDate;
     setDate(currentDate);
@@ -61,43 +88,48 @@ export default function SetProfileScreen({ navigation }) {
       navigation.navigate('Register')
   };
 
-    const handleSubmit = async () => {
-      const month = date.getMonth() + 1;
-      const str = `${date.getDate()}/${month}/${date.getFullYear()}`;
-      const interests = selectedActivities.map(data => mockData[data].label);
-      const favoriteFood = selectedFood.map(data => foodData[data].label);
-      const profile = {
-        birthday: str,
-        gender: gender,
-        country: country,
-        favDest: favoriteDestinations.split(', '),
-        favFood: favoriteFood,
-        hobbies: interests,
-        token: token
-      };
-      const response = await fetch(`http://${backend}:3000/profile/update`, {
-        method: 'PUT',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify(profile),
-      });
-      const data = await response.json();
-      if (data.result) {
-        setErrorMsg(false)
-        dispatch(updateProfile(data.user))
-        navigation.navigate('DrawerNavigator')
-      } else {
-        setErrorMsg(data.error);
-        setShowError(true);
-      }
+  const handleSubmit = async () => {
+    const month = date.getMonth() + 1;
+    // Transform date into string in DD/MM/YYYY format
+    const str = `${date.getDate()}/${month}/${date.getFullYear()}`;
+    const interests = favoriteActivitiesTypes.map(data => activitiesTypes[data].label);
+    const activities = selectedHobbies.map(data => hobbies[data].label);
+    const favoriteFood = selectedFood.map(data => foodData[data].label);
+    const profile = {
+      birthday: str,
+      gender: gender,
+      country: country,
+      favDest: favoriteDestinations.split(', '),
+      favFood: favoriteFood,
+      favTypes: interests,
+      hobbies: activities,
+      token: token
     };
-
-    const display = item => {
-      return (
-        <View>
-          <Text>{item.label}</Text>
-        </View>
-      )
+    // Update the empty profile with the inputs values
+    const response = await fetch(`http://${backend}:3000/profile/update`, {
+      method: 'PUT',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(profile),
+    });
+    const data = await response.json();
+    if (data.result) {
+      setErrorMsg(false)
+      // Send profile data in reducer user
+      dispatch(updateProfile(data.user))
+      navigation.navigate('DrawerNavigator')
+    } else {
+      setErrorMsg(data.error);
+      setShowError(true);
     }
+  };
+
+  const display = item => {
+    return (
+      <View>
+        <Text>{item.label}</Text>
+      </View>
+    )
+  }
 
   return (
     <ImageBackground source={require('../assets/background_2.png')} style={styles.background}>
@@ -147,15 +179,15 @@ export default function SetProfileScreen({ navigation }) {
               </View>
               <View style={styles.inputContainer}>
                 <MultiSelect
-                    style={styles.dropdown} data={mockData} labelField='label' valueField='value' placeholder='Favorites types of activities'
-                    placeholderStyle={styles.input} value={selectedActivities} onChange={(item) => {setSelectedActivities(item)}} renderItem={display}
-                    maxHeight={100} visibleSelectedItem={false} activeColor='lightblue'
+                    style={styles.dropdown} data={activitiesTypes} labelField='label' valueField='value' placeholder='Favorites types of activities'
+                    placeholderStyle={styles.input} value={favoriteActivitiesTypes} onChange={(item) => {setFavoriteActivitiesTypes(item)}}
+                    renderItem={display} maxHeight={100} visibleSelectedItem={false} activeColor='lightblue'
                 />
               </View>
               <View style={styles.inputContainer}>
                 <MultiSelect
-                    style={styles.dropdown} data={mockData} labelField='label' valueField='value' placeholder='Favorites activities'
-                    placeholderStyle={styles.input} value={selectedActivities} onChange={(item) => {setSelectedActivities(item)}} renderItem={display}
+                    style={styles.dropdown} data={hobbies} labelField='label' valueField='value' placeholder='Favorites activities'
+                    placeholderStyle={styles.input} value={selectedHobbies} onChange={(item) => {setSelectedHobbies(item)}} renderItem={display}
                     maxHeight={100} visibleSelectedItem={false} activeColor='lightblue'
                 />
               </View>
@@ -222,6 +254,7 @@ const styles = StyleSheet.create({
     borderColor: 'white',
     borderRadius: 5,
     backgroundColor: '#BBE5EB',
+    opacity: 0.8,
   },
   date: {
     flex: 1,
@@ -257,7 +290,8 @@ const styles = StyleSheet.create({
     borderRadius: 5,
     marginTop: 5,
     paddingLeft: 8,
-    backgroundColor: '#BBE5EB'
+    backgroundColor: '#BBE5EB',
+    opacity: 0.8,
   },
   input: {
     color: '#000000',
