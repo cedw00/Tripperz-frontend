@@ -3,7 +3,6 @@ import {
     Text,
     View,
     TouchableOpacity,
-
 } from 'react-native';
 import DateTimePicker from '@react-native-community/datetimepicker';
 import moment from 'moment';
@@ -22,7 +21,6 @@ export default function Destinations({ navigation }) {
     const dispatch = useDispatch();
 
 
-
     const [errMsg, setErrMsg] = useState('')
     const [depDate, setDepDate] = useState(new Date());
     const [arrDate, setArrDate] = useState(new Date());
@@ -30,15 +28,11 @@ export default function Destinations({ navigation }) {
     const [country, setCountry] = useState('')
 
 
-
-
     useEffect(() => {
-
         if (country !== '') {
             setErrMsg('');
         }
     }, [country]);
-
     const getData = (data) => {
         setCountry(data)
     }
@@ -81,12 +75,12 @@ export default function Destinations({ navigation }) {
         counter !== 0 && setCounter(counter - 1);
     };
 
+
+    
     //SEARCH + ERR MESSAGE
 
 
     const handleSearch = () => {
-
-       
         if (country === '') {
             setErrMsg('It looks like you forgot to choose a country !')
         }
@@ -94,9 +88,8 @@ export default function Destinations({ navigation }) {
             dispatch(addTrippers(counter))
             navigation.navigate('Result')
         }
-
     }
-
+    
     const handleTopDest = () => {
         navigation.navigate('TopDestionations')
     }
@@ -104,25 +97,18 @@ export default function Destinations({ navigation }) {
     return (
         <View style={styles.container}>
             <View style={styles.card}>
-
                 <View style={styles.destination}>
                     <Text style={styles.destText}>Destination</Text>
-
                     <View style={styles.countrylist}>
-
                         <SelectedList getData={getData} />
-
                     </View>
-
                     <View>
                         <Text style={{ color: 'red', alignSelf: 'center', bottom: '70%' }}>{errMsg}</Text>
                     </View>
                 </View>
-
                 <View style={styles.date}>
                     <Text style={{ color: 'rgba(6, 113, 136, 1)', margin: 10, fontWeight: 'bold', fontSize: 17, }} >Date</Text>
                     <Text style={styles.dateBorder}>
-
                         <DateTimePicker
                             style={styles.datePicker}
                             selectedItemColor='#D6DBDC'
@@ -140,12 +126,8 @@ export default function Destinations({ navigation }) {
                             onChange={onArrChange}
                             value={arrDate}
                         />
-
                     </Text>
-
                 </View>
-
-
                 <View style={styles.addTripperz}>
                     <Text style={{ color: '#000000', top: '-10%' }}>Add Tripperz</Text>
                     <View style={styles.buttons}>
@@ -154,7 +136,6 @@ export default function Destinations({ navigation }) {
                         <AntDesign name={'pluscircle'} size={30} color={'rgba(6, 113, 136, 1)'} onPress={() => handleAddClick()} />
                     </View>
                 </View>
-                
                 <View style={styles.submits}>
                     <TouchableOpacity style={styles.search} activeOpacity={0.8} onPress={() => handleSearch()}>
                         <Text style={styles.searchText}>Search</Text>
@@ -167,19 +148,15 @@ export default function Destinations({ navigation }) {
 
             </View>
         </View>
-
     )
 }
-
 const styles = StyleSheet.create({
     container: {
         width: '80%',
         height: '100%',
         flexDirection: 'column',
         justifyContent: 'center',
-
     },
-
     destination: {
         width: '100%',
         borderWidth: 2,
@@ -191,17 +168,15 @@ const styles = StyleSheet.create({
         borderRadius: 10,
         borderColor: 'rgba(6, 113, 136, 1)',
     },
-
     destText: {
         marginTop: '5%',
+        marginBottom:'3%',
         marginLeft: 15,
         color: 'rgba(6, 113, 136, 1)',
         fontWeight: 'bold',
         fontSize: 17,
     },
-
     date: {
-
         borderWidth: 2,
         paddingBottom: 10,
         backgroundColor: '#DEDEDE',
@@ -220,9 +195,7 @@ const styles = StyleSheet.create({
         width: '90%',
         alignSelf: 'center',
         marginBottom: '5%'
-
     },
-
     addTripperz: {
         padding: '5%',
         borderWidth: 1,
@@ -237,16 +210,12 @@ const styles = StyleSheet.create({
         shadowRadius: 2,
         borderRadius: 10,
         borderColor: 'rgba(6, 113, 136, 1)'
-
     },
-
     buttons: {
         flexDirection: 'row',
         alignItems: 'center',
         justifyContent: 'center'
-
     },
-
     counter: {
         paddingRight: '20%',
         paddingLeft: '20%',
@@ -257,7 +226,6 @@ const styles = StyleSheet.create({
         flexDirection: 'row',
         justifyContent: 'center'
     },
-
     search: {
         height: '40%',
         width: '45%',
@@ -289,14 +257,13 @@ const styles = StyleSheet.create({
         borderRadius: 8,
         marginBottom: '10%',
         marginTop: '5%'
-
     },
     topDestText: {
-        top:'30%',
-        left:5,
+        top: '30%',
+        left: 5,
         alignSelf: 'flex-start',
-        color:'rgba(6, 113, 136, 1)',
-        fontWeight:'bold',
+        color: 'rgba(6, 113, 136, 1)',
+        fontWeight: 'bold',
     },
     star: {
         bottom: '40%',

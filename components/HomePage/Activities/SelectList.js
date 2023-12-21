@@ -25,16 +25,14 @@ const ActivityPicker = ({ getData }) => {
         const countryData = await response.json();
         setActivities(countryData.activTypes)
         setTypes(countryData.activTypes)
-
       } catch (error) {
         console.error('Error fetching country data:', error);
       }
     };
-
     fetchTypes();
-
   }, []);
  
+
   // SELECT ACTIVITY TYPE
 
   const handleTypeSelected = (value) => {
@@ -49,10 +47,8 @@ const ActivityPicker = ({ getData }) => {
   // SELECT ACTIVITY
 
   const handleActivitySelected = (value) => {
-    console.log('value',value)
     setSelectedActivity(value)
     const searchActivities = finalList[value].value;
-    console.log('search activ',searchActivities)
     dispatch(addActivity(searchActivities));
   }
 
@@ -60,9 +56,7 @@ const ActivityPicker = ({ getData }) => {
 
     <View style={styles.container}>
       <Text style={styles.title}>Activity Type</Text>
-
       <SelectList
-
         setSelected={handleTypeSelected}
         data={Types}
         dropdownStyles={{ borderColor: 'rgba(6, 113, 136, 1)', }}
@@ -76,13 +70,9 @@ const ActivityPicker = ({ getData }) => {
           marginRight: 15,
           marginBottom: 10,
         }}
-
-
-
-      />
+         />
       <Text style={styles.title}>Activity</Text>
       <SelectList
-
         setSelected={handleActivitySelected}
         data={finalList}
         dropdownStyles={{ borderColor: 'rgba(6, 113, 136, 1)', }}
@@ -95,10 +85,8 @@ const ActivityPicker = ({ getData }) => {
           marginRight: 15,
           marginBottom: '10%',
         }}
-
       />
     </View>
-
   );
 };
 
@@ -110,7 +98,6 @@ const styles = StyleSheet.create({
     marginLeft: '5%',
     marginBottom: '5%',
   }
-
 });
 
 export default ActivityPicker;
