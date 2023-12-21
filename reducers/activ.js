@@ -33,7 +33,7 @@ export const activSlice = createSlice({
       state.tempActivities = action.payload;
     },
     updateCardActiv: (state, action) => {
-      state.cardActiv.push(action.payload);
+      state.cardActiv = action.payload;
     },
     updateMorningValue: (state, action) => {
       state.morningValue = action.payload;

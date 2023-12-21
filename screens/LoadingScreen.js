@@ -12,12 +12,8 @@ import Spinner from "react-native-loading-spinner-overlay";
 import moment from "moment";
 import Day from "../components/Day";
 import {
-  nullifyDuration,
-  updatePlannedActivList,
+  updateCardActiv,
   pushSizes,
-  emptySizes,
-  emptyActivities,
-  updateTripperList,
   updateTempActiv,
   addDayPlan,
 } from "../reducers/activ";
@@ -33,6 +29,7 @@ export default function TripPlanScreen({ navigation }) {
   const { duration, start } = useSelector((state) => state.search.value);
 
   const [activitiesList, setActivitiesList] = useState([]);
+  const [actList, setActList] = useState([]);
 
   const allActivNames = [
     "restaurant",
@@ -71,7 +68,7 @@ export default function TripPlanScreen({ navigation }) {
   ];
   const [spinner, setSpinner] = useState(false);
   let size = [2, 4];
-  const PLACES_API_KEY = "********";
+  const PLACES_API_KEY = "AIzaSyDIHWBTXDGk6XeIiwAxnIX2tXN44o1nE7M";
 
   useEffect(() => {
     setSpinner(true); // Activation du spinner au début de la fonction
@@ -87,6 +84,7 @@ export default function TripPlanScreen({ navigation }) {
   }, []);
 
   let actArray = [];
+  let fullActArray = [];
   const fetchPlacesForActivity = async (activity) => {
     const res = await fetch(
       `https://maps.googleapis.com/maps/api/place/textsearch/json?query=${activity}+in+${tripCard.cityName}&key=${PLACES_API_KEY}`
@@ -118,8 +116,8 @@ export default function TripPlanScreen({ navigation }) {
         "Conditions et exigences pour utiliser les données de Google Places API conformément aux conditions d'utilisation de Google.";
 
       // PUSHING EACH ACTIVITY IN THE TABLE
+      fullActArray.push({name: name, rating: rating, address: address, photo: photos[0].photo_reference});
       actArray.push(name);
-
       console.log("Place ID:", placeId);
       console.log("Name:", name);
       console.log("Rating:", rating);
@@ -142,8 +140,10 @@ export default function TripPlanScreen({ navigation }) {
         console.error('Error fetching data:', error);
       });*/
     setActivitiesList(actArray);
+    setActList(fullActArray);
   };
   console.log("activitiesList", activitiesList);
+  console.log("actList", actList);
 
   const flyButton = (
     <View style={styles.confirm}>
@@ -156,6 +156,7 @@ export default function TripPlanScreen({ navigation }) {
   );
 
   const handleSearch = () => {
+    dispatch(updateCardActiv(fullActArray));
     for (let i = 0; i < duration + 1; i++) {
       const uniqueActivities = new Set();
       for (let j = uniqueActivities.size; j < 20; j++) {

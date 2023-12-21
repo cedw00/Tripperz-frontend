@@ -26,7 +26,7 @@ export default function SignInScreen({ navigation }) {
       email: email,
       password: password,
     }
-    const response = await fetch(`http://${backend}:3000/users/signin`, {
+    const response = await fetch(`https://tripperz-backend.vercel.app/users/signin`, {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify(user),
