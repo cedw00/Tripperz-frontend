@@ -7,9 +7,12 @@ import { addCountry } from '../../../reducers/search';
 import { addCity } from '../../../reducers/search';
 import { addCityList } from '../../../reducers/search';
 import { addCountryList } from '../../../reducers/search';
+import Constants from 'expo-constants';
 
 
 
+
+const backend = Constants.expoConfig.hostUri.split(`:`)[0]
 
 
 function SelectedList({ getData }) {
@@ -19,57 +22,67 @@ function SelectedList({ getData }) {
   const [countries, setCountries] = useState([]);
   const [selectedCountry, setSelectedCountry] = useState(null);
   const [selectedCity, setSelectedCity] = useState(null);
+  const [data, setData] = useState([]);
 
   const dispatch = useDispatch();
 
+  
+// CREATING COUNTRIES LIST
 
   useEffect(() => {
-    const fetchCountries = async () => {
+    const fetchTypes = async () => {
       try {
-        const response = await axios.get('https://countriesnow.space/api/v0.1/countries');
-        const countryData = response.data.data;
-        setCountries(countryData);
+        const response = await fetch(`http://${backend}:3000/countries/Allcountries`);
+        const countryData = await response.json();
+        const data = countryData.countries;
+        const countries = data.map((element, i) => ({ key: i, value: element.country }))
+        setData(data)
+        setCountries(countries)
 
       } catch (error) {
         console.error('Error fetching country data:', error);
       }
     };
 
-    fetchCountries();
+    fetchTypes();
 
   }, []);
 
 
-  let countrylist = countries.map((country, i) => ({ key: i, value: country.country }));
-  dispatch(addCountryList(countrylist));
+  dispatch(addCountryList(countries));
 
 
-  // SELECT COUNTRY AND CITY
 
-  let citiesList = [];
+
+  //SELECT A COUNTRY
 
   const handleCountrySelected = (value) => {
     setSelectedCountry(value)
-    const searchCountry = countrylist[value].value;
+    const searchCountry = countries[value].value;
     dispatch(addCountry(searchCountry));
     getData(searchCountry)
-
   }
 
+
+// CREATING CITIES LIST
+
+
+  let citiesList = [];
+
   if (selectedCountry !== null) {
-
-    const selectedCities = countries.find(item => item.country === countrylist[selectedCountry].value);
-
+    const selectedCities = data.find((item) => item.country === countries[selectedCountry].value);
     citiesList = selectedCities.cities;
-
+    console.log('citiesList',citiesList)
     dispatch(addCityList(citiesList))
   }
 
-  let citylist = citiesList.map((city, i) => ({ key: i, value: city }));
 
+  let citylist = citiesList.map((city, i) => ({ key: i, value: city.name }));
+
+
+// SELECT A CITY
 
   const setCitySelected = (value => {
-
     setSelectedCity(value);
     console.log('selected city', citylist[value].value)
     dispatch(addCity(citylist[value].value));
@@ -79,13 +92,10 @@ function SelectedList({ getData }) {
   return (
 
     <View style={styles.container}>
-
       <Text style={styles.title}>Country</Text>
-
       <SelectList
-
         setSelected={handleCountrySelected}
-        data={countrylist}
+        data={countries}
         dropdownStyles={{ borderColor: 'rgba(6, 113, 136, 1)', }}
         search={true}
         placeholder={'Select country'}
@@ -97,14 +107,10 @@ function SelectedList({ getData }) {
           marginRight: 15,
           marginBottom: 10,
         }}
-
-
       />
 
       <Text style={styles.title}>City</Text>
-
       <SelectList
-
         setSelected={setCitySelected}
         data={citylist}
         dropdownStyles={{ borderColor: 'rgba(6, 113, 136, 1)', }}
@@ -117,13 +123,10 @@ function SelectedList({ getData }) {
           marginRight: 15,
           marginBottom: '10%',
         }}
-
       />
     </View>
-
   );
 }
-
 
 const styles = StyleSheet.create({
   title: {
@@ -131,10 +134,7 @@ const styles = StyleSheet.create({
     fontWeight: 'bold',
     marginLeft: '5%',
     marginBottom: '5%',
-
-
   }
-
 });
 
 export default SelectedList;
