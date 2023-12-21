@@ -229,7 +229,7 @@ export default function TripsScreen({ navigation }) {
       </View> }
       <View style={styles.imageContainer}>
         <Image
-          source={require("../assets/images/tripperz-logo/trippng.png")} // Replace with the path to your image
+          source={require("../assets/logo.png")} // Replace with the path to your image
           style={styles.image}
         />
       </View>
