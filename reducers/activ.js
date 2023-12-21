@@ -11,11 +11,12 @@ const initialState = {
   afternoonActiv: [],
   morningValue: 2,
   afternoonValue: 4,
-  tripDuration: null,
+  tripDuration: [],
   activitiesSet: [],
   sizes: {},
   sizesArray: [],
-  dayPlan: []
+  dayPlan: [],
+  tripId: null,
 };
 
 export const activSlice = createSlice({
@@ -32,7 +33,7 @@ export const activSlice = createSlice({
       state.tempActivities = action.payload;
     },
     updateCardActiv: (state, action) => {
-      state.cardActiv.push(action.payload);
+      state.cardActiv = action.payload;
     },
     updateMorningValue: (state, action) => {
       state.morningValue = action.payload;
@@ -40,12 +41,8 @@ export const activSlice = createSlice({
     updateAfternoonValue: (state, action) => {
       state.afternoonValue = action.payload;
     },
-    updateSizes: (state, action) => {          
-      const { dayPayload, morningPayload, afternoonPayload } = action;   
-      let setMorning = state.sizesArray[dayPayload][0];
-      let setAfternoon = state.sizesArray[dayPayload][1];
-      state.sizesArray[dayPayload].splice(setMorning, 1, morningPayload);
-      state.sizesArray[dayPayload].splice(setAfternoon, 1, afternoonPayload);
+    getTripId: (state, action) => {          
+      state.tripId = action.payload;
     },
      deleteMorningActivity: (state, action) => {
       const {payload1, payload2} = action;
@@ -95,10 +92,10 @@ export const activSlice = createSlice({
       }
     },
     updateDayPlan: (state, action) => {
-      state.dayPlan = action.payload;
+      state.activitiesSet = action.payload;
     },
     getTripDuration: (state, action) => {
-      state.tripDuration = Math.floor(Math.random() * 30) + 1;
+      state.tripDuration = action.payload
     },
     nullifyDuration: (state, action) => {
       state.tripDuration = null;
@@ -115,6 +112,12 @@ export const activSlice = createSlice({
     pushSizes: (state, action) => {
       state.sizesArray.push(action.payload);
     },
+    updateSizes: (state, action) => {
+      state.sizesArray = action.payload;
+    },
+    resetId: (state, action) => {
+      state.tripId = null;
+    }
   },
 });
 
@@ -143,6 +146,9 @@ export const {
   decreaseMorning,
   decreaseAfternoon,
   emptyActivities,
-  deleteMorningActivity
+  deleteMorningActivity,
+  getTripId,
+  resetId,
+  updateDayPlan,
 } = activSlice.actions;
 export default activSlice.reducer;
