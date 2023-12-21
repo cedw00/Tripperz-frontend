@@ -37,8 +37,6 @@ export default function ActivitiesResultScreen({ navigation }) {
     const [searchCountry, setSearchCountry] = useState("");
     const { activityType } = useSelector((state) => state.activSearch.value);
     const { activity } = useSelector((state) => state.activSearch.value);
-    const { trippers } = useSelector((state) => state.activSearch.value)
-    const { duration } = useSelector((state) => state.search.value);
     //const tripCard = useSelector((state) => state.trips.cityCard);
 
     console.log('activity type', activityType)
@@ -53,7 +51,7 @@ export default function ActivitiesResultScreen({ navigation }) {
                     activityType,
                 };
                 const delay = (ms) => new Promise((resolve) => setTimeout(resolve, ms));
-                fetch(`http://${backend}:3000/countries/activitiesTypes`, {
+                fetch(`https://tripperz-backend.vercel.app/countries/activitiesTypes`, {
                     method: "POST",
                     headers: { "Content-Type": "application/json" },
                     body: JSON.stringify(data),
@@ -69,7 +67,7 @@ export default function ActivitiesResultScreen({ navigation }) {
                     activityType,
                     activity,
                 };
-                fetch(`http://${backend}:3000/countries/activity`, {
+                fetch(`https://tripperz-backend.vercel.app/countries/activity`, {
                     method: "POST",
                     headers: { "Content-Type": "application/json" },
                     body: JSON.stringify(data),

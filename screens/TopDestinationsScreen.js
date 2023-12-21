@@ -57,14 +57,6 @@ export default function TopDestinationsScreen({ navigation }) {
 
   const dispatch = useDispatch();
 
-  const [searchCountry, setSearchCountry] = useState('');
-  const { country } = useSelector((state) => state.search.value)
-  const { city } = useSelector((state) => state.search.value)
-  const { cityList } = useSelector((state) => state.search.value)
-  const { countryList } = useSelector((state) => state.search.value)
-  const tripCard = useSelector((state) => state.trips.cityCard)
-
-
   const [itemsToDisplay, setItemsToDisplay] = useState([])
   useEffect(() => {
     let newItemsToDisplay = [];
@@ -78,7 +70,7 @@ export default function TopDestinationsScreen({ navigation }) {
       };
 
       const promise = new Promise((resolve, reject) => {
-        fetch(`http://${backend}:3000/countries/city`, {
+        fetch(`https://tripperz-backend.vercel.app/countries/city`, {
           method: 'POST',
           headers: { 'Content-Type': 'application/json' },
           body: JSON.stringify(dest),

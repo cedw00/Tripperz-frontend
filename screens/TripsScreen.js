@@ -6,18 +6,15 @@ import {
   Pressable,
   ScrollView,
   SafeAreaView,
-  RefreshControl,
   Dimensions,
   Modal,
 } from "react-native";
 import FontAwesome from "react-native-vector-icons/FontAwesome";
-import React, { useState, useEffect, useCallback } from "react";
+import React, { useState, useEffect } from "react";
 import { useIsFocused } from "@react-navigation/native";
-import { createTripCard } from "../reducers/trips";
 import { updateRefresh } from "../reducers/user";
 import { useDispatch, useSelector } from "react-redux";
 import Footer from "../components/Footer";
-import Constants from "expo-constants";
 import {
   emptySizes,
   updateDayPlan,
@@ -26,32 +23,17 @@ import {
   getTripId,
 } from "../reducers/activ";
 
-const backend = Constants.expoConfig.hostUri.split(`:`)[0];
-
 export default function TripsScreen({ navigation }) {
   const dispatch = useDispatch();
   const isFocused = useIsFocused();
 
   const { token, refresh } = useSelector((state) => state.user.value);
-  const tripCard = useSelector((state) => state.trips.cityCard);
-  const myTrips = useSelector((state) => state.trips.value);
-  const allSizes = useSelector((state) => state.activ.sizesArray);
 
   const [allTrips, setAllTrips] = useState([]);
   const [trigger, setTrigger] = useState(false);
 
-  const [refreshing, setRefreshing] = useState(false);
-  const [error, setError] = useState(null);
   const [deleteModalVisible, setDeleteModalVisible] = useState(false);
-  const [dataModalVisible, setDataModalVisible] = useState(false);
   const [id, setId] = useState("");
-
-  const onRefresh = useCallback(() => {
-    setRefreshing(true);
-    setTimeout(() => {
-      setRefreshing(false);
-    }, 2000);
-  }, []);
 
   const emptySizesArray = () => {
     dispatch(emptySizes());
@@ -61,7 +43,7 @@ export default function TripsScreen({ navigation }) {
     if (refresh > 0) {
       (async() => {
         if (token !== null) {
-          const response = await fetch(`http://${backend}:3000/trips/${token}`);
+          const response = await fetch(`https://tripperz-backend.vercel.app/trips/${token}`);
           const data = await response.json();
           if (data.trips.length > 0) {
             setAllTrips(data.trips);
@@ -69,18 +51,15 @@ export default function TripsScreen({ navigation }) {
             setAllTrips([]);
             setError(data.error);
           }
-        } else {
-
         }
       })();
     }
   }, [trigger]);
 
   const handleDelete = async (id) => {
-    console.log("id", id);
     if (token !== null) {
       const response = await fetch(
-      `http://${backend}:3000/trips/${id}/${token}`,
+      `https://tripperz-backend.vercel.app/trips/${id}/${token}`,
       {
         method: "DELETE",
         headers: { "Content-Type": "application/json" },
@@ -99,7 +78,7 @@ export default function TripsScreen({ navigation }) {
   };
 
   const handleUpdate = async (id) => {
-    const response = await fetch(`http://${backend}:3000/trips/tripId/${id}`);
+    const response = await fetch(`https://tripperz-backend.vercel.app/trips/tripId/${id}`);
     console.log(0);
     const data = await response.json();
     console.log(4);
@@ -162,11 +141,10 @@ export default function TripsScreen({ navigation }) {
     return <View />;
   } else {
     if (refresh === 0) {
-      console.log("focus");
       emptySizesArray();
       if (token !== null) {
         (async() => {
-          const response = await fetch(`http://${backend}:3000/trips/${token}`);
+          const response = await fetch(`https://tripperz-backend.vercel.app/trips/${token}`);
           const data = await response.json();
           if (data.trips.length > 0) {
             setAllTrips(data.trips);
@@ -179,16 +157,6 @@ export default function TripsScreen({ navigation }) {
       } else {
         setError('Invalid token');
       }
-      (async () => {
-        const response = await fetch(`http://${backend}:3000/trips/${token}`);
-        const data = await response.json();
-        if (data.trips.length > 0) {
-          setAllTrips(data.trips);
-        } else {
-          setAllTrips([]);
-        }
-      })();
-      dispatch(updateRefresh(1));
     }
   }
 

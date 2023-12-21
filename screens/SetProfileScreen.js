@@ -7,7 +7,6 @@ import FontAwesome from 'react-native-vector-icons/FontAwesome';
 import { Dropdown, MultiSelect } from 'react-native-element-dropdown';
 import DateTimePicker from '@react-native-community/datetimepicker';
 import { updateProfile } from '../reducers/user';
-import Constants from 'expo-constants';
 
 const genderData = [
   { label: 'Male', value: 'Male' },
@@ -26,8 +25,6 @@ const foodData = [
   { label: 'Turkish', value: '8' },
   { label: 'Vegan', value: '9' },
 ];
-
-const backend = Constants.expoConfig.hostUri.split(`:`)[0]
 
 export default function SetProfileScreen({ navigation }) {
   const dispatch = useDispatch();
@@ -53,7 +50,7 @@ export default function SetProfileScreen({ navigation }) {
     let count = 0;
     (async () => {
       // Get the name and type of all activities in database
-      const response = await fetch(`http://${backend}:3000/countries/Allcountries`);
+      const response = await fetch(`https://tripperz-backend.vercel.app/countries/Allcountries`);
       const countryData = await response.json();
       for(const data of countryData.activTypes) {
         // Check if type is already in list to avoid case clone
@@ -106,7 +103,7 @@ export default function SetProfileScreen({ navigation }) {
       token: token
     };
     // Update the empty profile with the inputs values
-    const response = await fetch(`http://${backend}:3000/profile/update`, {
+    const response = await fetch(`https://tripperz-backend.vercel.app/profile/update`, {
       method: 'PUT',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify(profile),

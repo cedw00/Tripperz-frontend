@@ -6,13 +6,6 @@ import { addCountry } from '../../../reducers/search';
 import { addCity } from '../../../reducers/search';
 import { addCityList } from '../../../reducers/search';
 import { addCountryList } from '../../../reducers/search';
-import Constants from 'expo-constants';
-
-
-
-
-const backend = Constants.expoConfig.hostUri.split(`:`)[0]
-
 
 function SelectedList({ getData }) {
 
@@ -31,7 +24,7 @@ function SelectedList({ getData }) {
   useEffect(() => {
     const fetchTypes = async () => {
       try {
-        const response = await fetch(`http://${backend}:3000/countries/Allcountries`);
+        const response = await fetch(`https://tripperz-backend.vercel.app/countries/Allcountries`);
         const countryData = await response.json();
         const data = countryData.countries;
         const countries = data.map((element, i) => ({ key: i, value: element.country }))

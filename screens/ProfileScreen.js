@@ -10,9 +10,6 @@ import DateTimePicker from '@react-native-community/datetimepicker';
 import { LinearGradient } from 'expo-linear-gradient';
 import moment from 'moment';
 import Footer from '../components/Footer';
-import Constants from 'expo-constants';
-
-const backend = Constants.expoConfig.hostUri.split(`:`)[0]
 
 const genderData = [
     { label: 'Male', value: 'Male' },
@@ -60,7 +57,7 @@ export default function ProfileScreen({ navigation }) {
     let count = 0;
     (async () => {
       // Get the name and type of all activities in database
-      const response = await fetch(`http://${backend}:3000/countries/Allcountries`);
+      const response = await fetch(`https://tripperz-backend.vercel.app/countries/Allcountries`);
       const countryData = await response.json();
       for(const data of countryData.activTypes) {
         // Check if type is already in list to avoid case clone
@@ -121,7 +118,7 @@ export default function ProfileScreen({ navigation }) {
       hobbies: interestsList,
       token: token
     };
-    const response = await fetch(`http://${backend}:3000/profile/update`, {
+    const response = await fetch(`https://tripperz-backend.vercel.app/profile/update`, {
         method: 'PUT',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(profile),

@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import {
   StyleSheet,
@@ -14,9 +14,6 @@ import {
   emptyActivities,
   resetId,
 } from "../reducers/activ";
-import Constants from "expo-constants";
-
-const backend = Constants.expoConfig.hostUri.split(`:`)[0]
 
 export default function UpdateTripScreen({ navigation }) {
     const dayDuration = useSelector((state) => state.activ.tripDuration);
@@ -47,7 +44,7 @@ console.log('dayDuration in UTS', dayDuration)
             activitiesList: daysPlan,
             allSizes: allSizes,
         }
-        const response = await fetch(`http://${backend}:3000/trips/update`, {
+        const response = await fetch(`https://tripperz-backend.vercel.app/trips/update`, {
           method: 'PUT',
           headers: { 'Content-Type': 'application/json' },
           body: JSON.stringify(trip),

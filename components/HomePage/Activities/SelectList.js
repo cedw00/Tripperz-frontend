@@ -1,13 +1,9 @@
 import React, { useState, useEffect } from 'react';
 import { View, StyleSheet, Text } from 'react-native';
 import { SelectList } from 'react-native-dropdown-select-list';
-import Constants from 'expo-constants';
 import { useDispatch } from 'react-redux';
 import { addActivityType } from '../../../reducers/activSearch';
 import { addActivity } from '../../../reducers/activSearch';
-
-
-const backend = Constants.expoConfig.hostUri.split(`:`)[0];
 
 const ActivityPicker = ({ getData }) => {
 
@@ -21,7 +17,7 @@ const ActivityPicker = ({ getData }) => {
   useEffect(() => {
     const fetchTypes = async () => {
       try {
-        const response = await fetch(`http://${backend}:3000/countries/Allcountries`);
+        const response = await fetch(`https://tripperz-backend.vercel.app/countries/Allcountries`);
         const countryData = await response.json();
         setActivities(countryData.activTypes)
         setTypes(countryData.activTypes)

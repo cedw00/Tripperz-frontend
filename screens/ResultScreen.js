@@ -6,7 +6,6 @@ import {
   Dimensions,
   FlatList,
   SafeAreaView,
-  Item,
   Image,
   Pressable,
 } from "react-native";
@@ -22,23 +21,15 @@ import {
 import { createTripCard } from "../reducers/trips";
 import { useDispatch, useSelector } from "react-redux";
 import { getRandomActivityByInput } from "../modules/slotMods";
-import Constants from "expo-constants";
 import { addCountry } from "../reducers/search";
 import { addCity } from "../reducers/search";
-
-const backend = Constants.expoConfig.hostUri.split(`:`)[0];
 
 export default function ResultScreen({ navigation }) {
   const dispatch = useDispatch();
 
-  const [searchCountry, setSearchCountry] = useState("");
   const [spinner, setSpinner] = useState(false);
   const { country } = useSelector((state) => state.search.value);
   const { city } = useSelector((state) => state.search.value);
-  const { trippers } = useSelector((state) => state.search.value);
-  const { cityList } = useSelector((state) => state.search.value);
-  const { countryList } = useSelector((state) => state.search.value);
-  const { duration } = useSelector((state) => state.search.value);
   const tripCard = useSelector((state) => state.trips.cityCard);
 
   const [itemsToDisplay, setItemsToDisplay] = useState([]);
@@ -51,7 +42,7 @@ export default function ResultScreen({ navigation }) {
           country,
         };
         const delay = (ms) => new Promise((resolve) => setTimeout(resolve, ms));
-        fetch(`http://${backend}:3000/countries/cities`, {
+        fetch(`https://tripperz-backend.vercel.app/countries/cities`, {
           method: "POST",
           headers: { "Content-Type": "application/json" },
           body: JSON.stringify(data),
@@ -66,7 +57,7 @@ export default function ResultScreen({ navigation }) {
           country,
           city,
         };
-        fetch(`http://${backend}:3000/countries/city`, {
+        fetch(`https://tripperz-backend.vercel.app/countries/city`, {
           method: "POST",
           headers: { "Content-Type": "application/json" },
           body: JSON.stringify(data),

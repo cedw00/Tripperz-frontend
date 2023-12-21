@@ -4,9 +4,6 @@ import Ionicons from 'react-native-vector-icons/Ionicons';
 import { useState } from 'react';
 import { useDispatch } from 'react-redux';
 import { updateUser, updateProfile } from '../reducers/user';
-import Constants from 'expo-constants';
-
-const backend = Constants.expoConfig.hostUri.split(`:`)[0]
 
 export default function SignInScreen({ navigation }) {
   const dispatch = useDispatch();
