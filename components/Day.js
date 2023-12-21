@@ -20,7 +20,7 @@ import {
 } from "../reducers/activ";
 
 export default function Day(props) {
-  const PLACES_API_KEY = "AIzaSyDIHWBTXDGk6XeIiwAxnIX2tXN44o1nE7M";
+  const PLACES_API_KEY = "*****";
 
   // const [morningSize, setMorningSize] = useState(2);
   // const [afternoonSize, setAfternoonSize] = useState(4);
