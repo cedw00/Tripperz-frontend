@@ -20,7 +20,7 @@ import {
 } from "../reducers/activ";
 
 export default function Day(props) {
-  const PLACES_API_KEY = "*****";
+  const PLACES_API_KEY = "AIzaSyDIHWBTXDGk6XeIiwAxnIX2tXN44o1nE7M";
 
   // const [morningSize, setMorningSize] = useState(2);
   // const [afternoonSize, setAfternoonSize] = useState(4);
@@ -32,7 +32,7 @@ export default function Day(props) {
   const allSizes = useSelector((state) => state.activ.sizesArray);
   const daysPlan = useSelector((state) => state.activ.activitiesSet);
   const fullActivArray = useSelector((state) => state.activ.cardActiv);
-  console.log('fullActiv', fullActivArray)
+  console.log("fullActiv", fullActivArray);
   const dispatch = useDispatch();
 
   const morningPlan = daysPlan[props.i].slice(0, allSizes[props.i][0]);
@@ -52,8 +52,10 @@ export default function Day(props) {
       >
         <Slot activity={data} key={index} dayPlan={props.dayPlan} i={props.i} />
         <Pressable
-          onPress={() => {{ handleInfo(data),
-            setDataModalVisible(true);}
+          onPress={() => {
+            {
+              handleInfo(data), setDataModalVisible(true);
+            }
           }}
         >
           <FontAwesome
@@ -81,7 +83,9 @@ export default function Day(props) {
         <Slot activity={data} key={index} dayPlan={props.dayPlan} i={props.i} />
         <Pressable
           onPress={() => {
-            {handleInfo(data), setDataModalVisible(true);}
+            {
+              handleInfo(data), setDataModalVisible(true);
+            }
           }}
         >
           <FontAwesome
@@ -97,7 +101,7 @@ export default function Day(props) {
 
   const handleInfo = (data) => {
     const findData = fullActivArray.find((e) => e.name === data);
-    console.log('findData',findData);
+    console.log("findData", findData);
     if (findData) {
       setRating(findData.rating);
       setAddress(findData.address);
@@ -148,7 +152,7 @@ export default function Day(props) {
               </Text>
               <Image
                 source={{ uri: photo }}
-                style={{ width: 100, height: 100 }} // Taille de la photo
+                style={{ width: 30, height: 30 }} // Taille de la photo
               />
               <Text>{address}</Text>
               <Text>{rating}</Text>

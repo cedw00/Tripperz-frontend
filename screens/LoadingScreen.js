@@ -68,7 +68,7 @@ export default function TripPlanScreen({ navigation }) {
   ];
   const [spinner, setSpinner] = useState(false);
   let size = [2, 4];
-  const PLACES_API_KEY = "******";
+  const PLACES_API_KEY = "AIzaSyDIHWBTXDGk6XeIiwAxnIX2tXN44o1nE7M";
 
   useEffect(() => {
     setSpinner(true); // Activation du spinner au début de la fonction
@@ -78,8 +78,8 @@ export default function TripPlanScreen({ navigation }) {
 
     setTimeout(() => {
       setSpinner(false);
-      console.log("spinner is OFF, ACTIVITIES LIST", activitiesList);
-      console.log("spinner is OFF, ACTIVITIES", activities);
+      // console.log("spinner is OFF, ACTIVITIES LIST", activitiesList);
+      // console.log("spinner is OFF, ACTIVITIES", activities);
     }, 6000);
   }, []);
 
@@ -118,19 +118,19 @@ export default function TripPlanScreen({ navigation }) {
       // PUSHING EACH ACTIVITY IN THE TABLE
       fullActArray.push({name: name, rating: rating, address: address, photo: photos[0].photo_reference});
       actArray.push(name);
-      console.log("Place ID:", placeId);
-      console.log("Name:", name);
-      console.log("Rating:", rating);
-      console.log("Address:", address);
-      console.log("Coordinates:", coordinates.lat, coordinates.lng);
-      console.log("Types of Place:", types);
-      // console.log('Opening Hours:', openingHours);
-      console.log("Photos:", photos);
-      console.log("Phone Number:", phoneNumber);
-      console.log("Website:", website);
-      // console.log('Services:', services);
-      // console.log('Special Attributes:', specialAttributes);
-      console.log("Popularity:", popularity);
+      // console.log("Place ID:", placeId);
+      // console.log("Name:", name);
+      // console.log("Rating:", rating);
+      // console.log("Address:", address);
+      // console.log("Coordinates:", coordinates.lat, coordinates.lng);
+      // console.log("Types of Place:", types);
+      // // console.log('Opening Hours:', openingHours);
+      // console.log("Photos:", photos);
+      // console.log("Phone Number:", phoneNumber);
+      // console.log("Website:", website);
+      // // console.log('Services:', services);
+      // // console.log('Special Attributes:', specialAttributes);
+      // console.log("Popularity:", popularity);
       // console.log('Service Area:', serviceArea);
       // console.log('Attribution:', attribution);
       console.log("---------------------------------------");
@@ -142,8 +142,8 @@ export default function TripPlanScreen({ navigation }) {
     setActivitiesList(actArray);
     setActList(fullActArray);
   };
-  console.log("activitiesList", activitiesList);
-  console.log("actList", actList);
+  // console.log("activitiesList", activitiesList);
+  // console.log("actList", actList);
 
   const flyButton = (
     <View style={styles.confirm}>

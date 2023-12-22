@@ -36,6 +36,7 @@ export default function TripPlanScreen({ navigation }) {
   useEffect(() => {
     const tempArray = [];
     const date = moment(start, "DDMMYYYY").toDate();
+    console.log('date',start);
     const day = date.getDate();
     const month = date.getMonth();
     const year = date.getFullYear();
@@ -51,6 +52,7 @@ export default function TripPlanScreen({ navigation }) {
       } 
       tempArray.push(obj);
     }
+    console.log('temparray',tempArray);
     setDayDuration(tempArray);
     dispatch(updatePlannedActivList(tempArray));
     
@@ -61,6 +63,7 @@ export default function TripPlanScreen({ navigation }) {
 
 
     const days = dayDuration.map((data, i) => {
+      console.log(data);
       const date = `${data.day}/${data.month}/${data.year}`;
       return (
         <View key={i} title="Day Card" style={styles.dayContainer}>

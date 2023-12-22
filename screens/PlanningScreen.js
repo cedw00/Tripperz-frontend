@@ -53,7 +53,7 @@ export default function TripPlanScreen({ navigation }) {
 
   const inviteTripperz = () => {
     console.log("selectedTripper", otherTripperz);
-    fetch(`http://${backend}:3000/users/findUser/${otherTripperz}`)
+    fetch(`https://tripperz-backend.vercel.app/users/findUser/${otherTripperz}`)
       .then((response) => response.json())
       .then((data) => {
         console.log("data", data);
@@ -133,7 +133,7 @@ export default function TripPlanScreen({ navigation }) {
       allSizes: allSizes,
       tripperz: tripperz,
     };
-    const response = await fetch(`http://${backend}:3000/trips/`, {
+    const response = await fetch(`https://tripperz-backend.vercel.app/trips/`, {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify(trip),

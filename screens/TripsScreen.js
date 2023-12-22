@@ -59,7 +59,7 @@ export default function TripsScreen({ navigation }) {
   useEffect(() => {
     if (refresh > 0) {
       (async () => {
-        const response = await fetch(`http://${backend}:3000/trips/${token}`);
+        const response = await fetch(`https://tripperz-backend.vercel.app/trips/${token}`);
         const data = await response.json();
         if (data.trips.length > 0) {
           setAllTrips(data.trips);
@@ -73,7 +73,7 @@ export default function TripsScreen({ navigation }) {
   const handleDelete = async (id) => {
     console.log("id", id);
     const response = await fetch(
-      `http://${backend}:3000/trips/${id}/${token}`,
+      `https://tripperz-backend.vercel.app/trips/${id}/${token}`,
       {
         method: "DELETE",
         headers: { "Content-Type": "application/json" },
@@ -89,7 +89,7 @@ export default function TripsScreen({ navigation }) {
   };
 
   const handleUpdate = async (id) => {
-    const response = await fetch(`http://${backend}:3000/trips/tripId/${id}`);
+    const response = await fetch(`https://tripperz-backend.vercel.app/trips/tripId/${id}`);
     console.log(0);
     const data = await response.json();
     console.log(4);
@@ -155,7 +155,7 @@ export default function TripsScreen({ navigation }) {
       console.log("focus");
       emptySizesArray();
       (async () => {
-        const response = await fetch(`http://${backend}:3000/trips/${token}`);
+        const response = await fetch(`https://tripperz-backend.vercel.app/trips/${token}`);
         const data = await response.json();
         if (data.trips.length > 0) {
           setAllTrips(data.trips);
