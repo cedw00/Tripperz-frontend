@@ -36,6 +36,7 @@ export default function Day(props) {
   const dispatch = useDispatch();
 
   const morningPlan = daysPlan[props.i].slice(0, allSizes[props.i][0]);
+  //const altMorningPlan = fullActivArray[props.i].slice(0, allSizes[props.i][0]);
 
   console.log("morningPlan", morningPlan);
   const morningActivities = morningPlan.map((data, index) => {

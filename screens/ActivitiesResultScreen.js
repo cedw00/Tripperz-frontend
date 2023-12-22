@@ -152,7 +152,7 @@ export default function ActivitiesResultScreen({ navigation }) {
                         data={itemsToDisplay}
                         renderItem={({ item }) => {
                             return (
-                                <Item country={item.country} city={item.city} image={item.image} />
+                                <Item country={item.country} name={item.city} image={item.image} />
                             );
                         }}
                     />

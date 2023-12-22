@@ -157,6 +157,7 @@ export default function TripPlanScreen({ navigation }) {
 
   const handleSearch = () => {
     dispatch(updateCardActiv(fullActArray));
+    
     for (let i = 0; i < duration + 1; i++) {
       const uniqueActivities = new Set();
       for (let j = uniqueActivities.size; j < 20; j++) {
