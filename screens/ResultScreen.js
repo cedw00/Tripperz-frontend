@@ -51,7 +51,7 @@ export default function ResultScreen({ navigation }) {
           country,
         };
         const delay = (ms) => new Promise((resolve) => setTimeout(resolve, ms));
-        fetch(`http://${backend}:3000/countries/cities`, {
+        fetch(`https://tripperz-backend.vercel.app/countries/cities`, {
           method: "POST",
           headers: { "Content-Type": "application/json" },
           body: JSON.stringify(data),
@@ -66,7 +66,7 @@ export default function ResultScreen({ navigation }) {
           country,
           city,
         };
-        fetch(`http://${backend}:3000/countries/city`, {
+        fetch(`https://tripperz-backend.vercel.app/countries/city`, {
           method: "POST",
           headers: { "Content-Type": "application/json" },
           body: JSON.stringify(data),
