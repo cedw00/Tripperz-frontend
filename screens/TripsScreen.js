@@ -79,6 +79,7 @@ export default function TripsScreen({ navigation }) {
 
   const handleUpdate = async (id) => {
     const response = await fetch(`https://tripperz-backend.vercel.app/trips/tripId/${id}`);
+    const response = await fetch(`https://tripperz-backend.vercel.app/trips/tripId/${id}`);
     console.log(0);
     const data = await response.json();
     console.log(4);

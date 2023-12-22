@@ -26,6 +26,9 @@ import { getRandomActivityByInput } from "../modules/slotMods";
 export default function TripPlanScreen({ navigation }) {
   const activities = useSelector((state) => state.activ.value);
   const daysPlan = useSelector((state) => state.activ.activitiesSet);
+  const fullActivArray = useSelector((state) => state.activ.cardActiv);
+
+  console.log("TPS => fullActiv", fullActivArray);
 
   
   const dispatch = useDispatch();
@@ -36,6 +39,7 @@ export default function TripPlanScreen({ navigation }) {
   useEffect(() => {
     const tempArray = [];
     const date = moment(start, "DDMMYYYY").toDate();
+    console.log('date',start);
     const day = date.getDate();
     const month = date.getMonth();
     const year = date.getFullYear();
@@ -51,6 +55,7 @@ export default function TripPlanScreen({ navigation }) {
       } 
       tempArray.push(obj);
     }
+    console.log('temparray',tempArray);
     setDayDuration(tempArray);
     dispatch(updatePlannedActivList(tempArray));
     
@@ -61,10 +66,11 @@ export default function TripPlanScreen({ navigation }) {
 
 
     const days = dayDuration.map((data, i) => {
+      console.log(data);
       const date = `${data.day}/${data.month}/${data.year}`;
       return (
         <View key={i} title="Day Card" style={styles.dayContainer}>
-         <Day day={i + 1} date={date} dayPlan={daysPlan[i]} i={i} />
+         <Day day={i + 1} date={date} dayPlan={daysPlan[i]} i={i} activArray={fullActivArray[i]} />
         </View>
       )
     });
@@ -90,7 +96,7 @@ export default function TripPlanScreen({ navigation }) {
         {days}
       </ScrollView>
       <View style={styles.nextContainer}>
-      <Pressable onPress={() => {emptyArrays(), navigation.navigate("Result")}}>
+      <Pressable onPress={() => {emptyArrays(), navigation.navigate("Home")}}>
           <View style={styles.cancel}>
             <Text style={{ color: "black" }}>CANCEL</Text>
           </View>

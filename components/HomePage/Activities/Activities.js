@@ -11,8 +11,8 @@ import { useState, useEffect } from "react";
 import SelectList from './SelectList';
 import AntDesign from 'react-native-vector-icons/AntDesign'
 import { useDispatch } from 'react-redux';
-import { getDuration } from '../../../reducers/activSearch';
-import { addTrippers } from '../../../reducers/activSearch';
+import { getDuration } from '../../../reducers/search';
+import { addTrippers } from '../../../reducers/search';
 
 
 

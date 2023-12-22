@@ -86,19 +86,24 @@ export default function ActivitiesResultScreen({ navigation }) {
         // });
     }, [navigation]);
 
-
+    const checkItem = (element) => {
+        console.log(element.name, "picture:", element.image);
+        console.log("name:", element.name);
+        dispatch(createTripCard(element));
+        navigation.navigate("Loading");
+      };
 
 
     const Item = (item) => (
         <Pressable
             onPress={() => {
-                handleSearch(), checkItem(item);
+                checkItem(item);
             }}
             key={item.key}
         >
             <View style={styles.card}>
                 <Image style={styles.tinyLogo} source={{ uri: item.image }} />
-                <Text style={styles.itemtext}>{item.city}, {item.country}</Text>
+                <Text style={styles.itemtext}>{item.name}, {item.country}</Text>
             </View>
         </Pressable>
     );
@@ -145,7 +150,7 @@ export default function ActivitiesResultScreen({ navigation }) {
                         data={itemsToDisplay}
                         renderItem={({ item }) => {
                             return (
-                                <Item country={item.country} city={item.city} image={item.image} />
+                                <Item country={item.country} name={item.city} image={item.image} />
                             );
                         }}
                     />
