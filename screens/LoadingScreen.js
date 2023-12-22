@@ -68,7 +68,6 @@ export default function TripPlanScreen({ navigation }) {
   ];
   const [spinner, setSpinner] = useState(false);
   let size = [2, 4];
-  const PLACES_API_KEY = "AIzaSyDIHWBTXDGk6XeIiwAxnIX2tXN44o1nE7M";
 
   useEffect(() => {
     setSpinner(true); // Activation du spinner au début de la fonction
