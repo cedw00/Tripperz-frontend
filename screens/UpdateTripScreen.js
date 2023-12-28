@@ -47,7 +47,7 @@ console.log('dayDuration in UTS', dayDuration)
             activitiesList: daysPlan,
             allSizes: allSizes,
         }
-        const response = await fetch(`http://${backend}:3000/trips/update`, {
+        const response = await fetch(`https://tripperz-backend.vercel.app/trips/update`, {
           method: 'PUT',
           headers: { 'Content-Type': 'application/json' },
           body: JSON.stringify(trip),

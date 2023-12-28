@@ -75,7 +75,7 @@ export default function SetProfileScreen({ navigation }) {
         hobbies: interests,
         token: token
       };
-      const response = await fetch(`http://${backend}:3000/profile/update`, {
+      const response = await fetch(`https://tripperz-backend.vercel.app/profile/update`, {
         method: 'PUT',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(profile),

@@ -31,7 +31,7 @@ function SelectedList({ getData }) {
   useEffect(() => {
     const fetchTypes = async () => {
       try {
-        const response = await fetch(`http://${backend}:3000/countries/Allcountries`);
+        const response = await fetch(`https://tripperz-backend.vercel.app/countries/Allcountries`);
         const countryData = await response.json();
         const data = countryData.countries;
         const countries = data.map((element, i) => ({ key: i, value: element.country }))

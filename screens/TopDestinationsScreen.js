@@ -78,7 +78,7 @@ export default function TopDestinationsScreen({ navigation }) {
       };
 
       const promise = new Promise((resolve, reject) => {
-        fetch(`http://${backend}:3000/countries/city`, {
+        fetch(`https://tripperz-backend.vercel.app/countries/city`, {
           method: 'POST',
           headers: { 'Content-Type': 'application/json' },
           body: JSON.stringify(dest),
@@ -114,34 +114,19 @@ export default function TopDestinationsScreen({ navigation }) {
 
 
 
-  //     const handleSearch = () => {
-  //       navigation.navigate('TripPlan');
-  //       const uniqueActivities = new Set();
-  //       for (let i = uniqueActivities.size; i < 20; i++) {
-  //         const randomActivity = getRandomActivityByInput(
-  //           activitiesList,
-  //           allActivNames
-  //         );
-  //         uniqueActivities.add(randomActivity);
-  //         if (uniqueActivities.size >= 20) {
-  //           break;
-  //         }
-  //       };
-  //       dispatch(updateActivList(Array.from(uniqueActivities)));
-  //       dispatch(updateTempActiv(Array.from(uniqueActivities)));
-  //       dispatch(getTripDuration()); // RANDOM TRIP DURATION
-  //     };
-  //     const checkItem = (element) => {
-  //    //console.log('key:', element.key);
-  //   console.log(element.name,'picture:', element.image);
-  //   console.log('name:', element.name);
-  //       dispatch(createTripCard(element))
-  //     };
-  //     console.log('RS => This might be your next destination:', tripCard);
+ 
+      const checkItem = (element) => {
+     //console.log('key:', element.key);
+    console.log(element.name,'picture:', element.image);
+    console.log('name:', element.name);
+        dispatch(createTripCard(element))
+        navigation.navigate("Loading")
+      };
+      console.log('RS => This might be your next destination:', tripCard);
 
 
   const Item = (item) => (
-    <Pressable onPress={() => { handleSearch(), checkItem(item) }} key={item.key}>
+    <Pressable onPress={() => { checkItem(item) }} key={item.key}>
       <View style={styles.card}>
         <Image style={styles.tinyLogo} source={{ uri: item.image }} />
         <Text style={styles.itemtext}> {item.name}, {item.country}</Text>
