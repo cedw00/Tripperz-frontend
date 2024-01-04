@@ -86,7 +86,7 @@ export default function TripPlanScreen({ navigation }) {
   let fullActArray = [];
   const fetchPlacesForActivity = async (activity) => {
     const res = await fetch(
-      `https://maps.googleapis.com/maps/api/place/textsearch/json?query=${activity}+in+${tripCard.cityName}&key=${PLACES_API_KEY}`
+      `https://maps.googleapis.com/maps/api/place/textsearch/json?query=${activity}+in+${tripCard.cityName}&key=${process.env.PLACES_API_KEY}`
     );
     const data = await res.json();
     const bestVenues = data.results.filter((venue) => venue.rating > 4.5);

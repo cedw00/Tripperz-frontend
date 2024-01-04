@@ -218,7 +218,7 @@ export default function ProfileScreen({ navigation }) {
                   <MultiSelect
                       style={styles.list} data={foodData} labelField='label' valueField='value' placeholder='New favorite food types'
                       placeholderStyle={{color: '#A0ACAE'}} value={selectedFood} onChange={(item) => {setSelectedFood(item)}} renderItem={editDisplay} maxHeight={100}
-                      visibleSelectedItem={false} activeColor='lightblue'
+                      visibleSelectedItem={false} activeColor='lightblue' mode='modal'
                   />
               </View>
             </View>
@@ -227,7 +227,7 @@ export default function ProfileScreen({ navigation }) {
                   <MultiSelect
                       style={styles.list} data={activitiesTypes} labelField='label' valueField='value' placeholder='New favorites types of activities'
                       placeholderStyle={{color: '#A0ACAE'}} value={favoriteActivitiesTypes} onChange={(item) => {setFavoriteActivitiesTypes(item)}}
-                      renderItem={editDisplay} maxHeight={100} visibleSelectedItem={false} activeColor='lightblue'
+                      renderItem={editDisplay} maxHeight={100} visibleSelectedItem={false} activeColor='lightblue' mode='modal'
                   />
               </View>
             </View>
@@ -236,7 +236,7 @@ export default function ProfileScreen({ navigation }) {
                   <MultiSelect
                       style={styles.list} data={interest} labelField='label' valueField='value' placeholder='New favorites activities'
                       placeholderStyle={{color: '#A0ACAE'}} value={selectedHobbies} onChange={(item) => {setSelectedHobbies(item)}}
-                      renderItem={editDisplay} maxHeight={100} visibleSelectedItem={false} activeColor='lightblue'
+                      renderItem={editDisplay} maxHeight={100} visibleSelectedItem={false} activeColor='lightblue' mode='modal'
                   />
               </View>
             </View>

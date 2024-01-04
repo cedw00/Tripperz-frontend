@@ -20,7 +20,6 @@ import {
 } from "../reducers/activ";
 
 export default function Day(props) {
-  const PLACES_API_KEY = "AIzaSyDIHWBTXDGk6XeIiwAxnIX2tXN44o1nE7M";
 
   // const [morningSize, setMorningSize] = useState(2);
   // const [afternoonSize, setAfternoonSize] = useState(4);
@@ -107,7 +106,7 @@ export default function Day(props) {
       setRating(findData.rating);
       setAddress(findData.address);
       setPhoto(
-        `https://maps.googleapis.com/maps/api/place/photo?maxwidth=400&photoreference=${findData.photo}&key=${PLACES_API_KEY}`
+        `https://maps.googleapis.com/maps/api/place/photo?maxwidth=400&photoreference=${findData.photo}&key=${process.env.PLACES_API_KEY}`
       );
     }
   };

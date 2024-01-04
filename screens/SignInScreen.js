@@ -25,6 +25,7 @@ export default function SignInScreen({ navigation }) {
       email: email,
       password: password,
     }
+    // Calling signin route in backend
     const response = await fetch(`https://tripperz-backend.vercel.app/users/signin`, {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
@@ -43,7 +44,9 @@ export default function SignInScreen({ navigation }) {
   }
 
   const handleRegister = async () => {
+    // Give to variable canConnect the result of the function checkForm
     const canConnect = await checkForm();
+    // if canConnect is false shows an error otherwise go to HomeScreen
     if (!canConnect) {
       setShowError(true)
     } else {

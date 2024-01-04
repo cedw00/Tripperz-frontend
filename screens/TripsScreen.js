@@ -49,7 +49,6 @@ export default function TripsScreen({ navigation }) {
             setAllTrips(data.trips);
           } else {
             setAllTrips([]);
-            setError(data.error);
           }
         }
       })();
@@ -69,11 +68,7 @@ export default function TripsScreen({ navigation }) {
       if (data.result) {
       setDeleteModalVisible(!deleteModalVisible);
         setTrigger(!trigger);
-      } else {
-        setError(data.error);
       }
-    } else {
-      setError('Invalid token');
     }
   };
 
@@ -150,12 +145,9 @@ export default function TripsScreen({ navigation }) {
             setAllTrips(data.trips);
           } else {
             setAllTrips([]);
-            setError(data.error);
           }
         })();
         dispatch(updateRefresh(1));
-      } else {
-        setError('Invalid token');
       }
     }
   }
