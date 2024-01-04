@@ -4,9 +4,6 @@ import Ionicons from 'react-native-vector-icons/Ionicons';
 import { useState } from 'react';
 import { useDispatch } from 'react-redux';
 import { updateUser, updateProfile } from '../reducers/user';
-import Constants from 'expo-constants';
-
-const backend = Constants.expoConfig.hostUri.split(`:`)[0]
 
 export default function SignInScreen({ navigation }) {
   const dispatch = useDispatch();
@@ -16,16 +13,19 @@ export default function SignInScreen({ navigation }) {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
 
+  // Hide error messages and return to LoginScreen
   const handleReturn = () => {
     setShowError(false)
     navigation.navigate('Login')
   }
-  
+
+  // Function to check if email and password are correct
   const checkForm = async () => {
     const user = {
       email: email,
       password: password,
     }
+    // Calling signin route in backend
     const response = await fetch(`https://tripperz-backend.vercel.app/users/signin`, {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
@@ -33,6 +33,7 @@ export default function SignInScreen({ navigation }) {
     });
     const data = await response.json();
     if (data.result) {
+      // If a user in found then send his data in the reducer user
       dispatch(updateUser(data.user))
       dispatch(updateProfile(data.user))
       return true
@@ -43,7 +44,9 @@ export default function SignInScreen({ navigation }) {
   }
 
   const handleRegister = async () => {
+    // Give to variable canConnect the result of the function checkForm
     const canConnect = await checkForm();
+    // if canConnect is false shows an error otherwise go to HomeScreen
     if (!canConnect) {
       setShowError(true)
     } else {

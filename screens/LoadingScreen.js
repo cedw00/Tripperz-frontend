@@ -68,7 +68,6 @@ export default function TripPlanScreen({ navigation }) {
   ];
   const [spinner, setSpinner] = useState(false);
   let size = [2, 4];
-  const PLACES_API_KEY = "AIzaSyDIHWBTXDGk6XeIiwAxnIX2tXN44o1nE7M";
 
   useEffect(() => {
     setSpinner(true); // Activation du spinner au début de la fonction
@@ -87,7 +86,7 @@ export default function TripPlanScreen({ navigation }) {
   let fullActArray = [];
   const fetchPlacesForActivity = async (activity) => {
     const res = await fetch(
-      `https://maps.googleapis.com/maps/api/place/textsearch/json?query=${activity}+in+${tripCard.cityName}&key=${PLACES_API_KEY}`
+      `https://maps.googleapis.com/maps/api/place/textsearch/json?query=${activity}+in+${tripCard.cityName}&key=${process.env.PLACES_API_KEY}`
     );
     const data = await res.json();
     const bestVenues = data.results.filter((venue) => venue.rating > 4.5);

@@ -11,6 +11,7 @@ const initialState = {
     country: null,
     favoriteDestinations: [],
     favoriteFoods: null,
+    favoriteTypes: [],
     hobbies: [],
     refresh: 0,
     token: null
@@ -24,7 +25,7 @@ export const userSlice = createSlice({
    updateUser: (state, action) => {
      state.value.email = action.payload.email;
      state.value.username = action.payload.username;
-     state.value.phone = action.payload.phone;
+     state.value.phone = action.payload.phoneNb;
      state.value.token = action.payload.token;
    },
    updateProfile: (state, action) => {
@@ -33,6 +34,7 @@ export const userSlice = createSlice({
     state.value.country = action.payload.country;
     state.value.favoriteDestinations = action.payload.favoriteDestinations;
     state.value.favoriteFoods = action.payload.favoriteFoods;
+    state.value.favoriteTypes = action.payload.favoriteTypes;
     state.value.hobbies = action.payload.hobbies;
    },
    updateRefresh: (state, action) => {

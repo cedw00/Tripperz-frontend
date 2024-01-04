@@ -64,7 +64,6 @@ export default function TopDestinationsScreen({ navigation }) {
   const { countryList } = useSelector((state) => state.search.value)
   const tripCard = useSelector((state) => state.trips.cityCard)
 
-
   const [itemsToDisplay, setItemsToDisplay] = useState([])
   useEffect(() => {
     let newItemsToDisplay = [];

@@ -20,9 +20,7 @@ import {
   confirmTripSizes,
 } from "../reducers/trips";
 import { emptySizes, emptyActivities } from "../reducers/activ";
-import Constants from "expo-constants";
 
-const backend = Constants.expoConfig.hostUri.split(`:`)[0];
 
 export default function TripPlanScreen({ navigation }) {
   const [modalVisible, setModalVisible] = useState(false);
@@ -32,7 +30,6 @@ export default function TripPlanScreen({ navigation }) {
   const { start, end, country, duration } = useSelector(
     (state) => state.search.value
   );
-  const { value } = useSelector((state) => state.activ);
 
   const tripperz = useSelector((state) => state.tripper.value);
   const { email } = useSelector((state) => state.user.value);
@@ -108,18 +105,6 @@ export default function TripPlanScreen({ navigation }) {
   });
 
   const handleConfirm = async () => {
-    console.log('dayplan confirm', daysPlan);
-    // const activities = [];
-    // for (let i = 0; i < daysPlan.length; i++) {
-    //   for (let j = 0; j < daysPlan[i].length; i++) {
-    //     activities.push({
-    //       name: daysPlan[j],
-    //       type: "Test",
-    //       address: `${tripCard.cityName} at ${country}`,
-    //     });
-    //   }
-    // }
-    // console.log(activities);
     const trip = {
       token: token,
       start: start,

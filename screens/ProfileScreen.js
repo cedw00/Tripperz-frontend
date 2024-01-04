@@ -8,28 +8,13 @@ import Ionicons from 'react-native-vector-icons/Ionicons';
 import { Dropdown, MultiSelect } from 'react-native-element-dropdown';
 import DateTimePicker from '@react-native-community/datetimepicker';
 import { LinearGradient } from 'expo-linear-gradient';
+import moment from 'moment';
 import Footer from '../components/Footer';
-import Constants from 'expo-constants';
-
-const backend = Constants.expoConfig.hostUri.split(`:`)[0]
 
 const genderData = [
     { label: 'Male', value: 'Male' },
     { label: 'Female', value: 'Female' },
   ];
-  
-const mockData = [
-  { label: 'Cultural tourism', value: '0' },
-  { label: 'Guided Tours', value: '1' },
-  { label: 'Outdoor Activities', value: '2' },
-  { label: 'Water activities', value: '3' },
-  { label: 'Culinary experiences', value: '4' },
-  { label: 'Entertainment', value: '5' },
-  { label: 'Sports Activities', value: '6' },
-  { label: 'Relaxation and well-being', value: '7' },
-  { label: 'Ecotourism', value: '8' },
-  { label: 'Shopping', value: '9' },
-];
   
   const foodData = [
     { label: 'Italian', value: '0' },
@@ -42,21 +27,59 @@ const mockData = [
 
 export default function ProfileScreen({ navigation }) {
   const dispatch = useDispatch();
-  const { username, birthday, gender, country, favoriteDestinations, favoriteFoods, hobbies, token } = useSelector((state) => state.user.value)
+  const { username, email, phone, birthday, gender, country, favoriteDestinations, favoriteFoods, favoriteTypes, hobbies, token } = useSelector((state) => state.user.value)
   
   const [destinations, setDestinations] = useState('');
+
+  const [newUsername, setNewUsername] = useState(username);
+  const [newEmail, setNewEmail] = useState(email);
+  const [newPhoneNb, setNewPhoneNb] = useState(phone);
+  const [newPassword, setNewPassword] = useState(null);
   const [newGender, setNewGender] = useState(gender);
   const [newCountry, setNewCountry] = useState(country);
   const [newFavoriteDestinations, setNewFavoriteDestinations] = useState('');
-  const [selectedActivities, setSelectedActivities] = useState([]);
+  const [activitiesTypes, setActivitiesTypes] = useState([]);
+  const [favoriteActivitiesTypes, setFavoriteActivitiesTypes] = useState([]);
+  const [interest, setInterest] = useState([]);
+  const [selectedHobbies, setSelectedHobbies] = useState([]);
   const [selectedFood, setSelectedFood] = useState([]);
-  const [date, setDate] = useState(new Date());
+  const [date, setDate] = useState(moment(birthday, 'DD/MM/YYYY').toDate());
+
   const [showModal, setShowModal] = useState(false);
   const [errorMsg, setErrorMsg] = useState(null);
   const [showError, setShowError] = useState(false);
   const [trigger, setTrigger] = useState(false);
 
   useEffect(() => {
+    const typesList = [];
+    const activitiesList = [];
+    let index = 0;
+    let count = 0;
+    (async () => {
+      // Get the name and type of all activities in database
+      const response = await fetch(`https://tripperz-backend.vercel.app/countries/Allcountries`);
+      const countryData = await response.json();
+      for(const data of countryData.activTypes) {
+        // Check if type is already in list to avoid case clone
+        const isPresent = typesList.some(type => type.label.toLowerCase() === data.value.toLowerCase());
+        if (!isPresent) {
+          typesList.push({label: data.value, value: index});
+          index++;
+        }
+      }
+      for (const type of countryData.activTypes) {
+        for (const activity of type.activities) {
+          // Check if activity is already in list to avoid case clone
+          const isPresent = activitiesList.some(activityField => activityField.label.toLowerCase() === activity.value.toLowerCase());
+          if (!isPresent) {
+            activitiesList.push({label: activity.value, value: count});
+            count++;
+          }
+        }
+      }
+    })();
+    setActivitiesTypes(typesList);
+    setInterest(activitiesList);
     const str = favoriteDestinations.toString();
     const pattern = /,/g;
     const newStr = str.replace(pattern, ', ');
@@ -84,7 +107,7 @@ export default function ProfileScreen({ navigation }) {
   const handleSubmit = async () => {
     const month = date.getMonth() + 1;
     const str = `${date.getDate()}/${month}/${date.getFullYear()}`;
-    const interests = selectedActivities.map(data => mockData[data].label);
+    const interestsList = favoriteActivitiesTypes.map(data => activitiesTypes[data].label);
     const favoriteFood = selectedFood.map(data => foodData[data].label);
     const profile = {
       birthday: str,
@@ -92,7 +115,7 @@ export default function ProfileScreen({ navigation }) {
       country: newCountry,
       favDest: newFavoriteDestinations.split(', '),
       favFood: favoriteFood,
-      hobbies: interests,
+      hobbies: interestsList,
       token: token
     };
     const response = await fetch(`https://tripperz-backend.vercel.app/profile/update`, {
@@ -110,7 +133,6 @@ export default function ProfileScreen({ navigation }) {
       setErrorMsg(data.error);
       setShowError(!showError);
     }
-    
   }
 
   const cancelModif = () => {
@@ -135,72 +157,89 @@ export default function ProfileScreen({ navigation }) {
             <Text style={styles.title}>Edit your profile</Text>
           </View>
           <View style={styles.form}>
-              <View style={styles.field}>
-                <Text style={styles.label}>Birthday</Text>
-                <View style={styles.show}>
-                    <DateTimePicker
-                        testID="dateTimePicker"
-                        value={date}
-                        mode={'date'}
-                        maximumDate={new Date()}
-                        is24Hour={true}
-                        onChange={onChange}
-                    />
-                </View>
+            <View style={styles.field}>
+              <View style={styles.inputContainer}>
+                  <TextInput placeholder={username} onChangeText={(value) => setNewUsername(value)} placeholderTextColor={'#A0ACAE'}
+                  value={newUsername} style={styles.input}/>  
               </View>
-              <View style={styles.field}>
-                <Text style={styles.label}>Gender</Text>
-                <View style={styles.inputContainer}>
-                    <Dropdown
-                        style={styles.list} data={genderData} labelField='label' valueField='value' placeholder={gender} placeholderStyle={{color: '#A0ACAE'}}
-                        value={newGender} onChange={(item) => {setNewGender(item.value)}} renderItem={editDisplay} maxHeight={100}
-                    />
-                </View>
+            </View>
+            <View style={styles.field}>
+              <View style={styles.inputContainer}>
+                  <TextInput placeholder={email} onChangeText={(value) => setNewEmail(value)} placeholderTextColor={'#A0ACAE'}
+                  value={newEmail} style={styles.input}/>  
               </View>
-              <View style={styles.field}>
-                <Text style={styles.label}>Country</Text>
-                <View style={styles.inputContainer}>
-                    <TextInput placeholder={country} onChangeText={(value) => setNewCountry(value)} placeholderTextColor={'#A0ACAE'}
-                    value={newCountry} style={styles.input}/>  
-                </View>
+            </View>
+            <View style={styles.field}>
+              <View style={styles.inputContainer}>
+                  <TextInput placeholder={phone} onChangeText={(value) => setNewPhoneNb(value)} placeholderTextColor={'#A0ACAE'}
+                  value={newPhoneNb} style={styles.input}/>  
               </View>
-              <View style={styles.field}>
-                <Text style={styles.label}>Favorite Destinations</Text>
-                <View style={styles.inputContainer}>
-                    <TextInput placeholder="Favorite Destinations" onChangeText={(value) => setNewFavoriteDestinations(value)} placeholderTextColor={'#A0ACAE'}
-                    value={newFavoriteDestinations} style={styles.input}/>  
-                </View>
+            </View>
+            <View style={styles.field}>
+              <View style={styles.inputContainer}>
+                  <TextInput placeholder={"Enter your new password"} onChangeText={(value) => setNewPassword(value)} placeholderTextColor={'#A0ACAE'}
+                  value={newPassword} style={styles.input}/>  
               </View>
-              <View style={styles.field}>
-                <Text style={styles.label}>Favorite types of food</Text>
-                <View style={styles.inputContainer}>
-                    <MultiSelect
-                        style={styles.list} data={foodData} labelField='label' valueField='value' placeholder='Favorite food types'
-                        placeholderStyle={{color: '#A0ACAE'}} value={selectedFood} onChange={(item) => {setSelectedFood(item)}} renderItem={editDisplay} maxHeight={100}
-                        visibleSelectedItem={false} activeColor='lightblue'
-                    />
-                </View>
+            </View>
+            <View style={styles.field}>
+              <View style={styles.show}>
+                  <DateTimePicker
+                      testID="dateTimePicker"
+                      value={date}
+                      mode={'date'}
+                      maximumDate={new Date()}
+                      is24Hour={true}
+                      onChange={onChange}
+                  />
               </View>
-              <View style={styles.field}>
-                <Text style={styles.label}>Favorite types of activities</Text>
-                <View style={styles.inputContainer}>
-                    <MultiSelect
-                        style={styles.list} data={mockData} labelField='label' valueField='value' placeholder='Favorites types of activities'
-                        placeholderStyle={{color: '#A0ACAE'}} value={selectedActivities} onChange={(item) => {setSelectedActivities(item)}} renderItem={editDisplay}
-                        maxHeight={100} visibleSelectedItem={false} activeColor='lightblue'
-                    />
-                </View>
+            </View>
+            <View style={styles.field}>
+              <View style={styles.inputContainer}>
+                  <Dropdown
+                      style={styles.list} data={genderData} labelField='label' valueField='value' placeholder={gender} placeholderStyle={{color: '#A0ACAE'}}
+                      value={newGender} onChange={(item) => {setNewGender(item.value)}} renderItem={editDisplay} maxHeight={100}
+                  />
               </View>
-              <View style={styles.field}>
-                <Text style={styles.label}>Favorite activities</Text>
-                <View style={styles.inputContainer}>
-                    <MultiSelect
-                        style={styles.list} data={mockData} labelField='label' valueField='value' placeholder='Favorites activities'
-                        placeholderStyle={{color: '#A0ACAE'}} value={selectedActivities} onChange={(item) => {setSelectedActivities(item)}} renderItem={editDisplay}
-                        maxHeight={100} visibleSelectedItem={false} activeColor='lightblue'
-                    />
-                </View>
+            </View>
+            <View style={styles.field}>
+              <View style={styles.inputContainer}>
+                  <TextInput placeholder={country} onChangeText={(value) => setNewCountry(value)} placeholderTextColor={'#A0ACAE'}
+                  value={newCountry} style={styles.input}/>  
               </View>
+            </View>
+            <View style={styles.field}>
+              <View style={styles.inputContainer}>
+                  <TextInput placeholder="New favorite Destinations" onChangeText={(value) => setNewFavoriteDestinations(value)} placeholderTextColor={'#A0ACAE'}
+                  value={newFavoriteDestinations} style={styles.input}/>  
+              </View>
+            </View>
+            <View style={styles.field}>
+              <View style={styles.inputContainer}>
+                  <MultiSelect
+                      style={styles.list} data={foodData} labelField='label' valueField='value' placeholder='New favorite food types'
+                      placeholderStyle={{color: '#A0ACAE'}} value={selectedFood} onChange={(item) => {setSelectedFood(item)}} renderItem={editDisplay} maxHeight={100}
+                      visibleSelectedItem={false} activeColor='lightblue' mode='modal'
+                  />
+              </View>
+            </View>
+            <View style={styles.field}>
+              <View style={styles.inputContainer}>
+                  <MultiSelect
+                      style={styles.list} data={activitiesTypes} labelField='label' valueField='value' placeholder='New favorites types of activities'
+                      placeholderStyle={{color: '#A0ACAE'}} value={favoriteActivitiesTypes} onChange={(item) => {setFavoriteActivitiesTypes(item)}}
+                      renderItem={editDisplay} maxHeight={100} visibleSelectedItem={false} activeColor='lightblue' mode='modal'
+                  />
+              </View>
+            </View>
+            <View style={styles.field}>
+              <View style={styles.inputContainer}>
+                  <MultiSelect
+                      style={styles.list} data={interest} labelField='label' valueField='value' placeholder='New favorites activities'
+                      placeholderStyle={{color: '#A0ACAE'}} value={selectedHobbies} onChange={(item) => {setSelectedHobbies(item)}}
+                      renderItem={editDisplay} maxHeight={100} visibleSelectedItem={false} activeColor='lightblue' mode='modal'
+                  />
+              </View>
+            </View>
           </View>
           <View style={styles.foot}>
             <View style={styles.buttons}>
@@ -271,8 +310,8 @@ export default function ProfileScreen({ navigation }) {
                   placeholderStyle={'#000000'} renderItem={display} maxHeight={100} value={'Your favorites food'} iconColor='#000000'
               />
               <Dropdown
-                  style={styles.dropdown} data={hobbies} labelField='label' valueField='value' placeholder='Your favorites types of hobbies'
-                  placeholderStyle={'#000000'} renderItem={display} maxHeight={100} value={'Your favorites hobbies'} iconColor='#000000'
+                  style={styles.dropdown} data={favoriteTypes} labelField='label' valueField='value' placeholder='Your favorites types of hobbies'
+                  placeholderStyle={'#000000'} renderItem={display} maxHeight={100} value={'Your favorites types of hobbies'} iconColor='#000000'
               />
               <Dropdown
                   style={styles.dropdown} data={hobbies} labelField='label' valueField='value' placeholder='Your favorites hobbies'
@@ -503,7 +542,7 @@ const styles = StyleSheet.create({
     color: 'white',
   },
   form: {
-    flex: 2,
+    flex: 3,
     width: '100%',
     alignItems: 'center',
     justifyContent: 'space-around',
@@ -535,6 +574,8 @@ const styles = StyleSheet.create({
     flex: 1,
     width: '90%',
     justifyContent: 'center',
+    alignItems: 'center',
+    marginBottom: 10,
   },
   label: {
     flex: 1,

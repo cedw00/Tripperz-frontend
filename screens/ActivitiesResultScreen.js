@@ -37,8 +37,6 @@ export default function ActivitiesResultScreen({ navigation }) {
     const [searchCountry, setSearchCountry] = useState("");
     const { activityType } = useSelector((state) => state.activSearch.value);
     const { activity } = useSelector((state) => state.activSearch.value);
-    const { trippers } = useSelector((state) => state.activSearch.value)
-    const { duration } = useSelector((state) => state.search.value);
     //const tripCard = useSelector((state) => state.trips.cityCard);
 
     console.log('activity type', activityType)

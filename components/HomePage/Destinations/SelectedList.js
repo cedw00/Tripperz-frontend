@@ -6,13 +6,6 @@ import { addCountry } from '../../../reducers/search';
 import { addCity } from '../../../reducers/search';
 import { addCityList } from '../../../reducers/search';
 import { addCountryList } from '../../../reducers/search';
-import Constants from 'expo-constants';
-
-
-
-
-const backend = Constants.expoConfig.hostUri.split(`:`)[0]
-
 
 function SelectedList({ getData }) {
 
